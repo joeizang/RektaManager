@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using RektaManager.Shared.Abstractions;
 
-namespace RektaManager.Shared
+namespace RektaManager.Shared.Abstractions
 {
-    public class ApplicationUser : IdentityUser
+    public abstract class DomainModelBase : IDomainModel
     {
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
+        public Guid Id { get; set; }
         public bool IsDeleted { get; set; }
+
+        protected DomainModelBase()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
