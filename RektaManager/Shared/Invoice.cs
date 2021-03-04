@@ -27,8 +27,8 @@ namespace RektaManager.Shared
 
         public List<ChartOfAccounts> ChartOfAccounts { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public List<OrderSales> Orders { get; set; }
 
-        public List<Booking> Bookings { get; set; }
+        public List<BookingSales> Bookings { get; set; }
     }
 }

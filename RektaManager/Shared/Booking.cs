@@ -21,6 +21,10 @@ namespace RektaManager.Shared
 
         public string StaffId { get; set; }
 
+        public List<BookingSales> BookingSalesInvoices { get; set; }
+
+        public Guid InvoiceId { get; set; }
+
         public List<BookedItem> BookedItems { get; set; }
 
         public List<Service> BookedServices { get; set; }

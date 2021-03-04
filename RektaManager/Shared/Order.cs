@@ -26,6 +26,9 @@ namespace RektaManager.Shared
         [Required]
         public decimal Total { get; set; }
 
+        public List<OrderSales> OrderSalesInvoices { get; set; }
+
+        public Guid InvoiceId { get; set; }
 
     }
 }
