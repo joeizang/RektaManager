@@ -9,5 +9,6 @@ namespace RektaManager.Shared
 {
     public class Product : DomainModelBase
     {
+
     }
 }

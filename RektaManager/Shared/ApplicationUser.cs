@@ -13,5 +13,19 @@ namespace RektaManager.Shared
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string OtherNames { get; set; }
+
+        public string StaffIdNumber { get; set; }
+
+        public List<Order> ProcessedOrders { get; set; }
+
+        public List<Booking> HandledBookings { get; set; }
+
+        public List<StaffShift> StaffShifts { get; set; }
     }
 }
