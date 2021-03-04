@@ -9,5 +9,26 @@ namespace RektaManager.Shared
 {
     public class Invoice : DomainModelBase
     {
+        public DateTimeOffset TransactionDate { get; set; }
+
+        public DateTimeOffset DueDate { get; set; }
+
+        public string Description { get; set; }
+
+        public bool InvoicePaymentStatus { get; set; }
+
+        public Customer Customer { get; set; }
+
+        public Guid CustomerId { get; set; }
+
+        public InvoicePayment InvoicePayment { get; set; }
+
+        public Guid InvoicePaymentId { get; set; }
+
+        public List<ChartOfAccounts> ChartOfAccounts { get; set; }
+
+        public List<Order> Orders { get; set; }
+
+        public List<Booking> Bookings { get; set; }
     }
 }

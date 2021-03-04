@@ -29,6 +29,6 @@ namespace RektaManager.Shared
         public decimal Price { get; set; }
 
         [NotMapped]
-        public decimal TotalInventoryValuation { get; }
+        public decimal TotalInventoryValuation { get; set; }
     }
 }
