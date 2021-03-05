@@ -14,8 +14,6 @@ namespace RektaManager.Shared
 
         public List<Booking> CustomerBookings { get; set; }
 
-        public List<MoneyReceived> MoniesReceived { get; set; }
-
         public List<Invoice> CustomerInvoices { get; set; }
 
         [StringLength(50)]

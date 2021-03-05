@@ -19,11 +19,11 @@ namespace RektaManager.Shared
 
         public Customer Customer { get; set; }
 
-        public Guid CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         public InvoicePayment InvoicePayment { get; set; }
 
-        public Guid InvoicePaymentId { get; set; }
+        public int InvoicePaymentId { get; set; }
 
         public List<ChartOfAccounts> ChartOfAccounts { get; set; }
 

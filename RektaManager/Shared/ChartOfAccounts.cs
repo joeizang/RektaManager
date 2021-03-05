@@ -14,11 +14,7 @@ namespace RektaManager.Shared
         [StringLength(150)]
         public string Name { get; set; }
 
-        public List<InvoicePayment> InvoicePayments { get; set; }
-
         public List<Invoice> Invoices { get; set; }
-
-        public List<BillPayment> BillPayments { get; set; }
 
         public List<Bill> Bills { get; set; }
 

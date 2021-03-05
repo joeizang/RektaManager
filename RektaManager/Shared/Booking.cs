@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace RektaManager.Shared
 {
     public class Booking : DomainModelBase
     {
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Deposit { get; set; }
 
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
         
         public DateTimeOffset BookingDate { get; set; }
@@ -21,9 +24,15 @@ namespace RektaManager.Shared
 
         public string StaffId { get; set; }
 
+        public Customer Customer { get; set; }
+
+        public int CustomerId { get; set; }
+
         public List<BookingSales> BookingSalesInvoices { get; set; }
 
-        public Guid InvoiceId { get; set; }
+        public int InvoiceId { get; set; }
+
+        public Invoice Invoice { get; set; }
 
         public List<BookedItem> BookedItems { get; set; }
 

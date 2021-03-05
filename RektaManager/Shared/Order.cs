@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace RektaManager.Shared
     {
         public Customer Customer { get; set; }
 
-        public Guid CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         public List<OrderedItem> OrderedItems { get; set; }
 
@@ -24,11 +25,12 @@ namespace RektaManager.Shared
         public DateTimeOffset OrderDate { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
         public List<OrderSales> OrderSalesInvoices { get; set; }
 
-        public Guid InvoiceId { get; set; }
+        public int InvoiceId { get; set; }
 
     }
 }

@@ -12,7 +12,7 @@ namespace RektaManager.Shared.Abstractions
 
         DateTimeOffset UpdatedAt { get; set; }
 
-        Guid Id { get; set; }
+        int Id { get; set; }
 
         bool IsDeleted { get; set; }
     }

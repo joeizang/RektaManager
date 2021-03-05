@@ -26,6 +26,7 @@ namespace RektaManager.Shared
         public DateTimeOffset SupplyDate { get; set; }
         
         [Required]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
 
         [NotMapped]

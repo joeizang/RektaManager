@@ -12,8 +12,6 @@ namespace RektaManager.Shared
     {
         public List<Product> SuppliedProducts { get; set; }
 
-        public List<MoneySpent> SupplierPayments { get; set; }
-
         public List<Bill> SupplierBills { get; set; }
         
         [Required]

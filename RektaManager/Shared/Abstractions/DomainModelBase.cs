@@ -14,12 +14,9 @@ namespace RektaManager.Shared.Abstractions
         public DateTimeOffset UpdatedAt { get; set; }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
+        
         public bool IsDeleted { get; set; }
 
-        protected DomainModelBase()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }

@@ -13,10 +13,10 @@ namespace RektaManager.Shared
     {
         public Order OwningOrder { get; set; }
 
-        public Guid OrderId { get; set; }
+        public int OrderId { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(12,2)")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
 
         [StringLength(100)]

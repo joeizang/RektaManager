@@ -27,6 +27,7 @@ namespace RektaManager.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RektaManagerContext>(options =>
+                //options.UseSqlServer(
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
