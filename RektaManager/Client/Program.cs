@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using MatBlazor;
 
 namespace RektaManager.Client
@@ -24,6 +26,10 @@ namespace RektaManager.Client
 
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("RektaManager.ServerAPI"));
+
+            builder.Services.AddBlazoredLocalStorage( config => config.JsonSerializerOptions.WriteIndented = true);
+
+            builder.Services.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
             builder.Services.AddMatBlazor();
 

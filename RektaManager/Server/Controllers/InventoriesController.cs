@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RektaManager.Server.Commands.Inventories;
 using RektaManager.Server.Data;
 using RektaManager.Server.Queries.Inventories;
 using RektaManager.Shared;
@@ -18,10 +20,12 @@ namespace RektaManager.Server.Controllers
     public class InventoriesController : ControllerBase
     {
         private readonly RektaManagerContext _context;
+        private readonly IMapper _mapper;
 
-        public InventoriesController(RektaManagerContext context)
+        public InventoriesController(RektaManagerContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Inventories
@@ -59,40 +63,66 @@ namespace RektaManager.Server.Controllers
         }
 
         // GET: api/Inventories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetInventory(int id)
+        [HttpGet("{id}", Name = "GetOneInventory")]
+        public async Task<ActionResult<Inventory>> GetInventory(int id, CancellationToken token = default)
         {
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventories.AsNoTracking()
+                .Include(i => i.InventoryCategories)
+                .Include(i => i.Products)
+                .Select(i => new InventoryDetailComponentModel()
+                {
+                    InventoryName = i.Name,
+                    InventoryQuantity = i.Quantity,
+                    ProductNames = i.Products.Select(x => x.Name),
+                    InventoryCategories = i.InventoryCategories.Select(x => x.Name),
+                    Date = i.SupplyDate
+                }).SingleOrDefaultAsync(token)
+                .ConfigureAwait(false);
 
             if (inventory == null)
             {
                 return NotFound();
             }
 
-            return inventory;
+            return Ok(inventory);
         }
 
         // PUT: api/Inventories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(int id, Inventory inventory)
+        public async Task<IActionResult> PutInventory([FromBody] PutInventoryCommand inventory, CancellationToken token = default)
         {
-            if (id != inventory.Id)
+            var fromDb = await _context.Inventories.SingleOrDefaultAsync(i => i.Id == inventory.Id, token)
+                .ConfigureAwait(false);
+            if (fromDb is null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(inventory).State = EntityState.Modified;
+            fromDb.Name = inventory.Name;
+            fromDb.Price = inventory.Price;
+            fromDb.Quantity = inventory.Quantity;
+            fromDb.SupplyDate = inventory.SupplyDate;
+            _context.Entry(fromDb).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(token).ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InventoryExists(id))
+                if (!InventoryExists(inventory.Id))
                 {
-                    return NotFound();
+                    var target = new Inventory()
+                    {
+                        Name = inventory.Name,
+                        Price = inventory.Price,
+                        Quantity = inventory.Quantity,
+                        SupplyDate = inventory.SupplyDate
+                    };
+                    _context.Inventories.Add(target);
+                    var id = await _context.SaveChangesAsync(token).ConfigureAwait(false);
+                    return RedirectToRoute("GetOneInventory", new {Id = id});
                 }
                 else
                 {

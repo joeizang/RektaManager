@@ -33,6 +33,8 @@ namespace RektaManager.Server
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RektaManagerContext>();
 
