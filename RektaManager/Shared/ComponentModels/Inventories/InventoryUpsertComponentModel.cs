@@ -27,5 +27,7 @@ namespace RektaManager.Shared.ComponentModels.Inventories
         [Required]
         [DisplayFormat(DataFormatString = "d")]
         public double Quantity { get; set; }
+
+        public int Id { get; set; }
     }
 }
