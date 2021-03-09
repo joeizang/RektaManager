@@ -1,7 +1,17 @@
 ﻿@page "/inventory"
+@inject NavigationManager navManager
+
 
 <h3>Inventory Module</h3>
 
+<div>
+    <button @onclick="SwitchToCreate" class="btn btn-outline-info">Add Inventory</button>
+</div>
+
 @code {
 
+    void SwitchToCreate()
+    {
+        navManager.NavigateTo("inventory");
+    }
 }

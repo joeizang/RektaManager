@@ -1,7 +1,20 @@
 ﻿@page "/products"
+@inject NavigationManager navigationManager
+
 
 <h3>Products</h3>
 
+
+<div>
+    <button @onclick="GoToProductUpdate" class="btn btn-outline-info">
+        Update Product
+    </button>
+</div>
+
 @code {
 
+    private void GoToProductUpdate()
+    {
+        navigationManager.NavigateTo("products/1");
+    }
 }

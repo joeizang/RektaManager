@@ -1,0 +1,23 @@
+﻿@page "/inventory/create"
+
+@using RektaManager.Shared.ComponentModels.Inventories
+
+<h3>CreateInventory</h3>
+
+<EditForm Model="inventory" OnValidSubmit="AddNewInventory">
+    <div class="form-group">
+        <label class="custom-control-label">Inventory Name: </label>
+        <div>
+            <InputText class="form-control" @bind-Value="@inventoryName" />
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    private InventoryUpsertComponentModel inventory = new InventoryUpsertComponentModel();
+    private string inventoryName = string.Empty;
+    [Parameter]
+    public EventCallback AddNewInventory { get; set; }
+
+}
