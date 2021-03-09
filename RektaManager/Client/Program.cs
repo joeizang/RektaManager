@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
-using MatBlazor;
 
 namespace RektaManager.Client
 {
@@ -30,10 +29,6 @@ namespace RektaManager.Client
             builder.Services.AddBlazoredLocalStorage( config => config.JsonSerializerOptions.WriteIndented = true);
 
             builder.Services.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
-
-            builder.Services.AddMatBlazor();
-
-            builder.Services.AddMatToaster();
 
             builder.Services.AddApiAuthorization();
 
