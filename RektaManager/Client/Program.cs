@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using RektaManager.Client.Utils;
 
 namespace RektaManager.Client
 {
@@ -20,11 +21,15 @@ namespace RektaManager.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddHttpClient("RektaManager.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+            builder.Services.AddHttpClient("RektaManager.ServerAPI.NoAuthenticationClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+            builder.Services.AddHttpClient<IHttpService>(client =>
+                    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
             // Supply HttpClient instances that include access tokens when making requests to the server project
-            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("RektaManager.ServerAPI"));
+            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("RektaManager.ServerAPI.NoAuthenticationClient"));
+
+            builder.Services.AddScoped<IHttpService, HttpService>();
 
             builder.Services.AddBlazoredLocalStorage( config => config.JsonSerializerOptions.WriteIndented = true);
 

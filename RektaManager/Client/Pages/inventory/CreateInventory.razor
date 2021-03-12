@@ -1,96 +1,73 @@
 ﻿@page "/inventory/create"
 
 @using RektaManager.Shared.ComponentModels.Inventories
-@inject NavigationManager navigationManager
-@inject HttpClient httpClient
+@using RektaManager.Client.Utils
+@inject NavigationManager NavigationManager
+@inject IHttpService HttpService
 
 <div class="col-12 d-flex justify-content-center">
     <h3>Create Inventory</h3>
 </div>
 
 <div class="col-12 d-flex justify-content-center">
-    <EditForm EditContext="@context" OnValidSubmit="SubmitInventory">
-        <div class="form-group">
+    <EditForm Model="@inventory" OnValidSubmit="@SubmitInventory">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group custom-forms-preset">
             <label for="supplyDate"><b>Date Supplied</b></label>
             <div>
-                <InputDate id="supplyDate" class="form-control" @bind-Value="@supplyDate" />
+                <InputDate id="supplyDate" class="form-control custom-forms-preset"
+                    @bind-Value="@inventory.SupplyDate" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group custom-forms-preset">
             <label for="inventoryName"><b>Inventory Name</b></label>
             <div>
-                <InputText id="inventoryName" class="form-control" @bind-Value="@inventoryName" />
+                <InputText id="inventoryName" class="form-control custom-forms-preset" @bind-Value="@inventory.Name" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group custom-forms-preset">
             <label for="totalValue"><b>Total Value</b></label>
             <div>
-                <InputNumber id="totalValue" class="form-control" @bind-Value="@totalValue" />
+                <InputNumber id="totalValue" class="form-control custom-forms-preset" @bind-Value="@inventory.Price" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group custom-forms-preset">
             <label for="quantity"><b>Starting Quantity</b></label>
             <div>
-                <InputNumber id="quantity" class="form-control" @bind-Value="@quantity" />
+                <InputNumber id="quantity" class="form-control custom-forms-preset" @bind-Value="@inventory.Quantity" />
             </div>
         </div>
 
         <div class="form-group">
-            <input id="submitBtn" type="submit" value="Create" class="btn btn-primary col-12" />
-            <img src="images/giphy.gif" alt="loading" style="visibility: @displayProp"/>
+            <button type="submit" class="btn btn-primary col-12" disabled="@disabled">Create</button>
         </div>
     </EditForm>
 </div>
 
 @code {
-
     private InventoryUpsertComponentModel inventory = new InventoryUpsertComponentModel();
-    private string inventoryName = string.Empty;
-    private DateTimeOffset supplyDate = DateTimeOffset.UtcNow.LocalDateTime;
-    private decimal totalValue = 0m;
-    private double quantity = 0d;
-    private EditContext context;
-    private bool disabled = false;
-    private string displayProp = "hidden";
-
-    protected override void OnInitialized()
-    {
-        context = new EditContext(inventory);
-    }
-
-
-    [Parameter]
-    public EventCallback AddNewInventory { get; set; }
-
-
-    async Task SubmitInventory()
+    private bool disabled;
+    public async Task SubmitInventory()
     {
         disabled = true;
-        displayProp = "visible";
-        inventory.Name = inventoryName;
-        inventory.Price = totalValue;
-        inventory.Quantity = quantity;
-        inventory.SupplyDate = supplyDate;
-
-        
         try
         {
-            if (context.Validate())
-            {
-                var result = await httpClient.PutAsJsonAsync("api/inventories", inventory);
-                Console.WriteLine($"These are the contents of result {result}");
+            var result = await HttpService.Post("api/inventories", inventory);
 
-                if (result.IsSuccessStatusCode)
-                {
-                    disabled = false;
-                    navigationManager.NavigateTo("inventory");
-                }
+            if (result.Success)
+            {
+                disabled = false;
+                NavigationManager.NavigateTo("inventory");
+            }
+            else
+            {
+                Console.WriteLine("something failed. Maybe in the controller!");
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e.Message);
-            throw;
+            Console.WriteLine(ex.Message);
         }
     }
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Commands.Inventories;
@@ -20,77 +18,71 @@ namespace RektaManager.Server.Controllers
     public class InventoriesController : ControllerBase
     {
         private readonly RektaManagerContext _context;
-        private readonly IMapper _mapper;
 
-        public InventoriesController(RektaManagerContext context, IMapper mapper)
+        public InventoriesController(RektaManagerContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         // GET: api/Inventories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryComponentModel>>> GetInventories([FromQuery] GetInventoriesQuery query, CancellationToken token = default)
+        public async Task<ActionResult<IEnumerable<InventoryComponentModel>>> GetInventories(CancellationToken token = default)
         {
             var inventories = _context.Inventories.AsNoTracking();
-            if (string.IsNullOrEmpty(query.InventoryName))
-            {
-                inventories = inventories.Where(i => i.Price.Equals(query.Price));
-            }
 
-            inventories = inventories.Where(i => i.Name.Contains(query.InventoryName) || i.Price.Equals(query.Price));
-
-            DateTimeOffset newDateRange;
-            
-            if (query.DateOffset > 0)
-            {
-                newDateRange = query.Date.AddDays(query.DateOffset);
-                inventories = inventories.Where(i => i.SupplyDate >= query.Date && i.SupplyDate <= newDateRange);
-            }
-
-            inventories = inventories.Where(i => i.SupplyDate >= query.Date);
-
-            var result = await inventories.Select(x => new InventoryComponentModel()
-            {
-                InventoryDate = x.SupplyDate,
-                InventoryName = x.Name,
-                InventoryId = x.Id,
-                QuantityInStock = x.Quantity,
-                CategoryName = x.InventoryCategories.FirstOrDefault().Name
-            }).ToListAsync(token).ConfigureAwait(false);
-
-            return Ok(result);
+            return Ok(await inventories.Include(x => x.InventoryCategories).OrderBy(x => x.SupplyDate)
+                .ThenBy(x => x.Id)
+                .Select(x => new InventoryComponentModel()
+                {
+                    CategoryName = x.InventoryCategories.First().Name,
+                    InventoryDate = x.SupplyDate,
+                    InventoryName = x.Name,
+                    QuantityInStock = x.Quantity,
+                    InventoryId = x.Id
+                }).ToListAsync(token));
         }
 
         // GET: api/Inventories/5
         [HttpGet("{id}", Name = "GetOneInventory")]
-        public async Task<ActionResult<Inventory>> GetInventory(int id, CancellationToken token = default)
+        public async Task<ActionResult<Inventory>> GetInventory(int id)
         {
-            var inventory = await _context.Inventories.AsNoTracking()
-                .Include(i => i.InventoryCategories)
-                .Include(i => i.Products)
-                .Select(i => new InventoryDetailComponentModel()
-                {
-                    InventoryName = i.Name,
-                    InventoryQuantity = i.Quantity,
-                    ProductNames = i.Products.Select(x => x.Name),
-                    InventoryCategories = i.InventoryCategories.Select(x => x.Name),
-                    Date = i.SupplyDate
-                }).SingleOrDefaultAsync(token)
-                .ConfigureAwait(false);
+            var inventory = _context.Inventories.AsNoTracking();
 
-            if (inventory == null)
+            var mainResult = await inventory.Select(i => new InventoryDetailComponentModel()
+            {
+                InventoryName = i.Name,
+                InventoryQuantity = i.Quantity,
+                Date = i.SupplyDate
+            }).SingleOrDefaultAsync();
+
+            var categories = await inventory
+                .Include(i => i.InventoryCategories)
+                .Where(x => x.Id == id)
+                .Select(p => p.InventoryCategories.Single())
+                .Select(c => c.Name)
+                .ToListAsync();
+
+            var products = await _context.Products.AsNoTracking()
+                .Include(p => p.ProductInventory)
+                .Where(p => p.ProductInventory.Id == id)
+                .Select(p => p.Name)
+                .ToListAsync();
+
+            mainResult.InventoryCategories = categories;
+            mainResult.ProductNames = products;
+
+            if (mainResult is null)
             {
                 return NotFound();
             }
 
-            return Ok(inventory);
+            return Ok(mainResult);
         }
 
         // PUT: api/Inventories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory([FromBody] PutInventoryCommand inventory, CancellationToken token = default)
+        public async Task<IActionResult> PutInventory(PutInventoryCommand inventory, CancellationToken token = default)
         {
             var fromDb = await _context.Inventories.SingleOrDefaultAsync(i => i.Id == inventory.Id, token)
                 .ConfigureAwait(false);
@@ -122,7 +114,7 @@ namespace RektaManager.Server.Controllers
                     };
                     _context.Inventories.Add(target);
                     var id = await _context.SaveChangesAsync(token).ConfigureAwait(false);
-                    return RedirectToRoute("GetOneInventory", new {Id = id});
+                    return RedirectToRoute("GetOneInventory", new { Id = id });
                 }
                 else
                 {
@@ -136,12 +128,30 @@ namespace RektaManager.Server.Controllers
         // POST: api/Inventories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
+        public async Task<IActionResult> PostInventory(InventoryUpsertComponentModel
+         inventory)
         {
-            _context.Inventories.Add(inventory);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInventory", new { id = inventory.Id }, inventory);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var newInventory = new Inventory()
+                    {
+                        Name = inventory.Name,
+                        Price = inventory.Price,
+                        Quantity = inventory.Quantity,
+                        SupplyDate = inventory.SupplyDate
+                    };
+                    _context.Inventories.Add(newInventory);
+                    var newId = await _context.SaveChangesAsync().ConfigureAwait(false);
+                    inventory.Id = newId;
+                }
+                return CreatedAtAction("GetInventory", new { id = inventory.Id }, inventory);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new {ex.Message });
+            }
         }
 
         // DELETE: api/Inventories/5

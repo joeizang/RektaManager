@@ -205,5 +205,11 @@ namespace RektaManager.Server.Data
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(x => new {x.UserId, x.LoginProvider, x.Name});
         }
+
+
+        public DbSet<RektaManager.Shared.Invoice> Invoice { get; set; }
+
+
+        public DbSet<RektaManager.Shared.InvoicePayment> InvoicePayment { get; set; }
     }
 }

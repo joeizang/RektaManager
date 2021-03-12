@@ -1,17 +1,88 @@
 ﻿@page "/inventory"
-@inject NavigationManager navManager
+@using RektaManager.Client.Utils
+@using RektaManager.Shared.ComponentModels.Inventories
+@using System.Text.Json
+@inject NavigationManager NavManager
+@inject HttpClient HttpClient
 
 
 <h3>Inventory Module</h3>
 
 <div>
-    <button @onclick="SwitchToCreate" class="btn btn-outline-info">Add Inventory</button>
+    <button @onclick="SwitchToCreate" class="btn btn-outline-info"><i class="bi bi-bag-plus-fill"></i><b>Add Inventory</b></button>
+</div>
+
+<div class="pt-2">
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Inventory Id</th>
+                <th>Inventory Name</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Supplied On</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in inventory)
+            {
+                <tr>
+                    <td>
+                        @item.InventoryId
+                    </td>
+                    <td>
+                        @item.InventoryName
+                    </td>
+                    <td>
+                        @item.QuantityInStock
+                    </td>
+                    <td>
+                        @item.CategoryName
+                    </td>
+                    <td>
+                        @item.InventoryDate
+                    </td>
+                    <td>
+                        <a href="inventory/details/@item.InventoryId" class="btn btn-info"><span class="bi bi-eye-fill"></span></a>
+                        <a href="inventory/edit" class="btn btn-info"><span class="bi bi-pencil-square"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 @code {
 
+    List<InventoryComponentModel> inventory = new List<InventoryComponentModel>();
+    private JsonSerializerOptions defaultJsonSerializerOptions => new JsonSerializerOptions()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     void SwitchToCreate()
     {
-        navManager.NavigateTo("inventory/create");
+        NavManager.NavigateTo("inventory/create");
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync("/api/inventories");
+            if(response.IsSuccessStatusCode)
+            {
+                inventory = JsonSerializer.Deserialize<List<InventoryComponentModel>>(await response.Content.ReadAsStringAsync(), 
+                    defaultJsonSerializerOptions);
+                Console.WriteLine($"inventory has been fetched and has {inventory.Count} items in the list!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            //throw;
+        }
+    }
+
 }

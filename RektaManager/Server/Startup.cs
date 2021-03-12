@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RektaManager.Server.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using RektaManager.Shared;
 
 namespace RektaManager.Server
@@ -27,9 +28,11 @@ namespace RektaManager.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RektaManagerContext>(options =>
-                //options.UseSqlServer(
+            {
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"));
+                options.ConfigureWarnings(w => w.Log(RelationalEventId.MultipleCollectionIncludeWarning));
+            });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
