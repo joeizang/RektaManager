@@ -33,6 +33,31 @@ namespace RektaManager.Client.Utils
             return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
         }
 
+        public async Task<ResponseWrapper<object>> PutAsync<T>(string url, T requestPayload)
+        {
+            var reqPayload = JsonSerializer.Serialize(requestPayload);
+            var stringifiedPayload = new StringContent(reqPayload, Encoding.UTF8, "application/josn");
+            var response = await _client.PutAsync(url, stringifiedPayload);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+            }
+
+            return new ResponseWrapper<object>(null, false, response);
+        }
+
+        public async Task<ResponseWrapper<object>> DeleteAsync(string url)
+        {
+            var response = await _client.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+            }
+
+            return new ResponseWrapper<object>(null, false, response);
+        }
+
         public async Task<ResponseWrapper<T>> GetAsync<T>(string url)
         {
             var response = await _client.GetAsync(url);

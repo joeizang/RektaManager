@@ -12,6 +12,8 @@ namespace RektaManager.Client.Utils
 
         Task<ResponseWrapper<T>> GetAsync<T>(string url);
         JsonSerializerOptions DefaultJsonSerializerOptions { get; }
+        Task<ResponseWrapper<object>> PutAsync<T>(string url, T requestPayload);
+        Task<ResponseWrapper<object>> DeleteAsync(string url);
         Task<ResponseWrapper<T>> GetByIdAsync<T>(string url);
     }
 }
