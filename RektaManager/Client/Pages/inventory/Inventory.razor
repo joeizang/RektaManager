@@ -4,6 +4,7 @@
 @using System.Text.Json
 @inject NavigationManager NavManager
 @inject HttpClient HttpClient
+@inject IToastService Toast
 
 
 <h3>Inventory Module</h3>
@@ -44,8 +45,12 @@
                         @item.InventoryDate
                     </td>
                     <td>
-                        <a href="inventory/details/@item.InventoryId" class="btn btn-info"><span class="bi bi-eye-fill"></span></a>
-                        <a href="inventory/edit" class="btn btn-info"><span class="bi bi-pencil-square"></span></a>
+                        <a href="inventory/details/@item.InventoryId" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                        <a href="inventory/edit/@item.InventoryId" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteInventory(@item.InventoryId))">
+                            <span class="bi bi-trash2-fill"></span>
+                            <span style="display: @_displayProp"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                        </button>
                     </td>
                 </tr>
             }
@@ -56,6 +61,7 @@
 @code {
 
     List<InventoryComponentModel> inventory = new List<InventoryComponentModel>();
+    private string _displayProp = "none";
     private JsonSerializerOptions defaultJsonSerializerOptions => new JsonSerializerOptions()
     {
         PropertyNameCaseInsensitive = true
@@ -73,7 +79,7 @@
             var response = await HttpClient.GetAsync("/api/inventories");
             if(response.IsSuccessStatusCode)
             {
-                inventory = JsonSerializer.Deserialize<List<InventoryComponentModel>>(await response.Content.ReadAsStringAsync(), 
+                inventory = JsonSerializer.Deserialize<List<InventoryComponentModel>>(await response.Content.ReadAsStringAsync(),
                     defaultJsonSerializerOptions);
                 Console.WriteLine($"inventory has been fetched and has {inventory.Count} items in the list!");
             }
@@ -83,6 +89,15 @@
             Console.WriteLine(ex.Message);
             //throw;
         }
+    }
+
+    public async Task DeleteInventory(int id)
+    {
+        _displayProp = "inline";
+        await Task.Delay(3000);
+        _displayProp = "none";
+        Toast.ShowError("Deletion Successful", "Delete");
+        NavManager.NavigateTo("inventory");
     }
 
 }

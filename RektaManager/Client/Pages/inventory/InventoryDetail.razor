@@ -9,24 +9,15 @@
 
 <div class="d-flex justify-content-center align-items-center">
     <div class="card shadow p-0 bg-white rounded">
-        <h5 class="card-header bg-secondary">@_details.InventoryName</h5>
+        <h5 class="card-header bg-secondary">@_details.Name</h5>
         <div class="card-body">
-            <p><b>Created On :</b>@_details.Date.ToString("dd-MMM-yyyy")</p>
-            <p><b>At :</b>@_details.Date.ToLocalTime().ToString("h:mm:ss tt zz")</p>
+            <p><b>Created On :</b>@_details.SupplyDate.ToString("dd-MMM-yyyy")</p>
+            <p><b>At :</b>@_details.SupplyDate.ToLocalTime().ToString("h:mm:ss tt zz")</p>
             <p class="card-subtitle text-center font-weight-bold">Products</p>
-            <ul class="list-group list-group-flush">
-                @if (_details.ProductNames is null || !_details.ProductNames.Any())
-                {
-                    <li class="list-group-item">No Products for Now.</li>
-                }
-                else
-                {
-                    @foreach (var name in _details.ProductNames)
-                    {
-                        <li class="list-group-item">@name</li>
-                    }
-                }
-            </ul>
+            <span><button class="btn btn-dark" @onclick="@ShowProducts" style="display: @_showButton">More info...</button></span>
+            <div style="display: @_displayProp;">
+                <ProductDetails Model="@_moreDetails"/>
+            </div>
         </div>
     </div>
 </div>
@@ -36,11 +27,15 @@
     [Parameter]
     public int InventoryId { get; set; }
 
-    private InventoryDetailComponentModel _details = new InventoryDetailComponentModel();
+    private string _displayProp = "none";
+    private string _showButton = "inline";
+
+    private InventoryUpsertComponentModel _details = new InventoryUpsertComponentModel();
+    private InventoryDetailComponentModel _moreDetails = new InventoryDetailComponentModel();
+    private List<string> list = new List<string>() { "Gulder", "Star", "Star Lite", "33 Beer" };
 
     protected override async Task OnInitializedAsync()
     {
-        _details.InventoryCategories = new List<string>();
         try
         {
             var response = await HttpService.GetAsync($"api/inventories/{InventoryId}");
@@ -48,16 +43,25 @@
             if (response.IsSuccessStatusCode)
             {
                 _details = JsonSerializer
-                    .Deserialize<InventoryDetailComponentModel>(await response.Content.ReadAsStringAsync(),
+                    .Deserialize<InventoryUpsertComponentModel>(await response.Content.ReadAsStringAsync(),
                         new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+                _moreDetails.ProductNames = list;
             }
-            _details.ProductNames = new List<string>() { "Gulder", "Star", "Star Lite", "33 Beer" };
+
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
+    }
+
+    async Task ShowProducts()
+    {
+        _displayProp = "block";
+        _showButton = "none";
+        //await Task.Delay(4000);
 
     }
 

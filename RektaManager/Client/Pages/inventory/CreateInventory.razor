@@ -9,41 +9,7 @@
     <h3>Create Inventory</h3>
 </div>
 
-<div class="col-12 d-flex justify-content-center">
-    <EditForm Model="@inventory" OnValidSubmit="@SubmitInventory">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group custom-forms-preset">
-            <label for="supplyDate"><b>Date Supplied</b></label>
-            <div>
-                <InputDate id="supplyDate" class="form-control custom-forms-preset"
-                    @bind-Value="@inventory.SupplyDate" />
-            </div>
-        </div>
-        <div class="form-group custom-forms-preset">
-            <label for="inventoryName"><b>Inventory Name</b></label>
-            <div>
-                <InputText id="inventoryName" class="form-control custom-forms-preset" @bind-Value="@inventory.Name" />
-            </div>
-        </div>
-        <div class="form-group custom-forms-preset">
-            <label for="totalValue"><b>Total Value</b></label>
-            <div>
-                <InputNumber id="totalValue" class="form-control custom-forms-preset" @bind-Value="@inventory.Price" />
-            </div>
-        </div>
-        <div class="form-group custom-forms-preset">
-            <label for="quantity"><b>Starting Quantity</b></label>
-            <div>
-                <InputNumber id="quantity" class="form-control custom-forms-preset" @bind-Value="@inventory.Quantity" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary col-12" disabled="@disabled">Create</button>
-        </div>
-    </EditForm>
-</div>
+<InventoryForm Disabled="@disabled" Model="@inventory" SubmitForm="@SubmitInventory"/>
 
 @code {
     private InventoryUpsertComponentModel inventory = new InventoryUpsertComponentModel();

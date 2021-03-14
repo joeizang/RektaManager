@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Shared\RektaManager.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Commands.Inventories;
 using RektaManager.Server.Data;
@@ -13,7 +15,7 @@ using RektaManager.Shared.ComponentModels.Inventories;
 
 namespace RektaManager.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/inventories")]
     [ApiController]
     public class InventoriesController : ControllerBase
     {
@@ -43,33 +45,22 @@ namespace RektaManager.Server.Controllers
         }
 
         // GET: api/Inventories/5
-        [HttpGet("{id}", Name = "GetOneInventory")]
-        public async Task<ActionResult<Inventory>> GetInventory(int id)
+        [HttpGet("{id:int}", Name = "GetOneInventory")]
+        public async Task<ActionResult<InventoryUpsertComponentModel>> GetInventory(int id)
         {
-            var inventory = _context.Inventories.AsNoTracking();
+            var inventory = _context.Inventories
+                .AsNoTracking()
+                .Where(i => i.Id == id);
 
-            var mainResult = await inventory.Select(i => new InventoryDetailComponentModel()
-            {
-                InventoryName = i.Name,
-                InventoryQuantity = i.Quantity,
-                Date = i.SupplyDate
-            }).SingleOrDefaultAsync();
-
-            var categories = await inventory
-                .Include(i => i.InventoryCategories)
-                .Where(x => x.Id == id)
-                .Select(p => p.InventoryCategories.Single())
-                .Select(c => c.Name)
-                .ToListAsync();
-
-            var products = await _context.Products.AsNoTracking()
-                .Include(p => p.ProductInventory)
-                .Where(p => p.ProductInventory.Id == id)
-                .Select(p => p.Name)
-                .ToListAsync();
-
-            mainResult.InventoryCategories = categories;
-            mainResult.ProductNames = products;
+            var mainResult = await inventory.Select(i => 
+                new InventoryUpsertComponentModel()
+                {
+                    Name = i.Name,
+                    Quantity = i.Quantity,
+                    SupplyDate = i.SupplyDate,
+                    Id = i.Id,
+                    Price = i.Price
+                }).SingleOrDefaultAsync();
 
             if (mainResult is null)
             {
@@ -79,10 +70,45 @@ namespace RektaManager.Server.Controllers
             return Ok(mainResult);
         }
 
+        // GET: api/Inventories/5
+        [Route("api/inventories/{id}/more/{moreDetails:bool}")]
+        public async Task<ActionResult<InventoryDetailComponentModel>> GetMoreInventoryDetails(int id, bool moreDetails)
+        {
+            var inventory = _context.Inventories
+                .AsNoTracking()
+                .Where(i => i.Id == id);
+
+            var mainResult = new InventoryDetailComponentModel();
+            var categories = new List<string>();
+            var products = new List<string>();
+
+            if (moreDetails)
+            {
+                categories = await inventory
+                    .Include(i => i.InventoryCategories)
+                    .Where(x => x.Id == id)
+                    .Select(p => p.InventoryCategories.Single())
+                    .Select(c => c.Name)
+                    .ToListAsync();
+
+                products = await _context.Products.AsNoTracking()
+                    .Include(p => p.ProductInventory)
+                    .Where(p => p.ProductInventory.Id == id)
+                    .Select(p => p.Name)
+                    .ToListAsync();
+            }
+
+            mainResult.InventoryCategories = categories;
+            mainResult.ProductNames = products;
+
+
+            return Ok(mainResult);
+        }
+
         // PUT: api/Inventories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(PutInventoryCommand inventory, CancellationToken token = default)
+        public async Task<IActionResult> PutInventory([FromBody]InventoryUpsertComponentModel inventory, CancellationToken token = default)
         {
             var fromDb = await _context.Inventories.SingleOrDefaultAsync(i => i.Id == inventory.Id, token)
                 .ConfigureAwait(false);
