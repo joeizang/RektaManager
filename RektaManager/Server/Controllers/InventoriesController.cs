@@ -110,7 +110,7 @@ namespace RektaManager.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutInventory([FromBody]InventoryUpsertComponentModel inventory, CancellationToken token = default)
         {
-            var fromDb = await _context.Inventories.SingleOrDefaultAsync(i => i.Id == inventory.Id, token)
+            var fromDb = await _context.Inventories.Where(i => i.Id == inventory.Id).SingleOrDefaultAsync(token)
                 .ConfigureAwait(false);
             if (fromDb is null)
             {

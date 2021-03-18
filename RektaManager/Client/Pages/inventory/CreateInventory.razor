@@ -9,14 +9,17 @@
     <h3>Create Inventory</h3>
 </div>
 
-<InventoryForm Disabled="@disabled" Model="@inventory" SubmitForm="@SubmitInventory"/>
+<InventoryForm Disabled="@disabled" Model="@inventory" SubmitForm="@SubmitInventory" ButtonActionName="Create"
+    SpinnerColor="text-warning" ShowSpinner="@_spinner" SpinnerActionName="Creating..." />
 
 @code {
     private InventoryUpsertComponentModel inventory = new InventoryUpsertComponentModel();
     private bool disabled;
+    private string _spinner = "none";
     public async Task SubmitInventory()
     {
         disabled = true;
+        _spinner = "inline";
         try
         {
             var result = await HttpService.Post("api/inventories", inventory);
@@ -24,6 +27,7 @@
             if (result.Success)
             {
                 disabled = false;
+                _spinner = "none";
                 NavigationManager.NavigateTo("inventory");
             }
             else

@@ -4,6 +4,7 @@
 @using System.Text.Json
 @inject NavigationManager NavManager
 @inject HttpClient HttpClient
+@inject IHttpService HttpService 
 @inject IToastService Toast
 
 
@@ -94,9 +95,9 @@
     public async Task DeleteInventory(int id)
     {
         _displayProp = "inline";
-        await Task.Delay(3000);
+        await HttpService.DeleteAsync($"api/inventory/{id}");
         _displayProp = "none";
-        Toast.ShowError("Deletion Successful", "Delete");
+        Toast.ShowSuccess("Deletion Successful", "Delete");
         NavManager.NavigateTo("inventory");
     }
 

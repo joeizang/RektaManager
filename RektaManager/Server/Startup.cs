@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using RektaManager.Server.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Newtonsoft.Json;
 using RektaManager.Shared;
 
 namespace RektaManager.Server
@@ -29,8 +30,8 @@ namespace RektaManager.Server
         {
             services.AddDbContext<RektaManagerContext>(options =>
             {
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("SqlSvrConnection"));
                 options.ConfigureWarnings(w => w.Log(RelationalEventId.MultipleCollectionIncludeWarning));
             });
 
@@ -47,7 +48,8 @@ namespace RektaManager.Server
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options => 
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddRazorPages();
         }
 

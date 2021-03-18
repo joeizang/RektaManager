@@ -4,10 +4,16 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group custom-forms-preset">
+            <label for="inventoryId"><b>Inventory Id Number</b></label>
+            <div>
+                <InputNumber @bind-Value="@Model.Id" readonly id="inventoryId" class="form-control"/>
+                <small class="text-warning"><b>You cannot change this value...</b></small>
+            </div>
+        </div>
+        <div class="form-group custom-forms-preset">
             <label for="supplyDate"><b>Date Supplied</b></label>
             <div>
-                <InputDate id="supplyDate" class="form-control custom-forms-preset"
-                           @bind-Value="@Model.SupplyDate" />
+                <RadzenDatePicker @bind-Value=@Model.SupplyDate TValue="DateTimeOffset" DateFormat="dd-MM-yyyy" />
             </div>
         </div>
         <div class="form-group custom-forms-preset">
@@ -31,7 +37,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary col-12" disabled="@Disabled">@ButtonActionName</button> 
-            <span style="display: @showSpinner">
+            <span style="display: @ShowSpinner">
                 <ActionSpinner ActionName="@SpinnerActionName" ColorVariant="@SpinnerColor"/>
             </span>
         </div>
@@ -40,8 +46,6 @@
 
 @code {
 
-    private string showSpinner = "none";
-
     [Parameter]
     public EventCallback SubmitForm { get; set; }
 
@@ -49,7 +53,7 @@
     public bool Disabled { get; set; }
 
     [Parameter]
-    public bool ShowSpinner { get; set; }
+    public string ShowSpinner { get; set; } = "none";
 
     [Parameter]
     public string SpinnerActionName { get; set; }

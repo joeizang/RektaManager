@@ -15,8 +15,7 @@ namespace RektaManager.Shared.ComponentModels.Inventories
         [Required]
         public decimal Price { get; set; }
 
-        [Required]
-        public DateTimeOffset SupplyDate { get; set; }
+        [Required] public DateTimeOffset SupplyDate { get; set; } = DateTimeOffset.UtcNow;
 
         [Required]
         public double Quantity { get; set; }

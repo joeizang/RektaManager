@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Data;
+using RektaManager.Server.Queries.Products;
 using RektaManager.Shared;
+using RektaManager.Shared.ComponentModels.Inventories;
+using RektaManager.Shared.ComponentModels.Products;
 
 namespace RektaManager.Server.Controllers
 {
@@ -23,9 +26,17 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductComponentModel>>> GetProducts([FromQuery] ProductQuery query)
         {
-            return await _context.Products.ToListAsync();
+            if (query.Skip == 0 && query.Take == 0)
+            {
+                return Ok(await ReturnProducts(0, 10));
+            }
+            else
+            {
+                return (Ok(await ReturnProducts(query.Skip, query.Take)));
+            }
+            
         }
 
         // GET: api/Products/5
@@ -103,6 +114,26 @@ namespace RektaManager.Server.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+
+        private async Task<IEnumerable<ProductComponentModel>> ReturnProducts(int skip, int take)
+        {
+            return await _context.Products.AsNoTracking()
+                .Include(p => p.ProductInventory)
+                .Select(x => new ProductComponentModel()
+                {
+                    CostPrice = x.CostPrice,
+                    Description = x.Description,
+                    Name = x.Name,
+                    ProductId = x.Id,
+                    ProductInventoryId = x.ProductInventoryId,
+                    QuantityBought = x.QuantityBought,
+                    ProductUniqueIdentifier = x.ProductUniqueIdentifier,
+                    UnitMeasure = x.UnitMeasure
+                })
+                .Skip(skip)
+                .Take(take)
+                .ToArrayAsync();
         }
     }
 }

@@ -1,20 +1,75 @@
 ﻿@page "/products"
+@using RektaManager.Client.Utils
+@using RektaManager.Shared
+@using Microsoft.EntityFrameworkCore
 @inject NavigationManager navigationManager
+@inject IHttpService HttpService
 
 
 <h3>Products</h3>
 
 
 <div>
-    <button @onclick="GoToProductUpdate" class="btn btn-outline-info">
-        Update Product
-    </button>
+    <span>
+        <button @onclick="GoToProductUpdate" class="btn btn-outline-info">
+            Update Product
+        </button>
+    </span>
+    <span>
+        <button @onclick="@(() => navigationManager.NavigateTo("products/create"))" class="btn btn-outline-info">
+            Create Product
+        </button>
+    </span>
 </div>
 
-@code {
+<RadzenDataList WrapItems="true" AllowPaging="false" Data="@products" TItem="Product">
+    <Template Context="product">
+        <RadzenCard Style="width:300px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>Name:</div>
+                    <b>@product.Name</b>
+                    <div style="margin-top:20px">Employee:</div>
+                    @*<b>@(order.Employee?.FirstName + " " + order.Employee?.LastName)</b>*@
+                    <br />
+                </div>
+                <div class="col-md-6">
+                    <div>Cost Price:</div>
+                    <b>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", product.CostPrice)</b>
+                    <div style="margin-top:20px">Quantity Bought:</div>
+                    <b>@(product.QuantityBought)</b>
+                    <div style="margin-top:20px">Units Bought:</div>
+                    <b>@(product.UnitMeasure)</b>
+                    <div style="margin-top:20px">Ship name:</div>
+                    <b>@(product.ProductInventory.Name)</b>
+                </div>
+            </div>
 
-    private void GoToProductUpdate()
+        </RadzenCard>
+    </Template>
+</RadzenDataList>
+<RadzenPager Count="count" PageSize="@pageSize" PageNumbersCount="10" @*PageChanged="@PageChanged"*@ />
+@code {
+    int pageSize = 10;
+    int count;
+    public ResponseWrapper<IEnumerable<Product>> ResponseWrapper { get; set; }
+    IEnumerable<Product> products;
+
+    protected override async Task OnInitializedAsync()
     {
-        navigationManager.NavigateTo("products/1");
+        ResponseWrapper = await HttpService
+            .GetAsync<IEnumerable<Product>>($"api/products?skip={0}&take={pageSize}");
+        count = ResponseWrapper.Response.Count();
+        products = ResponseWrapper.Response;
+    }
+
+    //async Task PageChanged(PagerEventArgs args)
+    //{
+    //    //products = await GetProducts(args.Skip, args.Top);
+    //}
+
+    void GoToProductUpdate()
+    {
+        navigationManager.NavigateTo("products/{productId}");
     }
 }

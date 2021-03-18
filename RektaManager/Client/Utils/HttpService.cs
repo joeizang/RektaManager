@@ -19,6 +19,10 @@ namespace RektaManager.Client.Utils
             PropertyNameCaseInsensitive = true
         };
 
+        public HttpResponseMessage ServerResponse { get; set; }
+
+
+
 
         public HttpService(HttpClient client)
         {
@@ -28,34 +32,34 @@ namespace RektaManager.Client.Utils
         public async Task<ResponseWrapper<object>> Post<T>(string url, T data)
         {
             var jsonData = JsonSerializer.Serialize(data);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync(url, stringContent);
-            return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+            var stringContent = new StringContent(jsonData, Encoding.UTF8, Constants.ContentType);
+            ServerResponse = await _client.PostAsync(url, stringContent);
+            return new ResponseWrapper<object>(null, ServerResponse.IsSuccessStatusCode, ServerResponse);
         }
 
         public async Task<ResponseWrapper<object>> PutAsync<T>(string url, T requestPayload)
         {
             var reqPayload = JsonSerializer.Serialize(requestPayload);
-            var stringifiedPayload = new StringContent(reqPayload, Encoding.UTF8, "application/josn");
-            var response = await _client.PutAsync(url, stringifiedPayload);
+            var stringifiedPayload = new StringContent(reqPayload, Encoding.UTF8, Constants.ContentType);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
-            }
+                ServerResponse = await _client.PutAsync(url, stringifiedPayload);
 
-            return new ResponseWrapper<object>(null, false, response);
+                if (ServerResponse.IsSuccessStatusCode)
+                {
+                    return new ResponseWrapper<object>(null, ServerResponse.IsSuccessStatusCode, ServerResponse);
+                }
+                return new ResponseWrapper<object>(null, false, ServerResponse);
         }
 
         public async Task<ResponseWrapper<object>> DeleteAsync(string url)
         {
-            var response = await _client.DeleteAsync(url);
-            if (response.IsSuccessStatusCode)
+            ServerResponse = await _client.DeleteAsync(url);
+            if (ServerResponse.IsSuccessStatusCode)
             {
-                return new ResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+                return new ResponseWrapper<object>(null, ServerResponse.IsSuccessStatusCode, ServerResponse);
             }
 
-            return new ResponseWrapper<object>(null, false, response);
+            return new ResponseWrapper<object>(null, false, ServerResponse);
         }
 
         public async Task<ResponseWrapper<T>> GetAsync<T>(string url)

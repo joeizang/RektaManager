@@ -29,7 +29,7 @@
 
     private bool _disabledState;
 
-    private bool _showSpinner;
+    private string _showSpinner = "none";
 
     private InventoryUpsertComponentModel _inventory;
 
@@ -45,28 +45,26 @@
     private async Task Update()
     {
         _disabledState = true;
-        _showSpinner = true;
+        _showSpinner = "inline";
 
-        try
-        {
             if (!(_inventory is null))
             {
                 Console.WriteLine("inventory is not null");
-                var result = await HttpService.PutAsync($"api/inventories", _inventory);
+                var result = await HttpService.PutAsync($"api/inventories/{InventoryId}", _inventory);
 
                 if(result.Success)
                 {
-                    _showSpinner = false;
-                    Toast.ShowInfo("Inventory updated successfully","Updating Inventory");
+                    _showSpinner = "none";
+                    _disabledState = false;
+                    Toast.ShowSuccess("Inventory updated successfully","Updating Inventory");
                     NavigationMgr.NavigateTo("inventory");
                 }
+                else
+                {
+                    Console.WriteLine($"There was an Error and here is what it says: {result.Response}");
+                    Toast.ShowError($"There was an error {result.HttpResponseMessage.StatusCode}-{result.HttpResponseMessage.ReasonPhrase}");
+                }
             }
-        }
-        catch (Exception e)
-        {
-            Toast.ShowError(e.Message,"Error Updating");
-            throw;
-        }
     }
 
 }
