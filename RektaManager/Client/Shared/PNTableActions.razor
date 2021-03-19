@@ -1,0 +1,48 @@
+﻿
+    <a href="@FirstUri" class="@FirstButtonStyleProp"><span class="bi @FirstButtonIcon"></span></a>
+    <a href="@SecondUri" class="@SecondButtonStyleProp"><span class="bi @SecondButtonIcon"></span></a>
+    <button class="@ThirdButtonStyleProp" @onclick="@ButtonAction">
+        <span class="bi @ThirdButtonIcon"></span>
+        <span style="display: @VisibilityProp"><ActionSpinner ActionName="@SpinnerActionName" ColorVariant="@SpinnerColorVariant" /></span>
+    </button>
+
+
+
+@code {
+
+    [Parameter]
+    public string VisibilityProp { get; set; }
+
+    [Parameter]
+    public string SpinnerColorVariant { get; set; }
+
+    [Parameter]
+    public string SpinnerActionName { get; set; }
+
+    [Parameter]
+    public EventCallback ButtonAction { get; set; }
+
+    [Parameter]
+    public string FirstUri { get; set; }
+
+    [Parameter]
+    public string SecondUri { get; set; }
+
+    [Parameter]
+    public string FirstButtonIcon { get; set; }
+
+    [Parameter]
+    public string SecondButtonIcon { get; set; }
+
+    [Parameter]
+    public string ThirdButtonIcon { get; set; }
+
+    [Parameter]
+    public string FirstButtonStyleProp { get; set; }
+
+    [Parameter]
+    public string SecondButtonStyleProp { get; set; }
+
+    [Parameter]
+    public string ThirdButtonStyleProp { get; set; }
+}

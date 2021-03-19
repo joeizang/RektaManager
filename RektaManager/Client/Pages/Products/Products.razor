@@ -2,6 +2,7 @@
 @using RektaManager.Client.Utils
 @using RektaManager.Shared
 @using Microsoft.EntityFrameworkCore
+@using RektaManager.Shared.ComponentModels.Products
 @inject NavigationManager navigationManager
 @inject IHttpService HttpService
 
@@ -9,67 +10,94 @@
 <h3>Products</h3>
 
 
-<div>
-    <span>
-        <button @onclick="GoToProductUpdate" class="btn btn-outline-info">
-            Update Product
-        </button>
-    </span>
+<div class="pb-4 pb-sm-1">
     <span>
         <button @onclick="@(() => navigationManager.NavigateTo("products/create"))" class="btn btn-outline-info">
+            <span class="bi bi-bag-plus-fill"></span>
             Create Product
         </button>
     </span>
 </div>
 
-<RadzenDataList WrapItems="true" AllowPaging="false" Data="@products" TItem="Product">
-    <Template Context="product">
-        <RadzenCard Style="width:300px;">
-            <div class="row">
-                <div class="col-md-6">
-                    <div>Name:</div>
-                    <b>@product.Name</b>
-                    <div style="margin-top:20px">Employee:</div>
-                    @*<b>@(order.Employee?.FirstName + " " + order.Employee?.LastName)</b>*@
-                    <br />
-                </div>
-                <div class="col-md-6">
-                    <div>Cost Price:</div>
-                    <b>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", product.CostPrice)</b>
-                    <div style="margin-top:20px">Quantity Bought:</div>
-                    <b>@(product.QuantityBought)</b>
-                    <div style="margin-top:20px">Units Bought:</div>
-                    <b>@(product.UnitMeasure)</b>
-                    <div style="margin-top:20px">Ship name:</div>
-                    <b>@(product.ProductInventory.Name)</b>
-                </div>
-            </div>
-
-        </RadzenCard>
-    </Template>
-</RadzenDataList>
-<RadzenPager Count="count" PageSize="@pageSize" PageNumbersCount="10" @*PageChanged="@PageChanged"*@ />
+<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
+            AllowSorting="true" Data="@products" TItem="ProductComponentModel" ColumnWidth="200px" AllowColumnResize="true">
+    <Columns>
+        <RadzenGridColumn TItem="ProductComponentModel" Property="ProductId" Title="Product ID" />
+        <RadzenGridColumn TItem="ProductComponentModel" Property="Name" Title="Product Name" />
+        <RadzenGridColumn TItem="ProductComponentModel" Property="QuantityBought" Title="Quantity Bought" />
+        <RadzenGridColumn TItem="ProductComponentModel" Property="UnitMeasure" Title="Quantity Metric" />
+        <RadzenGridColumn TItem="ProductComponentModel" Property="InventoryName" Title="Stock Category" />
+        <RadzenGridColumn TItem="ProductComponentModel" Context="sampleBlazorModelsSampleOrder" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="product">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
+                </RadzenButton>
+                <button class="btn btn-outline-info" @onclick="@((args) => EditProduct(product))">
+                    <span class="bi bi-pencil-fill"></span>
+                    <span class="@spinnerVisibility"><ActionSpinner ActionName="Editing..." ColorVariant="text-warning"></ActionSpinner></span>
+                </button>
+            </Template>
+            <EditTemplate Context="product">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => Console.WriteLine("Editing..."))">
+                </RadzenButton>
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Console.WriteLine("Editing..."))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="ProductComponentModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <Template Context="product">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="product">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
 @code {
     int pageSize = 10;
     int count;
-    public ResponseWrapper<IEnumerable<Product>> ResponseWrapper { get; set; }
-    IEnumerable<Product> products;
+    //string _visibilityProp = "none";
+    //string _firstUri = "";
+    //string _secondUri = "";
+    //string _firstIcon = "";
+    //string _secondIcon = "";
+    //string _thirdIcon = "";
+    //string _spinnerColor = "";
+    //string _actionName = "";
+    //string _firstBtnStyle = "";
+    //string _secondBtnStyle = "";
+    //string _thirdBtnStyle = "";
+    string spinnerVisibility = "d-none";
+
+
+    public ResponseWrapper<IEnumerable<ProductComponentModel>> ResponseWrapper { get; set; }
+    IEnumerable<ProductComponentModel> products = new List<ProductComponentModel>();
+    RadzenGrid<ProductComponentModel> productGrid;
 
     protected override async Task OnInitializedAsync()
     {
         ResponseWrapper = await HttpService
-            .GetAsync<IEnumerable<Product>>($"api/products?skip={0}&take={pageSize}");
+            .GetAsync<IEnumerable<ProductComponentModel>>($"api/products?skip={0}&take={pageSize}");
         count = ResponseWrapper.Response.Count();
         products = ResponseWrapper.Response;
-    }
+        if (products.Any())
+        {
+            Console.WriteLine($"{nameof(products)} is not null or empty. Things should light up");
+        }
 
-    //async Task PageChanged(PagerEventArgs args)
-    //{
-    //    //products = await GetProducts(args.Skip, args.Top);
-    //}
+        Console.WriteLine($"Done { ResponseWrapper.Response.Single().Name}");
+    }
 
     void GoToProductUpdate()
     {
         navigationManager.NavigateTo("products/{productId}");
+    }
+
+    void EditProduct(ProductComponentModel product)
+    {
+        //spinnerVisibility = "d-inline";
+        navigationManager.NavigateTo($"products/edit/{product.ProductId}");
     }
 }

@@ -10,8 +10,11 @@ namespace RektaManager.Shared.ComponentModels.Products
     {
         public ProductUpsertComponentModel()
         {
-            ProductUniqueIdentifier = 
-                $"{Guid.NewGuid():N}-{DateTimeOffset.UtcNow.Ticks}";
+            if (string.IsNullOrEmpty(ProductUniqueIdentifier))
+            {
+                ProductUniqueIdentifier =
+                    $"{Guid.NewGuid():N}-{DateTimeOffset.UtcNow.Ticks}";
+            }
         }
         public string Name { get; set; }
 

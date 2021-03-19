@@ -24,14 +24,14 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/SelectInventories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventorySelectModel>>> GetInventories()
+        public async Task<ActionResult<List<InventorySelectModel>>> GetInventories()
         {
             var result = await _context.Inventories.AsNoTracking()
                 .Select(i => new InventorySelectModel()
                 {
                     InventoryId = i.Id,
                     InventoryName = i.Name
-                }).ToArrayAsync();
+                }).ToListAsync();
             return Ok(result);
         }
 

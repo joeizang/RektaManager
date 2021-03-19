@@ -127,6 +127,7 @@ namespace RektaManager.Server.Controllers
                     Name = x.Name,
                     ProductId = x.Id,
                     ProductInventoryId = x.ProductInventoryId,
+                    InventoryName = x.ProductInventory.Name,
                     QuantityBought = x.QuantityBought,
                     ProductUniqueIdentifier = x.ProductUniqueIdentifier,
                     UnitMeasure = x.UnitMeasure

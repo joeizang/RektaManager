@@ -1,25 +1,28 @@
 ﻿@using RektaManager.Shared.ComponentModels.Products
 @using RektaManager.Shared.ComponentModels.Inventories
 @using RektaManager.Shared
-<div class="d-flex card shadow justify-content-center align-items-center rounded pt-1 pb-4 col-12">
-    <EditForm Model="@Model" OnValidSubmit="@HandleFormSubmit">
+<div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
+    <EditForm Model="@Model" OnValidSubmit="@HandleFormSubmit" class="w-75 pr-3">
         <DataAnnotationsValidator/>
         <div class="form-group">
             <div class="col-sm-10">
                 <label for="productName">Product Name</label>
                 <InputText @bind-Value="@Model.Name" id="productName" class="form-control"/>
+                <ValidationMessage For="@(() => Model.Name)" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-10">
                 <label for="productPrice">Product Price</label>
                 <InputNumber class="form-control" id="productPrice" @bind-Value="@Model.CostPrice"/>
+                <ValidationMessage For="@(() => Model.CostPrice)" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-10">
                 <label for="productQuantity">Product Quantity</label>
                 <InputNumber class="form-control" id="productQuantity" @bind-Value="@Model.QuantityBought"/>
+                <ValidationMessage For="@(() => Model.QuantityBought)" />
             </div>
         </div>
         <div class="form-group">
@@ -31,19 +34,19 @@
         <div class="form-group">
             <div class="col-sm-10">
                 <label for="inventories">Inventory</label>
-                <InputSelect @bind-Value="@Inventories" id="inventories" class="form-control" DisplayName="Inventory Id">
+                <PNInputSelect @bind-Value="@Model.ProductInventoryId" id="inventories" class="form-control" DisplayName="Inventory Id">
                     @foreach(var option in Inventories)
                     {
                         <option value="@option.InventoryId">@option.InventoryName</option>
                     }
-                </InputSelect>
+                </PNInputSelect>
             </div>
         </div>
         <div class="form-group">
-            <div>
+            <div class="col-sm-10">
                 <label for="unitMeasure">Unit Measure</label>
                 <InputSelect id="unitMeasure" @bind-Value="@Model.UnitMeasure" class="form-control">
-                    <option>Select a Measurement...</option>
+                    <option value="0">Select a Measurement...</option>
                     @foreach (var option in Enum.GetValues<UnitMeasure>())
                     {
                         <option>@option</option>
@@ -52,14 +55,14 @@
             </div>
         </div>
         <div class="form-group">
-            <div>
+            <div class="col-sm-10">
                 <label for="description">Description</label>
                 <InputTextArea id="description" class="form-control" @bind-Value="@Model.Description" />
             </div>
         </div>
         <div class="form-group">
             <span>
-                <button type="submit" class="btn btn-primary col-12">@ButtonText</button>
+                <button type="submit" class="btn btn-primary col-10">@ButtonText</button>
             </span>
             <span style="display: @ShowSpinnerStatus">
                 <ActionSpinner ActionName="@SpinnerText" ColorVariant="@SpinnerColor"></ActionSpinner>
@@ -78,6 +81,8 @@
     [Parameter]
     public List<InventorySelectModel> Inventories { get; set; }
 
+    public string InventoryId { get; set; }
+
     [Parameter]
     public string SpinnerText { get; set; }
 
@@ -89,5 +94,11 @@
 
     [Parameter]
     public string ShowSpinnerStatus { get; set; }
-    
+
+
+    protected override void OnInitialized()
+    {
+        InventoryId = Model.ProductInventoryId.ToString();
+    }
+
 }

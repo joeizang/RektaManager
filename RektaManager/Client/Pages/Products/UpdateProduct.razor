@@ -1,9 +1,41 @@
-﻿@page "/products/{ProductId:int}"
-<h3>UpdateProduct</h3>
+﻿@page "/products/edit/{ProductId:int}"
+@using RektaManager.Shared.ComponentModels.Products
+@using RektaManager.Client.Utils
+@using RektaManager.Shared.ComponentModels.Inventories
+@inject IHttpService HttpService
+<h3>Update Product</h3>
+
+<ProductForm
+    Model="@product"
+    ButtonText="Update Product"
+    SpinnerText="Updating..."
+    SpinnerColor="text-warning"
+    ShowSpinnerStatus="@_showSpinnerStatus"
+    Inventories="@inventories"
+    HandleFormSubmit="@HandleSubmit"
+    ></ProductForm>
 
 @code {
 
     [Parameter]
     public int ProductId { get; set; }
+
+    private ProductUpsertComponentModel product = new ProductUpsertComponentModel();
+    public List<InventorySelectModel> inventories = new List<InventorySelectModel>();
+    string _showSpinnerStatus = "none";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await HttpService.GetByIdAsync<ProductUpsertComponentModel>($"api/products/{ProductId}");
+        var inventoryResponse = await HttpService.GetAsync<List<InventorySelectModel>>("api/selectInventories");
+        inventories = inventoryResponse.Response;
+        product = response.Response;
+    }
+
+    void HandleSubmit()
+    {
+        _showSpinnerStatus = "inline";
+        Console.WriteLine("Handling submit");
+    }
 
 }

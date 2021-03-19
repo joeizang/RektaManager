@@ -3,19 +3,22 @@
 @using RektaManager.Client.Utils
 @using RektaManager.Shared.ComponentModels.Inventories
 @inject IHttpService HttpService
-<h3 class="d-flex justify-content-center align-items-center">Create Product</h3>
+@inject IToastService Toast
+@inject NavigationManager NavigationManager
 
-
-<ProductForm 
-    Model="@_product" 
-    HandleFormSubmit="@CreateProductAsync"
-    SpinnerColor="text-success"
-    SpinnerText="Creating Product..."
-    Inventories="@_inventories"
-    ButtonText="Add Product"
-    ShowSpinnerStatus="@_showSpinnerStatus"
+<div class="container">
+    <h3 class="d-flex justify-content-center align-items-center">Create Product</h3>
+    <ProductForm 
+        Model="@_product" 
+        HandleFormSubmit="@CreateProductAsync"
+        SpinnerColor="text-success"
+        SpinnerText="Creating Product..."
+        Inventories="@_inventories"
+        ButtonText="Add Product"
+        ShowSpinnerStatus="@_showSpinnerStatus"
     />
 
+</div>
 @code {
     private ProductUpsertComponentModel _product = new ProductUpsertComponentModel();
     private List<InventorySelectModel> _inventories = new List<InventorySelectModel>();
@@ -27,7 +30,7 @@
         var response = await HttpService
             .GetAsync<IEnumerable<InventorySelectModel>>("api/selectInventories");
         Console.WriteLine();
-        
+
         _inventories.AddRange(response.Response);
     }
 
@@ -35,8 +38,19 @@
     async Task CreateProductAsync()
     {
         _showSpinnerStatus = "inline";
-        await Task.Delay(5000);
+        var result = await HttpService.Post($"api/products", _product);
+
+        if(result.Success == false)
+        {
+            Toast.ShowError("Could not create your Product!", "Error Creating Product");
+        }
         _showSpinnerStatus = "none";
+
+        if (result.Success == true)
+        {
+            Toast.ShowSuccess("Product Created Successfully!", "Success");
+            NavigationManager.NavigateTo("products");
+        }
 
     }
 }

@@ -8,5 +8,7 @@ namespace RektaManager.Client.Utils
     public static class Constants
     {
         public static string ContentType { get; } = "application/json";
+
+        public static string Key { get; } = "";
     }
 }

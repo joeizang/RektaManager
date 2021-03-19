@@ -12,7 +12,6 @@ using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Blazored.Toast;
 using RektaManager.Client.Utils;
-
 namespace RektaManager.Client
 {
     public class Program
