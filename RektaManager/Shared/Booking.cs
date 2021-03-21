@@ -15,7 +15,10 @@ namespace RektaManager.Shared
 
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
-        
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
+
         public DateTimeOffset BookingDate { get; set; }
 
         public DateTimeOffset EventDate { get; set; } // code in validations to make sure that booking don't happen too close to event date or too far.

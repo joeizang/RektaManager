@@ -29,5 +29,8 @@ namespace RektaManager.Shared
 
         public string Description { get; set; }
 
+        [Column("xmin")]
+        public uint Xmin { get; set; }
+
     }
 }

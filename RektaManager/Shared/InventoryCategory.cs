@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RektaManager.Shared.Abstractions;
 
 namespace RektaManager.Shared
@@ -11,5 +12,8 @@ namespace RektaManager.Shared
 
         [StringLength(200)]
         public string Description { get; set; }
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
     }
 }

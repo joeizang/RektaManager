@@ -204,6 +204,77 @@ namespace RektaManager.Server.Data
 
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(x => new {x.UserId, x.LoginProvider, x.Name});
+
+            //code to handle concurrency
+
+            builder.Entity<Bill>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<BillPayment>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<BookedItem>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Booking>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<ChartOfAccounts>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Customer>()
+            //.UseXminAsConcurrencyToken();
+            .Property(c => c.Xmin)
+            .IsConcurrencyToken();
+            builder.Entity<Inventory>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<InventoryCategory>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Invoice>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<InvoicePayment>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Order>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<OrderedItem>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Product>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<ProductCategory>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Service>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<StaffShift>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
+            builder.Entity<Supplier>()
+                //.UseXminAsConcurrencyToken();
+                .Property(c => c.Xmin)
+                .IsConcurrencyToken();
         }
 
 

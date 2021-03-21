@@ -4,6 +4,19 @@
 <div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
     <EditForm Model="@Model" OnValidSubmit="@HandleFormSubmit" class="w-75 pr-3">
         <DataAnnotationsValidator/>
+        
+        @if (ButtonText.Contains("Update", StringComparison.CurrentCultureIgnoreCase))
+        {
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <label for="productId">Product ID</label>
+                    <InputNumber @bind-Value="@Model.ProductId" id="productId" class="form-control" readonly />
+                    <ValidationMessage For="@(() => Model.Name)" />
+                </div>
+            </div>
+        }
+
+
         <div class="form-group">
             <div class="col-sm-10">
                 <label for="productName">Product Name</label>

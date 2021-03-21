@@ -6,19 +6,8 @@ using System.Threading.Tasks;
 
 namespace RektaManager.Shared.ComponentModels.Products
 {
-    public class ProductUpsertComponentModel
+    public class ProductDetailComponentModel
     {
-        public ProductUpsertComponentModel()
-        {
-            if (string.IsNullOrEmpty(ProductUniqueIdentifier))
-            {
-                ProductUniqueIdentifier =
-                    $"{Guid.NewGuid():N}-{DateTimeOffset.UtcNow.Ticks}";
-            }
-        }
-
-        public int ProductId { get; set; }
-
         public string Name { get; set; }
 
         public decimal CostPrice { get; set; }
@@ -29,8 +18,10 @@ namespace RektaManager.Shared.ComponentModels.Products
 
         public UnitMeasure UnitMeasure { get; set; }
 
-        public int ProductInventoryId { get; set; }
-
         public string Description { get; set; }
+
+        public int ProductId { get; set; }
+        
+        public string InventoryName { get; set; }
     }
 }

@@ -3,6 +3,12 @@
 @using RektaManager.Client.Utils
 @using RektaManager.Shared.ComponentModels.Inventories
 @inject IHttpService HttpService
+@inject IToastService Toast
+@inject NavigationManager Navigation
+
+
+
+
 <h3>Update Product</h3>
 
 <ProductForm
@@ -32,10 +38,17 @@
         product = response.Response;
     }
 
-    void HandleSubmit()
+    async Task HandleSubmit()
     {
         _showSpinnerStatus = "inline";
-        Console.WriteLine("Handling submit");
+        var response = await HttpService.PutAsync($"api/products/{ProductId}", product);
+
+        if (response.Success == true)
+        {
+            Toast.ShowSuccess("Update Successful", "Success");
+            Navigation.NavigateTo("products");
+        }
+        Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.StatusCode}");
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,9 @@ namespace RektaManager.Shared
         public string OtherNames { get; set; }
 
         public string StaffIdNumber { get; set; }
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
 
         public List<Order> ProcessedOrders { get; set; }
 

@@ -23,5 +23,8 @@ namespace RektaManager.Shared
         public decimal Total { get; set; }
 
         public List<Invoice> Invoices { get; set; }
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
     }
 }

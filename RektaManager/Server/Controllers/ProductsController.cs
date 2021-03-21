@@ -41,45 +41,59 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDetailComponentModel>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.AsNoTracking()
+                .Include(p => p.ProductInventory)
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDetailComponentModel()
+                {
+                    CostPrice = p.CostPrice,
+                    Name = p.Name,
+                    Description = p.Description,
+                    InventoryName = p.ProductInventory.Name,
+                    ProductId = p.Id,
+                    ProductUniqueIdentifier = p.ProductUniqueIdentifier,
+                    QuantityBought = p.QuantityBought,
+                    UnitMeasure = p.UnitMeasure
+                }).SingleOrDefaultAsync();
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            return product;
+            return Ok(product);
         }
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, [FromBody]ProductUpsertComponentModel product)
         {
-            if (id != product.Id)
+            if (id != product.ProductId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            var uuidTest = _context.Products.AsNoTracking()
+                .Any(x => x.ProductUniqueIdentifier.Equals(product.ProductUniqueIdentifier));
 
-            try
+            var target = new Product()
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                Name = product.Name,
+                CostPrice = product.CostPrice,
+                Description = product.Description,
+                QuantityBought = product.QuantityBought,
+                UnitMeasure = product.UnitMeasure,
+                ProductInventory = new Inventory() {Id = product.ProductInventoryId},
+                UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+            };
+
+            if (uuidTest)
+                target.ProductUniqueIdentifier = product.ProductUniqueIdentifier;
+
+            _context.Entry(target).State = EntityState.Modified;
 
             return NoContent();
         }

@@ -22,6 +22,9 @@ namespace RektaManager.Shared
         public Booking ServiceBooking { get; set; }
 
         public int ServiceBookingId { get; set; }
-        
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
+
     }
 }

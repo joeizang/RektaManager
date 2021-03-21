@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,11 @@ namespace RektaManager.Shared
         public ApplicationUser Staff { get; set; }
 
         public string StaffId { get; set; }
+
+        [Column("xmin")]
+        public uint Xmin { get; set; }
+
+        public DateTimeOffset OffDay { get; set; }
 
         public DateTimeOffset ShiftStartsAt { get; set; }
 
