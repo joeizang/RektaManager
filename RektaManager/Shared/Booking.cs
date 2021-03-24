@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -16,8 +17,8 @@ namespace RektaManager.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
 
         public DateTimeOffset BookingDate { get; set; }
 

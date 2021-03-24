@@ -1,6 +1,7 @@
 ﻿@page "/products/edit/{ProductId:int}"
 @using RektaManager.Shared.ComponentModels.Products
 @using RektaManager.Client.Utils
+@using RektaManager.Shared
 @using RektaManager.Shared.ComponentModels.Inventories
 @inject IHttpService HttpService
 @inject IToastService Toast
@@ -26,16 +27,16 @@
     [Parameter]
     public int ProductId { get; set; }
 
-    private ProductUpsertComponentModel product = new ProductUpsertComponentModel();
+    private Product product = new();
     public List<InventorySelectModel> inventories = new List<InventorySelectModel>();
     string _showSpinnerStatus = "none";
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await HttpService.GetByIdAsync<ProductUpsertComponentModel>($"api/products/{ProductId}");
+        var response = await HttpService.GetByIdAsync<Product>($"api/products/{ProductId}");
         var inventoryResponse = await HttpService.GetAsync<List<InventorySelectModel>>("api/selectInventories");
-        inventories = inventoryResponse.Response;
         product = response.Response;
+        inventories = inventoryResponse.Response;
     }
 
     async Task HandleSubmit()
@@ -48,7 +49,8 @@
             Toast.ShowSuccess("Update Successful", "Success");
             Navigation.NavigateTo("products");
         }
-        Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.StatusCode}");
+        Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.ReasonPhrase}");
+        _showSpinnerStatus = "none";
     }
 
 }

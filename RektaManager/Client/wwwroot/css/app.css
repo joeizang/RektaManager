@@ -42,3 +42,7 @@ body {
 .custom-forms-preset {
   border-radius: 3px;
 }
+
+.icon-span {
+    font-size: 0.75rem;
+}

@@ -22,8 +22,8 @@ namespace RektaManager.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
 
         public List<Bill> Bills { get; set; }
     }

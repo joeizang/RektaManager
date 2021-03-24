@@ -24,7 +24,7 @@ namespace RektaManager.Shared
 
         public List<Invoice> Invoices { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
     }
 }

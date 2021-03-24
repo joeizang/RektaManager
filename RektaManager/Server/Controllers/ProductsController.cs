@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RektaManager.Server.Data;
 using RektaManager.Server.Queries.Products;
 using RektaManager.Shared;
@@ -40,23 +41,14 @@ namespace RektaManager.Server.Controllers
         }
 
         // GET: api/Products/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDetailComponentModel>> GetProduct(int id)
+        [HttpGet("{id}", Name = "GetProductById")]
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.AsNoTracking()
+            var product = await _context.Products
                 .Include(p => p.ProductInventory)
+                .Include(c => c.ProductCategories)
                 .Where(p => p.Id == id)
-                .Select(p => new ProductDetailComponentModel()
-                {
-                    CostPrice = p.CostPrice,
-                    Name = p.Name,
-                    Description = p.Description,
-                    InventoryName = p.ProductInventory.Name,
-                    ProductId = p.Id,
-                    ProductUniqueIdentifier = p.ProductUniqueIdentifier,
-                    QuantityBought = p.QuantityBought,
-                    UnitMeasure = p.UnitMeasure
-                }).SingleOrDefaultAsync();
+                .SingleOrDefaultAsync();
 
             if (product == null)
             {
@@ -69,9 +61,9 @@ namespace RektaManager.Server.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, [FromBody]ProductUpsertComponentModel product)
+        public async Task<IActionResult> PutProduct(int id, [FromBody]Product product)
         {
-            if (id != product.ProductId)
+            if (id != product.Id)
             {
                 return BadRequest();
             }
@@ -79,21 +71,42 @@ namespace RektaManager.Server.Controllers
             var uuidTest = _context.Products.AsNoTracking()
                 .Any(x => x.ProductUniqueIdentifier.Equals(product.ProductUniqueIdentifier));
 
-            var target = new Product()
+            //_context.Entry(fromDb).State = EntityState.Modified;
+            _context.Products.Attach(product);
+            
+            try
             {
-                Name = product.Name,
-                CostPrice = product.CostPrice,
-                Description = product.Description,
-                QuantityBought = product.QuantityBought,
-                UnitMeasure = product.UnitMeasure,
-                ProductInventory = new Inventory() {Id = product.ProductInventoryId},
-                UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
-            };
+                await _context.SaveChangesAsync();
+                return RedirectToRoute("GetProductById", new { id = product.Id });
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                //if there was an exception, then the last update from the application wins and will be saved to the database
+                foreach (var item in e.Entries)
+                {
+                    if (item.Entity is Product)
+                    {
+                        var currentValuesFromApp = item.CurrentValues;
+                        var valuesInDb = await item.GetDatabaseValuesAsync();
 
-            if (uuidTest)
-                target.ProductUniqueIdentifier = product.ProductUniqueIdentifier;
+                        foreach (var target in currentValuesFromApp.Properties)
+                        {
+                            var sampleTargetProperty = currentValuesFromApp[target];
+                            var dbVal = valuesInDb[target];
+                        }
 
-            _context.Entry(target).State = EntityState.Modified;
+                        item.OriginalValues.SetValues(valuesInDb);
+                        await item.ReloadAsync();
+                        await _context.SaveChangesAsync();
+                        return RedirectToRoute("GetProductById", new { id = product.Id });
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("There is a conflict in saving your changes!");
+                    }
+                }
+
+            }
 
             return NoContent();
         }
@@ -101,12 +114,26 @@ namespace RektaManager.Server.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct([FromBody]Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            var newId = 0;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Products.Add(product);
+                    newId = await _context.SaveChangesAsync();
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(new { e.Message});
+            }
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            
+            return CreatedAtAction("GetProduct", new { id = newId }, product);
         }
 
         // DELETE: api/Products/5
@@ -130,22 +157,11 @@ namespace RektaManager.Server.Controllers
             return _context.Products.Any(e => e.Id == id);
         }
 
-        private async Task<IEnumerable<ProductComponentModel>> ReturnProducts(int skip, int take)
+        private async Task<IEnumerable<Product>> ReturnProducts(int skip, int take)
         {
             return await _context.Products.AsNoTracking()
                 .Include(p => p.ProductInventory)
-                .Select(x => new ProductComponentModel()
-                {
-                    CostPrice = x.CostPrice,
-                    Description = x.Description,
-                    Name = x.Name,
-                    ProductId = x.Id,
-                    ProductInventoryId = x.ProductInventoryId,
-                    InventoryName = x.ProductInventory.Name,
-                    QuantityBought = x.QuantityBought,
-                    ProductUniqueIdentifier = x.ProductUniqueIdentifier,
-                    UnitMeasure = x.UnitMeasure
-                })
+                .Include(p => p.ProductCategories)
                 .Skip(skip)
                 .Take(take)
                 .ToArrayAsync();

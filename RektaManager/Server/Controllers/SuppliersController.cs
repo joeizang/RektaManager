@@ -25,7 +25,9 @@ namespace RektaManager.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
         {
-            return await _context.Suppliers.ToListAsync();
+            return await _context.Suppliers
+                .Include(s => s.SuppliedProducts)
+                .ToListAsync();
         }
 
         // GET: api/Suppliers/5

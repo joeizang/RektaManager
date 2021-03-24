@@ -30,7 +30,7 @@ namespace RektaManager.Shared
         [StringLength(10)]
         public string ItemCode { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
     }
 }

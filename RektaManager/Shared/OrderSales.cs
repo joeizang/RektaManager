@@ -17,8 +17,5 @@ namespace RektaManager.Shared
         public Order Order { get; set; }
 
         public int OrderId { get; set; }
-
-        [Column("xmin")]
-        public uint Xmin { get; set; }
     }
 }

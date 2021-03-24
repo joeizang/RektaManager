@@ -23,5 +23,8 @@ namespace RektaManager.Shared.ComponentModels.Products
         public int ProductId { get; set; }
         
         public string InventoryName { get; set; }
+
+        public byte[] Timestamp { get; set; }
+
     }
 }

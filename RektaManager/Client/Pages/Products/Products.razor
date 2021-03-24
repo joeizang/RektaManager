@@ -10,7 +10,7 @@
 <h3>Products</h3>
 
 
-<div class="pb-4 pb-sm-1">
+<div class="pb-4 mb-4">
     <span>
         <button @onclick="@(() => navigationManager.NavigateTo("products/create"))" class="btn btn-outline-info">
             <span class="bi bi-bag-plus-fill"></span>
@@ -19,85 +19,82 @@
     </span>
 </div>
 
-<RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="4"
-            AllowSorting="true" Data="@products" TItem="ProductComponentModel" ColumnWidth="200px" AllowColumnResize="true">
-    <Columns>
-        <RadzenGridColumn TItem="ProductComponentModel" Property="ProductId" Title="Product ID" />
-        <RadzenGridColumn TItem="ProductComponentModel" Property="Name" Title="Product Name" />
-        <RadzenGridColumn TItem="ProductComponentModel" Property="QuantityBought" Title="Quantity Bought" />
-        <RadzenGridColumn TItem="ProductComponentModel" Property="UnitMeasure" Title="Quantity Metric" />
-        <RadzenGridColumn TItem="ProductComponentModel" Property="InventoryName" Title="Stock Category" />
-        <RadzenGridColumn TItem="ProductComponentModel" Context="sampleBlazorModelsSampleOrder" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-            <Template Context="product">
-                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
-                </RadzenButton>
-                <button class="btn btn-outline-info" @onclick="@((args) => EditProduct(product))">
-                    <span class="bi bi-pencil-fill"></span>
-                    <span class="@spinnerVisibility"><ActionSpinner ActionName="Editing..." ColorVariant="text-warning"></ActionSpinner></span>
-                </button>
-            </Template>
-            <EditTemplate Context="product">
-                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => Console.WriteLine("Editing..."))">
-                </RadzenButton>
-                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Console.WriteLine("Editing..."))">
-                </RadzenButton>
-            </EditTemplate>
-        </RadzenGridColumn>
-        <RadzenGridColumn TItem="ProductComponentModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
-            <Template Context="product">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
-                </RadzenButton>
-            </Template>
-            <EditTemplate Context="product">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => Console.WriteLine("Editing..."))">
-                </RadzenButton>
-            </EditTemplate>
-        </RadzenGridColumn>
-    </Columns>
-</RadzenGrid>
+<div class="pt-2">
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Quantity Bought</th>
+            <th>Quantity Metric</th>
+            <th>Stock Category</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in _products)
+        {
+            <tr>
+                <td>
+                    @product.Id
+                </td>
+                <td>
+                    @product.Name
+                </td>
+                
+                <td>
+                    @product.QuantityBought
+                </td>
+                <td>
+                    @product.UnitMeasure
+                </td>
+                <td>
+                    @product.ProductInventory.Name
+                </td>
+                <td>
+                    <a href="products/details/@product.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                    <a href="products/edit/@product.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.Id))">
+                        <span class="bi bi-trash2-fill"></span>
+                        <span style="display: @spinnerVisibility3"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
 @code {
     int pageSize = 10;
-    int count;
-    //string _visibilityProp = "none";
-    //string _firstUri = "";
-    //string _secondUri = "";
-    //string _firstIcon = "";
-    //string _secondIcon = "";
-    //string _thirdIcon = "";
-    //string _spinnerColor = "";
-    //string _actionName = "";
-    //string _firstBtnStyle = "";
-    //string _secondBtnStyle = "";
-    //string _thirdBtnStyle = "";
-    string spinnerVisibility = "d-none";
+    int _count;
+    string spinnerVisibility3 = "none";
 
-
-    public ResponseWrapper<IEnumerable<ProductComponentModel>> ResponseWrapper { get; set; }
-    IEnumerable<ProductComponentModel> products = new List<ProductComponentModel>();
-    RadzenGrid<ProductComponentModel> productGrid;
+    IEnumerable<Product> _products = new List<Product>();
 
     protected override async Task OnInitializedAsync()
     {
-        ResponseWrapper = await HttpService
-            .GetAsync<IEnumerable<ProductComponentModel>>($"api/products?skip={0}&take={pageSize}");
-        count = ResponseWrapper.Response.Count();
-        products = ResponseWrapper.Response;
-        if (products.Any())
-        {
-            Console.WriteLine($"{nameof(products)} is not null or empty. Things should light up");
-        }
+        var result = await HttpService
+            .GetAsync<IEnumerable<Product>>($"api/products?skip={0}&take={pageSize}");
+        _count = result.Response.Count();
+        _products = result.Response;
 
-        Console.WriteLine($"Done { ResponseWrapper.Response.Single().Name}");
     }
 
-    void GoToProductUpdate()
+    void ProductDetails(int id)
     {
-        navigationManager.NavigateTo("products/{productId}");
+        navigationManager.NavigateTo($"products/details/{id}");
     }
 
-    void EditProduct(ProductComponentModel product)
+    void EditProduct(Product product)
     {
         //spinnerVisibility = "d-inline";
-        navigationManager.NavigateTo($"products/edit/{product.ProductId}");
+        navigationManager.NavigateTo($"products/edit/{product.Id}");
+    }
+
+    async Task DeleteProduct(int id)
+    {
+        spinnerVisibility3 = "inline";
+        await Task.Delay(5000);
+        spinnerVisibility3 = "d-none";
     }
 }

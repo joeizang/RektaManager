@@ -15,8 +15,8 @@ namespace RektaManager.Shared
         [StringLength(150)]
         public string Name { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
 
         public List<Invoice> Invoices { get; set; }
 

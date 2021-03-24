@@ -1,6 +1,7 @@
 ﻿@page "/products/create"
 @using RektaManager.Shared.ComponentModels.Products
 @using RektaManager.Client.Utils
+@using RektaManager.Shared
 @using RektaManager.Shared.ComponentModels.Inventories
 @inject IHttpService HttpService
 @inject IToastService Toast
@@ -20,7 +21,7 @@
 
 </div>
 @code {
-    private ProductUpsertComponentModel _product = new ProductUpsertComponentModel();
+    private Product _product = new();
     private List<InventorySelectModel> _inventories = new List<InventorySelectModel>();
     private string _showSpinnerStatus = "none";
 
@@ -42,11 +43,11 @@
 
         if(result.Success == false)
         {
-            Toast.ShowError("Could not create your Product!", "Error Creating Product");
+            Toast.ShowError($"Could not create your Product! {result.HttpResponseMessage.ReasonPhrase}", "Error Creating Product");
         }
         _showSpinnerStatus = "none";
 
-        if (result.Success == true)
+        if (result.Success)
         {
             Toast.ShowSuccess("Product Created Successfully!", "Success");
             NavigationManager.NavigateTo("products");

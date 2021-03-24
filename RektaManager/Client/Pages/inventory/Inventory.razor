@@ -36,9 +36,9 @@
                     <td>
                         @item.InventoryName
                     </td>
-                    <td>
-                        @item.QuantityInStock
-                    </td>
+                    <PNDynamicTd InventoryModel="@item" TimerDuration="7000" Url="">
+                        
+                    </PNDynamicTd>
                     <td>
                         @item.CategoryName
                     </td>
@@ -63,6 +63,7 @@
 
     List<InventoryComponentModel> inventory = new List<InventoryComponentModel>();
     private string _displayProp = "none";
+    private string _tdUrl = $"api/";
     private JsonSerializerOptions defaultJsonSerializerOptions => new JsonSerializerOptions()
     {
         PropertyNameCaseInsensitive = true

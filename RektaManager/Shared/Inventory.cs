@@ -32,7 +32,7 @@ namespace RektaManager.Shared
         [NotMapped]
         public decimal TotalInventoryValuation { get; set; }
 
-        [Column("xmin")]
-        public uint Xmin { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
     }
 }
