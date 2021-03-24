@@ -24,6 +24,7 @@ namespace RektaManager.Shared
 
         public string StaffIdNumber { get; set; }
 
+        [ConcurrencyCheck]
         [Timestamp]
         public byte[] Timestamp { get; set; }
 

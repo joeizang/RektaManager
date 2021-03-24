@@ -32,8 +32,5 @@ namespace RektaManager.Shared
 
         public int InvoiceId { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
     }
 }

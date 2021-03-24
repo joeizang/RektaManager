@@ -23,8 +23,5 @@ namespace RektaManager.Shared
         public decimal Total { get; set; }
 
         public List<Invoice> Invoices { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }

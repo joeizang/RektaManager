@@ -29,8 +29,5 @@ namespace RektaManager.Shared
         [Required]
         [StringLength(10)]
         public string ItemCode { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }

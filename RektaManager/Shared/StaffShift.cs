@@ -15,9 +15,6 @@ namespace RektaManager.Shared
 
         public string StaffId { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
         public DateTimeOffset OffDay { get; set; }
 
         public DateTimeOffset ShiftStartsAt { get; set; }

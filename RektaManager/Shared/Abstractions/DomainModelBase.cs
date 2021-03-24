@@ -18,5 +18,9 @@ namespace RektaManager.Shared.Abstractions
         
         public bool IsDeleted { get; set; }
 
+        [ConcurrencyCheck]
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
+
     }
 }

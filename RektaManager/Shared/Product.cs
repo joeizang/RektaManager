@@ -30,8 +30,5 @@ namespace RektaManager.Shared
 
         public string Description { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
     }
 }

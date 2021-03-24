@@ -14,9 +14,6 @@ namespace RektaManager.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
         public double Quantity { get; set; }
         
         [StringLength(50)]

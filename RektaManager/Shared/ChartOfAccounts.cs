@@ -15,9 +15,6 @@ namespace RektaManager.Shared
         [StringLength(150)]
         public string Name { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
         public List<Invoice> Invoices { get; set; }
 
         public List<Bill> Bills { get; set; }

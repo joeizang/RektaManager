@@ -23,8 +23,5 @@ namespace RektaManager.Shared
 
         [StringLength(44)]
         public string PhoneNumber { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }

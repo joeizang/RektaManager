@@ -24,9 +24,6 @@ namespace RektaManager.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
         public bool PaymentStatus { get; set; }
 
         public List<ChartOfAccounts> ChartOfAccounts { get; set; }

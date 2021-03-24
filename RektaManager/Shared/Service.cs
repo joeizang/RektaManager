@@ -23,8 +23,5 @@ namespace RektaManager.Shared
 
         public int ServiceBookingId { get; set; }
 
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
     }
 }

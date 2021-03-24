@@ -32,8 +32,5 @@ namespace RektaManager.Shared
         public List<OrderSales> Orders { get; set; }
 
         public List<BookingSales> Bookings { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }

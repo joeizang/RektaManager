@@ -17,8 +17,5 @@ namespace RektaManager.Shared
 
         [StringLength(300)]
         public string Description { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }

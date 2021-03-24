@@ -31,8 +31,5 @@ namespace RektaManager.Shared
 
         [NotMapped]
         public decimal TotalInventoryValuation { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
     }
 }
