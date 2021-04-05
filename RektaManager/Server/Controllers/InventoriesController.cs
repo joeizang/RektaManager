@@ -78,6 +78,8 @@ namespace RektaManager.Server.Controllers
                 {
                     Name = i.Name,
                     SupplyDate = i.SupplyDate,
+                    Quantity = i.Products.Sum(x => x.QuantityBought),
+                    Price = i.Products.Sum(p => p.CostPrice),
                     Id = i.Id,
                 }).SingleOrDefaultAsync();
 

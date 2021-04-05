@@ -11,9 +11,9 @@ namespace RektaManager.Shared
 {
     public class Inventory : DomainModelBase
     {
-        public List<Product> Products { get; set; }
+        public virtual List<Product> Products { get; set; }
 
-        public List<InventoryCategory> InventoryCategories { get; set; }
+        public virtual List<InventoryCategory> InventoryCategories { get; set; }
 
         [Required]
         [StringLength(100)]

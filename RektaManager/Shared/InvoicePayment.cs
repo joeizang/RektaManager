@@ -22,6 +22,6 @@ namespace RektaManager.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        public List<Invoice> Invoices { get; set; }
+        public virtual List<Invoice> Invoices { get; set; }
     }
 }

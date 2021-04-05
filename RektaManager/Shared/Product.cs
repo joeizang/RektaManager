@@ -20,7 +20,7 @@ namespace RektaManager.Shared
 
         public string ProductUniqueIdentifier { get; set; }
 
-        public List<ProductCategory> ProductCategories { get; set; }
+        public virtual List<ProductCategory> ProductCategories { get; set; }
 
         public UnitMeasure UnitMeasure { get; set; }
 

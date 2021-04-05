@@ -15,7 +15,7 @@ namespace RektaManager.Shared
 
         public int CustomerId { get; set; }
 
-        public List<OrderedItem> OrderedItems { get; set; }
+        public virtual List<OrderedItem> OrderedItems { get; set; }
 
         public ApplicationUser Staff { get; set; }
 

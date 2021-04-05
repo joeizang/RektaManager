@@ -26,7 +26,7 @@ namespace RektaManager.Shared
 
         public bool PaymentStatus { get; set; }
 
-        public List<ChartOfAccounts> ChartOfAccounts { get; set; }
+        public virtual List<ChartOfAccounts> ChartOfAccounts { get; set; }
 
         public int ChartOfAccountsId { get; set; }
 
