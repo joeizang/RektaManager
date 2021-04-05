@@ -46,3 +46,25 @@ body {
 .icon-span {
     font-size: 0.75rem;
 }
+
+.app-spinner {
+    border: 16px solid silver;
+    border-top: 1rem solid #337ab7;
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    animation: spin 650ms linear infinite;
+    top: 40%;
+    left: 55%;
+    position: absolute;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}

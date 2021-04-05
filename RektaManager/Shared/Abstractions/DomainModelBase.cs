@@ -13,6 +13,12 @@ namespace RektaManager.Shared.Abstractions
         
         public DateTimeOffset UpdatedAt { get; set; }
 
+        [StringLength(100)]
+        public string CreatedBy { get; set; }
+
+        [StringLength(100)]
+        public string UpdatedBy { get; set; }
+
         [Key]
         public int Id { get; set; }
         

@@ -8,10 +8,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
-using Blazored.SessionStorage;
 using Blazored.Toast;
 using RektaManager.Client.Utils;
+
 namespace RektaManager.Client
 {
     public class Program
@@ -30,10 +29,6 @@ namespace RektaManager.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("RektaManager.ServerAPI"));
 
             builder.Services.AddScoped<IHttpService, HttpService>();
-
-            builder.Services.AddBlazoredLocalStorage( config => config.JsonSerializerOptions.WriteIndented = true);
-
-            builder.Services.AddBlazoredSessionStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
             builder.Services.AddBlazoredToast();
 

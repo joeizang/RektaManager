@@ -1,6 +1,7 @@
 ﻿@using RektaManager.Shared.ComponentModels.Products
 @using RektaManager.Shared.ComponentModels.Inventories
 @using RektaManager.Shared
+@using RektaManager.Shared.ComponentModels.Suppliers
 <div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
     <EditForm Model="@Model" OnValidSubmit="@HandleFormSubmit" class="w-75 pr-3">
         <DataAnnotationsValidator />
@@ -14,7 +15,6 @@
                 <div>
                     <label for="productId">Product ID</label>
                     <InputNumber @bind-Value="@Model.Id" id="productId" class="form-control" readonly />
-                    <ValidationMessage For="@(() => Model.Name)" />
                 </div>
             </div>
         }
@@ -53,7 +53,18 @@
                 <PNInputSelect @bind-Value="@Model.ProductInventoryId" id="inventories" class="form-control" DisplayName="Inventory Id">
                     @foreach (var option in Inventories)
                     {
-                        <option value="@Model.ProductInventoryId">@option.InventoryName</option>
+                        <option value="@InventoryId">@option.InventoryName</option>
+                    }
+                </PNInputSelect>
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="suppliers">Supplier</label>
+                <PNInputSelect @bind-Value="@Model.SupplierId" id="suppliers" class="form-control" DisplayName="Supplier Id">
+                    @foreach (var supplier in Suppliers)
+                    {
+                        <option value="@SupplierId">@supplier.SupplierName</option>
                     }
                 </PNInputSelect>
             </div>
@@ -89,7 +100,7 @@
 
 @code {
     [Parameter]
-    public Product Model { get; set; }
+    public ProductUpsertComponentModel Model { get; set; }
 
     [Parameter]
     public EventCallback HandleFormSubmit { get; set; }
@@ -97,7 +108,12 @@
     [Parameter]
     public List<InventorySelectModel> Inventories { get; set; }
 
+    [Parameter]
+    public List<SupplierSelectModel> Suppliers { get; set; }
+
     public string InventoryId { get; set; }
+
+    public string SupplierId { get; set; }
 
     [Parameter]
     public string SpinnerText { get; set; }
@@ -114,7 +130,13 @@
 
     protected override void OnInitialized()
     {
-        //InventoryId = Model.ProductInventoryId.ToString();
+        InventoryId = Model.ProductInventoryId.ToString();
+        SupplierId = Model.SupplierId.ToString();
     }
 
+
+    void HandleSupplierSelectChange(dynamic somethingelse, string param)
+    {
+
+    }
 }

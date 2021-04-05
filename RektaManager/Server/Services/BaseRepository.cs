@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
@@ -14,33 +15,33 @@ namespace RektaManager.Server.Services
     public class BaseRepository : IRepository
     {
         private readonly RektaManagerContext _context;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public BaseRepository(RektaManagerContext context)
+        public BaseRepository(RektaManagerContext context, IHttpContextAccessor httpContext)
         {
             _context = context;
+            _httpContext = httpContext;
         }
         public async Task Save<T>() where T : DomainModelBase
         {
+            var user = _httpContext.HttpContext.User.Identity.Name ?? "Unknown";
             foreach (var entity in _context.ChangeTracker.Entries<T>())
             {
                 if (entity.State == EntityState.Added)
                 {
                     entity.Entity.CreatedAt = DateTimeOffset.UtcNow.LocalDateTime;
                     entity.Entity.UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime;
-                    //if (string.IsNullOrEmpty(entity.Entity.CreatedBy))
-                    //{
-                    //    entity.Entity.CreatedBy = user;
-                    //    entity.Entity.UpdatedBy = user;
-                    //}
+                    if (string.IsNullOrEmpty(entity.Entity.CreatedBy))
+                    {
+                        entity.Entity.CreatedBy = user;
+                        entity.Entity.UpdatedBy = user;
+                    }
                 }
 
                 if (entity.State == EntityState.Modified)
                 {
                     entity.Entity.UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime;
-                    //if (string.IsNullOrEmpty(entity.Entity.UpdatedBy))
-                    //{
-                    //    entity.Entity.UpdatedBy = user;
-                    //}
+                    entity.Entity.UpdatedBy = user;
                 }
             }
 

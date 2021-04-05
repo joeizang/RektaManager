@@ -8,12 +8,18 @@ namespace RektaManager.Shared.Abstractions
 {
     public interface IDomainModel
     {
-        DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
-        DateTimeOffset UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
-        int Id { get; set; }
+        public string CreatedBy { get; set; }
 
-        bool IsDeleted { get; set; }
+        public string UpdatedBy { get; set; }
+
+        public int Id { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        byte[] Timestamp { get; set; }
     }
 }

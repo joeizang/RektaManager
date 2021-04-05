@@ -24,13 +24,21 @@ namespace RektaManager.Server.Data
 
         public DbSet<Booking> Bookings { get; set; }
 
+        public DbSet<BookingActionsAudit> BookingAudits { get; set; }
+
         public DbSet<ChartOfAccounts> ChartOfAccounts { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Inventory> Inventories { get; set; }
 
+        public DbSet<InventoryActionsAudit> InventoryAudits { get; set; }
+
         public DbSet<InventoryCategory> InventoryCategories { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
+        public DbSet<InvoiceActionsAudit> InvoiceAudits { get; set; }
 
         public DbSet<OrderSales> OrderSales { get; set; }
 
@@ -38,9 +46,15 @@ namespace RektaManager.Server.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderActionsAudit> OrderAudits { get; set; }
+
         public DbSet<OrderedItem> OrderedItems { get; set; }
 
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductActionsAudit> ProductActions { get; set; }
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 

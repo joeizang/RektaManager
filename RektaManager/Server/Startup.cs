@@ -11,6 +11,8 @@ using RektaManager.Server.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
+using RektaManager.Server.Abstractions;
+using RektaManager.Server.Services;
 using RektaManager.Shared;
 
 namespace RektaManager.Server
@@ -37,7 +39,7 @@ namespace RektaManager.Server
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RektaManagerContext>();

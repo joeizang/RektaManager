@@ -24,6 +24,7 @@ namespace RektaManager.Shared.ComponentModels.Products
         public string Description { get; set; }
 
         public int ProductId { get; set; }
+
         public string InventoryName { get; set; }
     }
 }

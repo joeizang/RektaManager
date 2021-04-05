@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
@@ -14,7 +15,7 @@ namespace RektaManager.Server.Services
     {
         private readonly RektaManagerContext _context;
 
-        public OrderRepository(RektaManagerContext context) : base(context)
+        public OrderRepository(RektaManagerContext context, IHttpContextAccessor httpContext) : base(context, httpContext)
         {
             _context = context;
         }

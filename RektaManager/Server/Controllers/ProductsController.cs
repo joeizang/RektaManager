@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using RektaManager.Client.Utils;
+using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
 using RektaManager.Server.Queries.Products;
 using RektaManager.Shared;
 using RektaManager.Shared.ComponentModels.Inventories;
 using RektaManager.Shared.ComponentModels.Products;
+using RektaManager.Shared.ComponentModels.Suppliers;
 
 namespace RektaManager.Server.Controllers
 {
@@ -19,25 +25,20 @@ namespace RektaManager.Server.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly RektaManagerContext _context;
+        private readonly IProductRepository _repo;
 
-        public ProductsController(RektaManagerContext context)
+        public ProductsController(RektaManagerContext context, IProductRepository repo)
         {
             _context = context;
+            _repo = repo;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductComponentModel>>> GetProducts([FromQuery] ProductQuery query)
         {
-            if (query.Skip == 0 && query.Take == 0)
-            {
-                return Ok(await ReturnProducts(0, 10));
-            }
-            else
-            {
-                return (Ok(await ReturnProducts(query.Skip, query.Take)));
-            }
-            
+            var result = await _repo.Get(query);
+            return Ok(result);
         }
 
         // GET: api/Products/5
@@ -58,57 +59,62 @@ namespace RektaManager.Server.Controllers
             return Ok(product);
         }
 
+        [HttpGet("supplierselect", Name = "GetSupplierForProductPost")]
+        public async Task<ActionResult<SupplierSelectModel>> GetSuppliers()
+        {
+            var result = await _context.Suppliers.AsNoTracking()
+                .Select(s => new SupplierSelectModel
+                {
+                    SupplierId = s.Id,
+                    SupplierName = s.Name
+                }).ToListAsync();
+            return Ok(result);
+        }
+
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, [FromBody]Product product)
+        public async Task<IActionResult> PutProduct(int id, [FromBody]ProductUpsertComponentModel product)
         {
             if (id != product.Id)
             {
                 return BadRequest();
             }
 
-            var uuidTest = _context.Products.AsNoTracking()
-                .Any(x => x.ProductUniqueIdentifier.Equals(product.ProductUniqueIdentifier));
+            await _repo.Update(product);
 
-            //_context.Entry(fromDb).State = EntityState.Modified;
-            _context.Products.Attach(product);
-            
+            var modified = _context.ChangeTracker.Entries<Product>()
+                .Where(x => x.State == EntityState.Modified)
+                .SingleOrDefault();
+
+            var inventory = await _context.Inventories.SingleOrDefaultAsync(i => i.Products.First().Id == id)
+                .ConfigureAwait(false);
+
+            var dbVal = await modified.GetDatabaseValuesAsync();
+            var fromDb = dbVal.ToObject() as Product;
+
+            var changes = new PropertyChanges<Product>(modified, fromDb);
+
+            var auditTrack = new ProductActionsAudit
+            {
+                Actions = ActionPerformed.Updated,
+                Changes = JsonSerializer.Serialize(changes),
+            };
+
+
             try
             {
-                await _context.SaveChangesAsync();
+                await _repo.Save<Product>();
+                await _repo.Save<ProductActionsAudit>();
                 return RedirectToRoute("GetProductById", new { id = product.Id });
             }
             catch (DbUpdateConcurrencyException e)
             {
-                //if there was an exception, then the last update from the application wins and will be saved to the database
-                foreach (var item in e.Entries)
-                {
-                    if (item.Entity is Product)
-                    {
-                        var currentValuesFromApp = item.CurrentValues;
-                        var valuesInDb = await item.GetDatabaseValuesAsync();
-
-                        foreach (var target in currentValuesFromApp.Properties)
-                        {
-                            var sampleTargetProperty = currentValuesFromApp[target];
-                            var dbVal = valuesInDb[target];
-                        }
-
-                        item.OriginalValues.SetValues(valuesInDb);
-                        await item.ReloadAsync();
-                        await _context.SaveChangesAsync();
-                        return RedirectToRoute("GetProductById", new { id = product.Id });
-                    }
-                    else
-                    {
-                        throw new NotSupportedException("There is a conflict in saving your changes!");
-                    }
-                }
+                await e.Entries.Single().ReloadAsync();
+                await _repo.Save<Product>();
+                return Ok();
 
             }
-
-            return NoContent();
         }
 
         // POST: api/Products
@@ -123,7 +129,6 @@ namespace RektaManager.Server.Controllers
                 {
                     _context.Products.Add(product);
                     newId = await _context.SaveChangesAsync();
-                    
                 }
             }
             catch (Exception e)

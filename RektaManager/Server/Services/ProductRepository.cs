@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
@@ -15,10 +16,12 @@ namespace RektaManager.Server.Services
     public class ProductRepository : BaseRepository, IProductRepository
     {
         private readonly RektaManagerContext _context;
+        private readonly IHttpContextAccessor _htttpContext;
 
-        public ProductRepository(RektaManagerContext context) : base(context)
+        public ProductRepository(RektaManagerContext context, IHttpContextAccessor htttpContext) : base(context, htttpContext)
         {
             _context = context;
+            _htttpContext = htttpContext;
         }
 
 

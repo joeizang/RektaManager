@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
 using RektaManager.Shared;
+using RektaManager.Shared.ComponentModels.Orders;
 
 namespace RektaManager.Server.Controllers
 {
@@ -15,10 +17,12 @@ namespace RektaManager.Server.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly RektaManagerContext _context;
+        private readonly IOrderRepository _repo;
 
-        public OrdersController(RektaManagerContext context)
+        public OrdersController(RektaManagerContext context, IOrderRepository repo)
         {
             _context = context;
+            _repo = repo;
         }
 
         // GET: api/Orders
@@ -26,6 +30,21 @@ namespace RektaManager.Server.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             return await _context.Orders.ToListAsync();
+        }
+
+
+        [HttpGet("orderitems", Name = "GetOrderItems")]
+        public async Task<ActionResult<IEnumerable<OrderItemComponentModel>>> GetOrderItems()
+        {
+            var result = await _repo.GetQueryable<OrderItem>(null, null)
+                .Select(x => new OrderItemComponentModel
+                {
+                    Id = x.Id,
+                    ImageUrl = x.ImageUrl,
+                    ItemName = x.ItemName,
+                    Price = x.Price
+                }).ToListAsync();
+            return result;
         }
 
         // GET: api/Orders/5

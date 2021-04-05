@@ -20,16 +20,9 @@ namespace RektaManager.Shared
         public string Name { get; set; }
 
         [Required]
-        public double Quantity { get; set; }
-
-        [Required]
         public DateTimeOffset SupplyDate { get; set; }
-        
-        [Required]
-        [Column(TypeName = "decimal(20,2)")]
-        public decimal Price { get; set; }
 
-        [NotMapped]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal TotalInventoryValuation { get; set; }
     }
 }

@@ -32,16 +32,37 @@ namespace RektaManager.Server.Controllers
         {
             var inventories = _context.Inventories.AsNoTracking();
 
-            return Ok(await inventories.Include(x => x.InventoryCategories).OrderBy(x => x.SupplyDate)
+            //QuantityInStock = x.Products.SingleOrDefault().QuantityBought,
+            var products = await _context.Products.AsNoTracking()
+                .Select(x => new { Qty = x.QuantityBought, InventoryId = x.ProductInventoryId })
+                .ToListAsync(token);
+            //QuantityInStock = products.Single(p => p.InventoryId == x.Id).Qty
+            var result = await inventories
+                .Include(x => x.InventoryCategories)
+                //.Where(i => i.Id == products.Single().InventoryId)
+                .OrderBy(x => x.SupplyDate)
                 .ThenBy(x => x.Id)
                 .Select(x => new InventoryComponentModel()
                 {
-                    CategoryName = x.InventoryCategories.First().Name,
                     InventoryDate = x.SupplyDate,
                     InventoryName = x.Name,
-                    QuantityInStock = x.Quantity,
                     InventoryId = x.Id
-                }).ToListAsync(token));
+                }).ToListAsync(token);
+
+            if (products.Any())
+            {
+                products.ForEach(p =>
+                {
+                    result.ForEach(i =>
+                    {
+                        if (i.InventoryId == p.InventoryId)
+                        {
+                            i.QuantityInStock += p.Qty;
+                        }
+                    });
+                });
+            }
+            return Ok(result);
         }
 
         // GET: api/Inventories/5
@@ -56,10 +77,8 @@ namespace RektaManager.Server.Controllers
                 new InventoryUpsertComponentModel()
                 {
                     Name = i.Name,
-                    Quantity = i.Quantity,
                     SupplyDate = i.SupplyDate,
                     Id = i.Id,
-                    Price = i.Price
                 }).SingleOrDefaultAsync();
 
             if (mainResult is null)
@@ -118,8 +137,6 @@ namespace RektaManager.Server.Controllers
             }
 
             fromDb.Name = inventory.Name;
-            fromDb.Price = inventory.Price;
-            fromDb.Quantity = inventory.Quantity;
             fromDb.SupplyDate = inventory.SupplyDate;
             _context.Entry(fromDb).State = EntityState.Modified;
 
@@ -134,8 +151,6 @@ namespace RektaManager.Server.Controllers
                     var target = new Inventory()
                     {
                         Name = inventory.Name,
-                        Price = inventory.Price,
-                        Quantity = inventory.Quantity,
                         SupplyDate = inventory.SupplyDate
                     };
                     _context.Inventories.Add(target);
@@ -164,8 +179,6 @@ namespace RektaManager.Server.Controllers
                     var newInventory = new Inventory()
                     {
                         Name = inventory.Name,
-                        Price = inventory.Price,
-                        Quantity = inventory.Quantity,
                         SupplyDate = inventory.SupplyDate
                     };
                     _context.Inventories.Add(newInventory);

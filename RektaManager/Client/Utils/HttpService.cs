@@ -20,10 +20,7 @@ namespace RektaManager.Client.Utils
         };
 
         public HttpResponseMessage ServerResponse { get; set; }
-
-
-
-
+        
         public HttpService(HttpClient client)
         {
             _client = client;

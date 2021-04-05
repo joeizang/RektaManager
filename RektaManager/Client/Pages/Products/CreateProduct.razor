@@ -3,6 +3,7 @@
 @using RektaManager.Client.Utils
 @using RektaManager.Shared
 @using RektaManager.Shared.ComponentModels.Inventories
+@using RektaManager.Shared.ComponentModels.Suppliers
 @inject IHttpService HttpService
 @inject IToastService Toast
 @inject NavigationManager NavigationManager
@@ -15,14 +16,16 @@
         SpinnerColor="text-success"
         SpinnerText="Creating Product..."
         Inventories="@_inventories"
+        Suppliers="@_suppliers"
         ButtonText="Add Product"
         ShowSpinnerStatus="@_showSpinnerStatus"
     />
 
 </div>
 @code {
-    private Product _product = new();
+    private ProductUpsertComponentModel _product = new();
     private List<InventorySelectModel> _inventories = new List<InventorySelectModel>();
+    private List<SupplierSelectModel> _suppliers = new List<SupplierSelectModel>();
     private string _showSpinnerStatus = "none";
 
 
@@ -32,7 +35,10 @@
             .GetAsync<IEnumerable<InventorySelectModel>>("api/selectInventories");
         Console.WriteLine();
 
+        var supplierResponse = await HttpService.GetAsync<IEnumerable<SupplierSelectModel>>("api/products/supplierselect");
+
         _inventories.AddRange(response.Response);
+        _suppliers.AddRange(supplierResponse.Response);
     }
 
 

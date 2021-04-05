@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RektaManager.Shared.Abstractions;
 
 namespace RektaManager.Shared.ComponentModels.Products
 {
-    public class ProductUpsertComponentModel
+    public class ProductUpsertComponentModel : BaseUpsertComponentModel
     {
         public ProductUpsertComponentModel()
         {
@@ -16,8 +17,6 @@ namespace RektaManager.Shared.ComponentModels.Products
                     $"{Guid.NewGuid():N}-{DateTimeOffset.UtcNow.Ticks}";
             }
         }
-
-        public int ProductId { get; set; }
 
         public string Name { get; set; }
 
@@ -31,9 +30,9 @@ namespace RektaManager.Shared.ComponentModels.Products
 
         public int ProductInventoryId { get; set; }
 
-        public string Description { get; set; }
+        public int SupplierId { get; set; }
 
-        public byte[] Timestamp { get; set; }
+        public string Description { get; set; }
 
     }
 }

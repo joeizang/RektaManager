@@ -36,7 +36,7 @@
         {
             <tr>
                 <td>
-                    @product.Id
+                    @product.ProductId
                 </td>
                 <td>
                     @product.Name
@@ -49,12 +49,12 @@
                     @product.UnitMeasure
                 </td>
                 <td>
-                    @product.ProductInventory.Name
+                    @product.InventoryName
                 </td>
                 <td>
-                    <a href="products/details/@product.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
-                    <a href="products/edit/@product.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
-                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.Id))">
+                    <a href="products/details/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                    <a href="products/edit/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.ProductId))">
                         <span class="bi bi-trash2-fill"></span>
                         <span style="display: @spinnerVisibility3"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
                     </button>
@@ -69,12 +69,12 @@
     int _count;
     string spinnerVisibility3 = "none";
 
-    IEnumerable<Product> _products = new List<Product>();
+    IEnumerable<ProductComponentModel> _products = new List<ProductComponentModel>();
 
     protected override async Task OnInitializedAsync()
     {
         var result = await HttpService
-            .GetAsync<IEnumerable<Product>>($"api/products?skip={0}&take={pageSize}");
+            .GetAsync<IEnumerable<ProductComponentModel>>($"api/products?skip={0}&take={pageSize}");
         _count = result.Response.Count();
         _products = result.Response;
 
@@ -85,10 +85,10 @@
         navigationManager.NavigateTo($"products/details/{id}");
     }
 
-    void EditProduct(Product product)
+    void EditProduct(ProductComponentModel product)
     {
         //spinnerVisibility = "d-inline";
-        navigationManager.NavigateTo($"products/edit/{product.Id}");
+        navigationManager.NavigateTo($"products/edit/{product.ProductId}");
     }
 
     async Task DeleteProduct(int id)

@@ -3,6 +3,8 @@
 @using RektaManager.Client.Utils
 @using RektaManager.Shared
 @using RektaManager.Shared.ComponentModels.Inventories
+@using System.Net
+@using RektaManager.Shared.ComponentModels.Suppliers
 @inject IHttpService HttpService
 @inject IToastService Toast
 @inject NavigationManager Navigation
@@ -20,6 +22,7 @@
     ShowSpinnerStatus="@_showSpinnerStatus"
     Inventories="@inventories"
     HandleFormSubmit="@HandleSubmit"
+    Suppliers="@_suppliers"
     ></ProductForm>
 
 @code {
@@ -27,16 +30,22 @@
     [Parameter]
     public int ProductId { get; set; }
 
-    private Product product = new();
+    private ProductUpsertComponentModel product = new();
     public List<InventorySelectModel> inventories = new List<InventorySelectModel>();
+    private List<SupplierSelectModel> _suppliers = new List<SupplierSelectModel>();
     string _showSpinnerStatus = "none";
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await HttpService.GetByIdAsync<Product>($"api/products/{ProductId}");
+        var response = await HttpService.GetByIdAsync<ProductUpsertComponentModel>($"api/products/{ProductId}");
         var inventoryResponse = await HttpService.GetAsync<List<InventorySelectModel>>("api/selectInventories");
+        var supplierResponse = await HttpService.GetAsync<IEnumerable<SupplierSelectModel>>("api/products/supplierselect");
         product = response.Response;
         inventories = inventoryResponse.Response;
+        _suppliers.AddRange(supplierResponse.Response);
+
+        if (product.Id < 1)
+            product.Id = ProductId;
     }
 
     async Task HandleSubmit()
@@ -44,13 +53,14 @@
         _showSpinnerStatus = "inline";
         var response = await HttpService.PutAsync($"api/products/{ProductId}", product);
 
-        if (response.Success == true)
+        if (response.Success == true || response.HttpResponseMessage.StatusCode == HttpStatusCode.NoContent ||
+            response.HttpResponseMessage.StatusCode == HttpStatusCode.OK)
         {
             Toast.ShowSuccess("Update Successful", "Success");
             Navigation.NavigateTo("products");
         }
-        Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.ReasonPhrase}");
-        _showSpinnerStatus = "none";
+        //Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.ReasonPhrase}");
+        //_showSpinnerStatus = "none";
     }
 
 }
