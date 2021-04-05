@@ -30,7 +30,7 @@ namespace RektaManager.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RektaLinqPadContext>(options =>
+            services.AddDbContext<RektaManagerContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SqlSvrConnection"));//.EnableSensitiveDataLogging();

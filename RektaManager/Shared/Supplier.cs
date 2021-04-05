@@ -11,9 +11,9 @@ namespace RektaManager.Shared
 {
     public class Supplier : DomainModelBase
     {
-        public virtual List<Product> SuppliedProducts { get; set; }
+        public  List<Product> SuppliedProducts { get; set; }
 
-        public virtual List<Bill> SupplierBills { get; set; }
+        public  List<Bill> SupplierBills { get; set; }
         
         [Required]
         [StringLength(100)]

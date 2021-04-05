@@ -27,10 +27,10 @@ namespace RektaManager.Shared
 
         public int InvoicePaymentId { get; set; }
 
-        public virtual List<ChartOfAccounts> ChartOfAccounts { get; set; }
+        public  List<ChartOfAccounts> ChartOfAccounts { get; set; }
 
-        public virtual List<OrderSales> Orders { get; set; }
+        public  List<OrderSales> Orders { get; set; }
 
-        public virtual List<BookingSales> Bookings { get; set; }
+        public  List<BookingSales> Bookings { get; set; }
     }
 }
