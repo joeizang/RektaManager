@@ -1,0 +1,35 @@
+﻿@using RektaManager.Shared.ComponentModels.Orders
+
+
+
+    <div class="col-4 mb-3 ml-2">
+        <div class="card shadow-lg d-flex" @onclick="@SetActiveBorder" style="border: @(_borderSwitch ? _switch : ""); width: 18rem;">
+            <img class="card-img" src="@Item.ImageUrl" alt="cardImage"/>
+            <div class="card-img-overlay">
+                <h3 class="card-title text-dark">@Item.ItemName</h3>
+                <h4>@Item.Price</h4>
+            </div>
+        </div>
+    </div>
+
+
+@code {
+
+    [Parameter]
+    public OrderItemComponentModel Item { get; set; }
+
+    private bool _borderSwitch = false;
+
+    private string _switch = "3px solid #bac842";
+
+
+    void SetActiveBorder()
+    {
+
+        Console.WriteLine("Clicked and Choice made!");
+
+        _borderSwitch = !_borderSwitch;
+
+    }
+
+}

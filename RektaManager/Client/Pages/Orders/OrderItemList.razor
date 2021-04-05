@@ -1,0 +1,15 @@
+﻿@using RektaManager.Shared.ComponentModels.Orders
+
+
+        @foreach (var item in OrderItems)
+        {
+            <OrderItem Item="@item"></OrderItem>
+        }
+
+
+@code {
+
+    [Parameter]
+    public List<OrderItemComponentModel> OrderItems { get; set; }
+
+}
