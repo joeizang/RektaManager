@@ -1,18 +1,16 @@
 ﻿@page "/inventory/details/{InventoryId:int}"
-@using RektaManager.Client.Utils
 @using RektaManager.Shared.ComponentModels.Inventories
-@using System.Text.Json
-@inject HttpClient HttpService
+@inject IHttpService HttpService
 
 
 <h3>Inventory Detail</h3>
 
 <div class="d-flex justify-content-center align-items-center">
     <div class="card shadow p-0 bg-white rounded">
-        <h5 class="card-header bg-secondary">@_details.Name</h5>
+        <h5 class="card-header bg-secondary">@_moreDetails.Name</h5>
         <div class="card-body">
-            <p><b>Created On :</b>@_details.SupplyDate.ToString("dd-MMM-yyyy")</p>
-            <p><b>At :</b>@_details.SupplyDate.ToLocalTime().ToString("h:mm:ss tt zz")</p>
+            <p><b>Created On :</b>@_moreDetails.Date.ToString("dd-MMM-yyyy")</p>
+            <p><b>At :</b>@_moreDetails.Date.ToLocalTime().ToString("h:mm:ss tt zz")</p>
             <p class="card-subtitle text-center font-weight-bold">Products</p>
             <span><button class="btn btn-dark" @onclick="@ShowProducts" style="display: @_showButton">More info...</button></span>
             <div style="display: @_displayProp;">
@@ -30,22 +28,18 @@
     private string _displayProp = "none";
     private string _showButton = "inline";
 
-    private InventoryUpsertComponentModel _details = new InventoryUpsertComponentModel();
     private InventoryDetailComponentModel _moreDetails = new InventoryDetailComponentModel();
-    private List<string> list = new List<string>() { "Gulder", "Star", "Star Lite", "33 Beer" };
+
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var response = await HttpService.GetAsync($"api/inventories/{InventoryId}");
+            var response = await HttpService.GetByIdAsync<InventoryDetailComponentModel>($"api/inventories/{InventoryId}");
 
-            if (response.IsSuccessStatusCode)
+            if (response.Success)
             {
-                _details = JsonSerializer
-                    .Deserialize<InventoryUpsertComponentModel>(await response.Content.ReadAsStringAsync(),
-                        new JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
-                _moreDetails.ProductNames = list;
+                _moreDetails = response.Response;
             }
 
         }

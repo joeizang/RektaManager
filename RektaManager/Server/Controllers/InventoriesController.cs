@@ -12,6 +12,7 @@ using RektaManager.Server.Data;
 using RektaManager.Server.Queries.Inventories;
 using RektaManager.Shared;
 using RektaManager.Shared.ComponentModels.Inventories;
+using RektaManager.Shared.ComponentModels.Products;
 
 namespace RektaManager.Server.Controllers
 {
@@ -31,57 +32,62 @@ namespace RektaManager.Server.Controllers
         public async Task<ActionResult<IEnumerable<InventoryComponentModel>>> GetInventories(CancellationToken token = default)
         {
             var inventories = _context.Inventories.AsNoTracking();
+            var products = _context.Products.AsNoTracking();
 
-            //QuantityInStock = x.Products.SingleOrDefault().QuantityBought,
-            var products = await _context.Products.AsNoTracking()
-                .Select(x => new { Qty = x.QuantityBought, InventoryId = x.ProductInventoryId })
-                .ToListAsync(token);
-            //QuantityInStock = products.Single(p => p.InventoryId == x.Id).Qty
-            var result = await inventories
-                .Include(x => x.InventoryCategories)
-                //.Where(i => i.Id == products.Single().InventoryId)
-                .OrderBy(x => x.SupplyDate)
-                .ThenBy(x => x.Id)
-                .Select(x => new InventoryComponentModel()
-                {
-                    InventoryDate = x.SupplyDate,
-                    InventoryName = x.Name,
-                    InventoryId = x.Id
-                }).ToListAsync(token);
+            inventories = inventories.Include(i => i.InventoryCategories);
+            products = products.Include(p => p.ProductInventory);
 
-            if (products.Any())
+            var inventoryEnumerable = await inventories.Select(i => new InventoryComponentModel
             {
-                products.ForEach(p =>
+                InventoryId = i.Id,
+                InventoryDate = i.SupplyDate,
+                InventoryName = i.Name,
+                CategoryName = i.InventoryCategories.First().Name
+            }).ToListAsync(token).ConfigureAwait(false);
+
+            var productEnumerable = await products
+                .Select(p => new {p.QuantityBought, p.ProductInventoryId})
+                .ToListAsync(token).ConfigureAwait(false);
+
+            inventoryEnumerable.ForEach(one =>
+            {
+                foreach (var product in productEnumerable)
                 {
-                    result.ForEach(i =>
+                    if (product.ProductInventoryId == one.InventoryId)
                     {
-                        if (i.InventoryId == p.InventoryId)
-                        {
-                            i.QuantityInStock += p.Qty;
-                        }
-                    });
-                });
-            }
-            return Ok(result);
+                        one.QuantityInStock += product.QuantityBought;
+                    }
+                }
+            });
+            
+            return Ok(inventoryEnumerable);
         }
 
         // GET: api/Inventories/5
         [HttpGet("{id:int}", Name = "GetOneInventory")]
-        public async Task<ActionResult<InventoryUpsertComponentModel>> GetInventory(int id)
+        public async Task<ActionResult<InventoryDetailComponentModel>> GetInventory(int id)
         {
             var inventory = _context.Inventories
                 .AsNoTracking()
                 .Where(i => i.Id == id);
+            var products = await _context.Products.AsNoTracking()
+                .Where(p => p.ProductInventoryId == id)
+                .Select(x => new ProductComponentModel
+                {
+                    Name = x.Name,
+                    UnitMeasure = x.UnitMeasure,
+                    QuantityBought = x.QuantityBought,
+                }).ToListAsync().ConfigureAwait(false);
 
-            var mainResult = await inventory.Select(i => 
-                new InventoryUpsertComponentModel()
+            var mainResult = await inventory.Select(i =>
+                new InventoryDetailComponentModel()
                 {
                     Name = i.Name,
-                    SupplyDate = i.SupplyDate,
-                    Quantity = i.Products.Sum(x => x.QuantityBought),
-                    Price = i.Products.Sum(p => p.CostPrice),
-                    Id = i.Id,
-                }).SingleOrDefaultAsync();
+                    Date = i.SupplyDate,
+                    Products = products,
+                    InventoryCategories = i.InventoryCategories.Select(x => x.Name).ToList(),
+                    InventoryId = i.Id,
+                }).SingleOrDefaultAsync().ConfigureAwait(false);
 
             if (mainResult is null)
             {
@@ -101,7 +107,7 @@ namespace RektaManager.Server.Controllers
 
             var mainResult = new InventoryDetailComponentModel();
             var categories = new List<string>();
-            var products = new List<string>();
+            var products = new List<ProductComponentModel>();
 
             if (moreDetails)
             {
@@ -115,12 +121,18 @@ namespace RektaManager.Server.Controllers
                 products = await _context.Products.AsNoTracking()
                     .Include(p => p.ProductInventory)
                     .Where(p => p.ProductInventory.Id == id)
-                    .Select(p => p.Name)
+                    .Select(p => new ProductComponentModel
+                    {
+                        ProductId = p.Id,
+                        Name = p.Name,
+                        QuantityBought = p.QuantityBought,
+                        UnitMeasure = p.UnitMeasure
+                    })
                     .ToListAsync();
             }
 
             mainResult.InventoryCategories = categories;
-            mainResult.ProductNames = products;
+            mainResult.Products = products;
 
 
             return Ok(mainResult);
