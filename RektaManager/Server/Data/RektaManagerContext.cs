@@ -1,9 +1,11 @@
-﻿using IdentityServer4.EntityFramework.Entities;
+﻿using System;
+using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MySql.EntityFrameworkCore.Extensions;
 using RektaManager.Shared;
 
 namespace RektaManager.Server.Data
@@ -219,82 +221,33 @@ namespace RektaManager.Server.Data
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(x => new {x.UserId, x.LoginProvider, x.Name});
 
-            //code to handle concurrency
+            builder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.LoginProvider).HasMaxLength(90));
+            builder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.ProviderKey).HasMaxLength(90));
+            
+            builder.Entity<IdentityUserToken<string>>(entity => entity.Property(m => m.LoginProvider).HasMaxLength(90));
+            builder.Entity<IdentityUserToken<string>>(entity => entity.Property(m => m.Name).HasMaxLength(90));
+            
+            builder.Entity<IdentityUserClaim<string>>(entity => entity.Property(m => m.Id).HasMaxLength(90));
+            builder.Entity<IdentityRoleClaim<string>>(entity => entity.Property(m => m.Id).HasMaxLength(90));
+            
+            builder.Entity<ApplicationUser>(entity => entity.Property(m => m.Id).HasMaxLength(90));
+            builder.Entity<ApplicationUser>(entity => entity.Property(m => m.CreatedAt)
+                .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
+            builder.Entity<ApplicationUser>(entity => entity.Property(m => m.UpdatedAt)
+                .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
+            builder.Entity<ApplicationRole>(entity => entity.Property(m => m.Id).HasMaxLength(90));
+            builder.Entity<ApplicationRole>(entity => entity.Property(m => m.CreatedAt)
+            .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
+            builder.Entity<ApplicationRole>(entity => entity.Property(m => m.UpdatedAt)
+                .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
 
-            //builder.Entity<Bill>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<BillPayment>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<BookedItem>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Booking>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<ChartOfAccounts>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Customer>()
-            ////.UseXminAsConcurrencyToken();
-            //.Property(c => c.Xmin)
-            //.IsConcurrencyToken();
-            //builder.Entity<Inventory>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<InventoryCategory>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Invoice>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<InvoicePayment>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Order>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<OrderedItem>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Product>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<ProductCategory>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Service>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<StaffShift>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
-            //builder.Entity<Supplier>()
-            //    //.UseXminAsConcurrencyToken();
-            //    .Property(c => c.Xmin)
-            //    .IsConcurrencyToken();
+
         }
 
 
-        public DbSet<RektaManager.Shared.Invoice> Invoice { get; set; }
+        public DbSet<Invoice> Invoice { get; set; }
 
 
-        public DbSet<RektaManager.Shared.InvoicePayment> InvoicePayment { get; set; }
+        public DbSet<InvoicePayment> InvoicePayment { get; set; }
     }
 }

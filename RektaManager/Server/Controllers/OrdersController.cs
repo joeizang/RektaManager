@@ -33,8 +33,8 @@ namespace RektaManager.Server.Controllers
         }
 
 
-        [HttpGet("orderitems", Name = "GetOrderItems")]
-        public async Task<ActionResult<IEnumerable<OrderItemComponentModel>>> GetOrderItems()
+        [HttpGet("orderItems", Name = "GetOrderItems")]
+        public async Task<ActionResult<List<OrderItemComponentModel>>> GetOrderItems()
         {
             var result = await _repo.GetQueryable<OrderItem>(null, null)
                 .Select(x => new OrderItemComponentModel
@@ -44,7 +44,7 @@ namespace RektaManager.Server.Controllers
                     ItemName = x.ItemName,
                     Price = x.Price
                 }).ToListAsync();
-            return result;
+            return Ok(result);
         }
 
         // GET: api/Orders/5

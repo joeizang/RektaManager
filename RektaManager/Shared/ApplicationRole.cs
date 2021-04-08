@@ -6,32 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using RektaManager.Shared.Abstractions;
 
 namespace RektaManager.Shared
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationRole : IdentityRole<string>
     {
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow.LocalDateTime;
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow.LocalDateTime;
         public bool IsDeleted { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string OtherNames { get; set; }
-
-        public string StaffIdNumber { get; set; }
-
-        [ConcurrencyCheck]
+        [ConcurrencyCheck, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
         public byte[] Timestamp { get; set; }
-
-        public List<Order> ProcessedOrders { get; set; }
-
-        public List<Booking> HandledBookings { get; set; }
-
-        public List<StaffShift> StaffShifts { get; set; }
     }
 }

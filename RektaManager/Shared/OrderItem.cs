@@ -22,5 +22,9 @@ namespace RektaManager.Shared
         [StringLength(100)]
         public string ItemName { get; set; }
 
+        [Required]
+        [StringLength(10)]
+        public string ItemCode { get; set; }
+
     }
 }

@@ -120,15 +120,30 @@ namespace RektaManager.Server.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct([FromBody]Product product)
+        public async Task<ActionResult<Product>> PostProduct([FromBody] ProductUpsertComponentModel model)
         {
             var newId = 0;
             try
             {
+                var product = new Product
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    ProductUniqueIdentifier = model.ProductUniqueIdentifier,
+                    QuantityBought = model.QuantityBought,
+                    ProductInventoryId = model.ProductInventoryId,
+                    CostPrice = model.CostPrice,
+                    SupplierId = model.SupplierId,
+                    UnitMeasure = model.UnitMeasure
+                };
                 if (ModelState.IsValid)
                 {
-                    _context.Products.Add(product);
-                    newId = await _context.SaveChangesAsync();
+                    //_context.Products.Add(product);
+                    await _repo.Add(product);
+                    await _repo.Save<Product>();
+                    // TODO: CHECK EXCEPTION WHEN THE LINQ IN THE PRODUCT REPOSITORY IS BEING EVALUATED HERE.
+                    var result = await _repo.GetProductBy(model.ProductUniqueIdentifier).ConfigureAwait(false);
+                    newId = result.Id;
                 }
             }
             catch (Exception e)
@@ -138,7 +153,7 @@ namespace RektaManager.Server.Controllers
             }
 
             
-            return CreatedAtAction("GetProduct", new { id = newId }, product);
+            return CreatedAtAction("GetProduct", new { id = newId }, new {});
         }
 
         // DELETE: api/Products/5

@@ -2,12 +2,12 @@
 
 
 
-    <div class="col-4 mb-3 ml-2">
-        <div class="card shadow-lg d-flex" @onclick="@SetActiveBorder" style="border: @(_borderSwitch ? _switch : ""); width: 18rem;">
+    <div class="col-4 mb-3 d-flex">
+        <div class="card shadow-lg d-flex" @onclick="@SetActiveBorder" style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
             <img class="card-img" src="@Item.ImageUrl" alt="cardImage"/>
             <div class="card-img-overlay">
-                <h3 class="card-title text-dark">@Item.ItemName</h3>
-                <h4>@Item.Price</h4>
+                <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
+                <h4 class="card-headings font-weight-bolder text-light">@Item.Price</h4>
             </div>
         </div>
     </div>

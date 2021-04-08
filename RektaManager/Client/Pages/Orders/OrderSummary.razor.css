@@ -1,0 +1,6 @@
+﻿body {
+    padding: 3.5rem;
+    margin: 0;
+    background: #2f4f4f;
+    background: linear-gradient(90deg, darkolivegreen 0, slategrey 48%);
+}

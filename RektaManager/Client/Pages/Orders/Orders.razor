@@ -1,5 +1,6 @@
 ﻿@page "/orders"
 @using RektaManager.Shared.ComponentModels.Orders
+@inject IHttpService HttpService
 
 <h3>Orders</h3>
 
@@ -12,23 +13,28 @@
         link
         <span class="bi bi-book-fill"></span>
     </button>
-    <button class="btn btn-outline-info">
-        link
-        <span class="bi bi-book-fill"></span>
-    </button>
-    <button class="btn btn-outline-info">
-        link
-        <span class="bi bi-book-fill"></span>
-    </button>
+    @if(OrderedItems.Any())
+    {
+        <button class="btn btn-outline-info">
+            Cancel
+          <span class="bi bi-book-fill"></span>
+        </button>
+        <button class="btn btn-outline-info">
+            Finish Sale
+          <span class="bi bi-book-fill"></span>
+        </button>
+    }
 </div>
 
 <div class="row">
     <OrderItemList OrderItems="@OrderItems"></OrderItemList>
-    <OrderSummary></OrderSummary>
+    <OrderSummary/>
 </div>
 
 
 @code {
+    public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; } = new List<OrderedItemUpsertComponentModel>();
+    
     public List<OrderItemComponentModel> OrderItems { get; set; } = new List<OrderItemComponentModel>()
     {
         new OrderItemComponentModel()
@@ -92,4 +98,17 @@
             Price = 9000
         },
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        //1. fetch OrderItems from the API
+        var orderItems = await HttpService.GetAsync<List<OrderItemComponentModel>>("api/orders/orderItems");
+        if (orderItems is not null && orderItems.Success) OrderItems = orderItems.Response;
+        //2. Once any OrderItem is clicked, it should be added to the OrderedItems list
+        //3. Once the order is going to be finished, then the OrderedItems list should be sent to the api
+        //4. Once the OrderedItems list is sent, it should be reset to 0 and the page should be refreshed.
+
+        await Task.Delay(1000);
+    }
+
 }

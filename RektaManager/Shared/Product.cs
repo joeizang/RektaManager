@@ -29,6 +29,6 @@ namespace RektaManager.Shared
         public int ProductInventoryId { get; set; }
 
         public string Description { get; set; }
-
+        public int SupplierId { get; set; }
     }
 }

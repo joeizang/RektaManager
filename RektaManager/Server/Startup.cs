@@ -32,8 +32,8 @@ namespace RektaManager.Server
         {
             services.AddDbContext<RektaManagerContext>(options =>
             {
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlSvrConnection"));//.EnableSensitiveDataLogging();
+                options.UseMySQL(
+                    Configuration.GetConnectionString("MysqlSvr")).EnableSensitiveDataLogging();
                 options.ConfigureWarnings(w => w.Log(RelationalEventId.MultipleCollectionIncludeWarning));
             });
 
