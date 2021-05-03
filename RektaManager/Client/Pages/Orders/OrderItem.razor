@@ -1,16 +1,18 @@
 ﻿@using RektaManager.Shared.ComponentModels.Orders
+@inject DialogService Dialog
 
 
 
-    <div class="col-4 mb-3 d-flex">
-        <div class="card shadow-lg d-flex" @onclick="@SetActiveBorder" style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
-            <img class="card-img" src="@Item.ImageUrl" alt="cardImage"/>
-            <div class="card-img-overlay">
-                <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
-                <h4 class="card-headings font-weight-bolder text-light">@Item.Price</h4>
-            </div>
+<div class="col-4 mb-3 d-flex">
+    <div class="card shadow-lg d-flex" @onclick="@AddOrderedItem"
+        style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
+        <img class="card-img" src="@Item.ImageUrl" alt="cardImage" />
+        <div class="card-img-overlay">
+            <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
+            <h4 class="card-headings font-weight-bolder text-light bg-secondary">@Item.Price</h4>
         </div>
     </div>
+</div>
 
 
 @code {
@@ -23,12 +25,13 @@
     private string _switch = "3px solid #bac842";
 
 
-    void SetActiveBorder()
+    void AddOrderedItem()
     {
+        Dialog.Open<AddOrderedItem>("Confirm Selected Item", new Dictionary<string, object>()
+        {
+            {"Model", Item }
 
-        Console.WriteLine("Clicked and Choice made!");
-
-        _borderSwitch = !_borderSwitch;
+        }, new DialogOptions(){ Width = "18rem" });
 
     }
 

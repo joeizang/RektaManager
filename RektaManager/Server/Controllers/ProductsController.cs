@@ -127,8 +127,8 @@ namespace RektaManager.Server.Controllers
             {
                 var product = new Product
                 {
-                    Name = model.Name,
-                    Description = model.Description,
+                    Name = model.Name.ToUpper(),
+                    Description = model.Description.ToUpper(),
                     ProductUniqueIdentifier = model.ProductUniqueIdentifier,
                     QuantityBought = model.QuantityBought,
                     ProductInventoryId = model.ProductInventoryId,
@@ -141,8 +141,9 @@ namespace RektaManager.Server.Controllers
                     //_context.Products.Add(product);
                     await _repo.Add(product);
                     await _repo.Save<Product>();
-                    // TODO: CHECK EXCEPTION WHEN THE LINQ IN THE PRODUCT REPOSITORY IS BEING EVALUATED HERE.
-                    var result = await _repo.GetProductBy(model.ProductUniqueIdentifier).ConfigureAwait(false);
+                    var result = await _context.Products
+                        .Where(x => x.ProductUniqueIdentifier.Equals(model.ProductUniqueIdentifier))
+                        .SingleOrDefaultAsync().ConfigureAwait(false);
                     newId = result.Id;
                 }
             }

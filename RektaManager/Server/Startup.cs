@@ -40,6 +40,7 @@ namespace RektaManager.Server
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RektaManagerContext>();

@@ -22,11 +22,12 @@ namespace RektaManager.Server.Services
 
         public async Task<OrderComponentModel> GetOrderBy(string searchTerm)
         {
-            var orderQuery = _context.Orders.AsNoTracking().Include(o => o.OrderedItems)
-                .Where(o => o.Customer.Name.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase));
+            var orderQuery = _context.Orders.AsNoTracking()
+                .Include(o => o.OrderedItems)
+                .Where(o => o.Customer.Name.Equals(searchTerm.ToUpper()));
             var orderedItems = _context.OrderedItems.AsNoTracking()
-                .Where(o => o.Name.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)
-                            && o.ItemCode.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)
+                .Where(o => o.Name.Equals(searchTerm)
+                            && o.ItemCode.Equals(searchTerm)
                             && o.Price.Equals(decimal.Parse(searchTerm)) &&
                             o.Quantity.Equals(double.Parse(searchTerm)));
             var result = await orderQuery.Where(o => o.Id == orderedItems.SingleOrDefault().OrderId)

@@ -192,7 +192,7 @@ namespace RektaManager.Server.Controllers
                 {
                     var newInventory = new Inventory()
                     {
-                        Name = inventory.Name,
+                        Name = inventory.Name.ToUpper(),
                         SupplyDate = inventory.SupplyDate
                     };
                     _context.Inventories.Add(newInventory);

@@ -17,6 +17,10 @@ namespace RektaManager.Shared.ComponentModels.Orders
         [Required]
         public decimal Price { get; set; }
 
+        [Column(TypeName = "float(6,2)")]
+        [Required]
+        public float Quantity { get; set; }
+
         [Required]
         [StringLength(100)]
         public string ItemName { get; set; }

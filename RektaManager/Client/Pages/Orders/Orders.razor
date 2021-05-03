@@ -13,97 +13,34 @@
         link
         <span class="bi bi-book-fill"></span>
     </button>
-    @if(OrderedItems.Any())
+    @if (State.OrderedItems.Any())
     {
         <button class="btn btn-outline-info">
             Cancel
-          <span class="bi bi-book-fill"></span>
+            <span class="bi bi-book-fill"></span>
         </button>
         <button class="btn btn-outline-info">
             Finish Sale
-          <span class="bi bi-book-fill"></span>
+            <span class="bi bi-book-fill"></span>
         </button>
     }
 </div>
 
 <div class="row">
-    <OrderItemList OrderItems="@OrderItems"></OrderItemList>
-    <OrderSummary/>
+
+    <OrderItemList></OrderItemList>
 </div>
 
 
 @code {
-    public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; } = new List<OrderedItemUpsertComponentModel>();
-    
-    public List<OrderItemComponentModel> OrderItems { get; set; } = new List<OrderItemComponentModel>()
-    {
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.royacshop.com/wp-content/uploads/2020/03/How-to-Prepare-Tuwo-Shinkafa-and-Miyan-Taushe.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://9jafoods.com/wp-content/uploads/2019/08/amala-and-ewedu-2.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.xycinews.com/wp-content/uploads/2019/03/water-leave-and-akpu-recipe-main-photo.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://img-global.cpcdn.com/recipes/dd2c903975f18360/751x532cq70/gwote-acha-recipe-recipe-main-photo.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-        new OrderItemComponentModel()
-        {
-            ImageUrl = "https://www.preciouscore.com/wp-content/uploads/2018/08/Nigerian-Jollof-Rice.jpg",
-            ItemName = "SomeItem",
-            Price = 9000
-        },
-    };
+    [CascadingParameter]
+    public OrderState State { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         //1. fetch OrderItems from the API
-        var orderItems = await HttpService.GetAsync<List<OrderItemComponentModel>>("api/orders/orderItems");
-        if (orderItems is not null && orderItems.Success) OrderItems = orderItems.Response;
+        //var orderItems = await HttpService.GetAsync<List<OrderItemComponentModel>>("api/orders/orderItems");
+        //if (orderItems is not null && orderItems.Success) state.OrderItems = orderItems.Response;
         //2. Once any OrderItem is clicked, it should be added to the OrderedItems list
         //3. Once the order is going to be finished, then the OrderedItems list should be sent to the api
         //4. Once the OrderedItems list is sent, it should be reset to 0 and the page should be refreshed.

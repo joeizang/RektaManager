@@ -1,30 +1,41 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Toast.Configuration
+@using RektaManager.Shared.ComponentModels.Orders
 @using ToastPosition = Blazored.Toast.Configuration.ToastPosition
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <div class="main">
-        <div class="top-row px-4 auth">
-            <LoginDisplay />
+
+<CascadingValue Value="@state">
+    <RadzenDialog />
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
-        <BlazoredToasts
-            IconType="new IconType()"
-            SuccessIcon="bi bi-hand-thumbs-up-fill"
-            SuccessClass="bg-success"
-            ErrorIcon="bi bi-hand-thumbs-down-fill"
-            ErrorClass="bg-danger"
-            ShowProgressBar="true"
-            RemoveToastsOnNavigation="false"
-            Timeout="3"
-            Position="ToastPosition.TopRight"
-            InfoIcon="bi bi-lightbulb-fill"
-        />
-        <div class="content px-4">
-            @Body
+
+        <div class="main">
+            <div class="top-row px-4 auth">
+                <LoginDisplay />
+            </div>
+            <BlazoredToasts
+                IconType="new IconType()"
+                SuccessIcon="bi bi-hand-thumbs-up-fill"
+                SuccessClass="bg-success"
+                ErrorIcon="bi bi-hand-thumbs-down-fill"
+                ErrorClass="bg-danger"
+                ShowProgressBar="true"
+                RemoveToastsOnNavigation="false"
+                Timeout="3"
+                Position="ToastPosition.TopRight"
+                InfoIcon="bi bi-lightbulb-fill"
+            />
+            <div class="content px-4">
+                @Body
+            </div>
         </div>
     </div>
-</div>
+</CascadingValue>
+
+@code
+{
+    OrderState state = new();
+}

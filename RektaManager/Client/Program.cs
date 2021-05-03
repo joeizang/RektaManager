@@ -8,7 +8,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Blazored.Modal;
 using Blazored.Toast;
+using Radzen;
 using RektaManager.Client.Utils;
 
 namespace RektaManager.Client
@@ -31,6 +34,12 @@ namespace RektaManager.Client
             builder.Services.AddScoped<IHttpService, HttpService>();
 
             builder.Services.AddBlazoredToast();
+
+            builder.Services.AddBlazoredModal();
+
+            builder.Services.AddBlazoredLocalStorage();
+
+            builder.Services.AddScoped<DialogService>();
 
             builder.Services.AddApiAuthorization();
 

@@ -17,6 +17,8 @@ namespace RektaManager.Shared
 
         public  List<OrderedItem> OrderedItems { get; set; }
 
+        public float OrderedItemsCount { get; set; }
+
         public ApplicationUser Staff { get; set; }
 
         public string StaffId { get; set; }
@@ -31,6 +33,13 @@ namespace RektaManager.Shared
         public List<OrderSales> OrderSalesInvoices { get; set; }
 
         public int InvoiceId { get; set; }
+
+        public Order()
+        {
+            OrderSalesInvoices = new List<OrderSales>();
+            OrderedItems = new List<OrderedItem>();
+            OrderedItemsCount = OrderedItems.Count;
+        }
 
     }
 }

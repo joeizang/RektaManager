@@ -1,7 +1,47 @@
 ﻿@page "/invoices"
+@using RektaManager.Shared
+@using RektaManager.Shared.ComponentModels.Invoices
+@inject HttpService Http
+@inject NavigationManager Navigation
 
-<h3>Invoices</h3>
+<div class="d-flex justify-content-center align-items-center">
+    <span class="h3">Invoices</span>
+</div>
+
+<RadzenGrid Data="_invoices" AllowSorting="true" AllowPaging="true">
+    <Columns>
+        <RadzenGridColumn TItem="Invoice" Property="Id" Title="Invoice Id"/>
+        <RadzenGridColumn TItem="Invoice" Property="TransactionDate" Title="Date" Sortable="true" Format="dd:MMMM:yyyy"/>
+        <RadzenGridColumn TItem="Invoice" Property="CustomerName" Title="Customer's Name" Sortable="true"/>
+        <RadzenGridColumn TItem="Invoice" Property="InvoicePaymentStatus" Title="Payment Status" />
+        <RadzenGridColumn TItem="Invoice" Property="NumberOfOrders" Title="Number Of Orders Per Invoice" />
+        <RadzenGridColumn TItem="Invoice" Title="Number Of Orders Per Invoice">
+            <Template>
+                  
+            </Template>
+        </RadzenGridColumn>
+
+
+    </Columns>
+</RadzenGrid>
 
 @code {
+    List<InvoiceListComponentModel> _invoices = new List<InvoiceListComponentModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<Invoice>>("api/invoices");
+
+        if (response.Success)
+            _invoices = response.Response.Select(x => new InvoiceListComponentModel
+            {
+                CustomerName = x.Customer.Name,
+                DueDate = x.DueDate,
+                InvoicePaymentStatus = x.InvoicePaymentStatus,
+                NumberOfOrders = x.Orders.Count,
+                TransactionDate = x.TransactionDate
+            }).ToList();
+    }
 
 }

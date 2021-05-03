@@ -1,15 +1,16 @@
 ﻿@using RektaManager.Shared.ComponentModels.Orders
 
 
-        @foreach (var item in OrderItems)
-        {
-            <OrderItem Item="@item"></OrderItem>
-        }
+@foreach (var item in State.OrderItems)
+{
+    <OrderItem Item="@item"></OrderItem>
+}
 
 
 @code {
 
-    [Parameter]
-    public List<OrderItemComponentModel> OrderItems { get; set; }
+    [CascadingParameter]
+    public OrderState State { get; set; }
+
 
 }

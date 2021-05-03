@@ -16,12 +16,12 @@ namespace RektaManager.Server.Services
     public class ProductRepository : BaseRepository, IProductRepository
     {
         private readonly RektaManagerContext _context;
-        private readonly IHttpContextAccessor _htttpContext;
+        private readonly IHttpContextAccessor _httpContext;
 
         public ProductRepository(RektaManagerContext context, IHttpContextAccessor htttpContext) : base(context, htttpContext)
         {
             _context = context;
-            _htttpContext = htttpContext;
+            _httpContext = htttpContext;
         }
 
 
@@ -71,10 +71,10 @@ namespace RektaManager.Server.Services
         {
             var result = await _context.Products.AsNoTracking()
                 .Include(p => p.ProductInventory)
-                .Where(p => p.Name.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.ProductUniqueIdentifier.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.Description.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.ProductInventory.Name.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                .Where(p => p.Name.Equals(searchTerm.ToUpper()) ||
+                            p.ProductUniqueIdentifier.Equals(searchTerm) ||
+                            p.Description.Contains(searchTerm.ToUpper()) ||
+                            p.ProductInventory.Name.Equals(searchTerm) ||
                             p.CostPrice.Equals(decimal.Parse(searchTerm)) ||
                             p.QuantityBought.Equals(double.Parse(searchTerm)))
                 .SingleOrDefaultAsync();
@@ -111,10 +111,10 @@ namespace RektaManager.Server.Services
             if (!string.IsNullOrEmpty(query.SearchString))
             {
                 deferred = deferred.Where(p =>
-                    p.Name.Equals(query.SearchString, StringComparison.InvariantCultureIgnoreCase) ||
-                    p.ProductUniqueIdentifier.Equals(query.SearchString, StringComparison.InvariantCultureIgnoreCase) ||
-                    p.Description.Contains(query.SearchString, StringComparison.InvariantCultureIgnoreCase) ||
-                    p.ProductInventory.Name.Equals(query.SearchString, StringComparison.InvariantCultureIgnoreCase) ||
+                    p.Name.Equals(query.SearchString) ||
+                    p.ProductUniqueIdentifier.Equals(query.SearchString) ||
+                    p.Description.Contains(query.SearchString) ||
+                    p.ProductInventory.Name.Equals(query.SearchString) ||
                     p.CostPrice.Equals(decimal.Parse(query.SearchString)) ||
                     p.QuantityBought.Equals(double.Parse(query.SearchString)));
             }

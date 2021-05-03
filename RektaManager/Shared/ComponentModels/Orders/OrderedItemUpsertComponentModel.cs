@@ -22,6 +22,7 @@ namespace RektaManager.Shared.ComponentModels.Orders
         public string ItemCode { get; set; }
 
         [Required]
+        [Range(typeof(double),"1","5000", ErrorMessage = "You cannot have a quantity of 0 for an Order")]
         public double Quantity { get; set; }
     }
 }
