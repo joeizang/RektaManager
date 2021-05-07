@@ -1,17 +1,68 @@
-﻿<div class="col-3 d-flex">
-    <div>
-        <div>
-            <b>Item Ordered :</b>
-        </div>
-        <div>
-            <b>Quantity :</b>
-        </div>
-        <div>
-            <b>Unit Price :</b>
-        </div>
+﻿@page "/orders"
+@inject IHttpService Http
+@inject NavigationManager Navigation
+@using RektaManager.Shared.ComponentModels.Orders
+
+<div class="d-flex justify-content-center align-items-center">
+    <p class="h3">Orders Made</p>
+</div>
+
+
+<div class="mt-4">
+    <div class="mb-4 d-flex justify-content-between align-content-center">
+        <span>
+            <button @onclick="@(() => Navigation.NavigateTo("orders/make-orders"))" class="btn btn-outline-info">
+                Place Order
+            </button>
+        </span>
     </div>
+
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Sales Person</th>
+            <th>Order Date</th>
+            <th>Amount</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (_orders is null || !_orders.Any())
+        {
+            <tr class="spinner-grow-sm">No Orders to show</tr>
+        }
+        else
+        {
+            @foreach (var order in _orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.StaffName</td>
+                    <td>@order.OrderDate.LocalDateTime.ToString("dd-MM-yy")</td>
+                    <td>@order.OrderTotal</td>
+                    @*<td>@order.OrderedItems.Count()</td>*@
+                    <td>
+                        <span><a class="bi bi-eye-fill" href="@($"details/{order.OrderId}")"></a></span>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
 </div>
 
 @code {
+    List<OrderComponentModel> _orders = new List<OrderComponentModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<OrderComponentModel>>("api/orders");
+
+        if (response.Success == false)
+            _orders = new List<OrderComponentModel>();
+        _orders = response.Response;
+    }
 
 }

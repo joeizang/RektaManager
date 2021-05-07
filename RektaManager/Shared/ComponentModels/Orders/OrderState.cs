@@ -10,6 +10,9 @@ namespace RektaManager.Shared.ComponentModels.Orders
     {
         public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; } = new();
 
+        public Dictionary<long,string> CurrentOrderKey { get; set; }
+
+
         public List<OrderItemComponentModel> OrderItems { get; set; } = new List<OrderItemComponentModel>()
         {
             new OrderItemComponentModel()

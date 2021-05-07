@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace RektaManager.Server.Services
         {
             _context = context;
         }
+
 
         public async Task<OrderComponentModel> GetOrderBy(string searchTerm)
         {
@@ -83,36 +85,6 @@ namespace RektaManager.Server.Services
                     Id = x.Id
                 }).SingleOrDefaultAsync();
             return orderItem;
-        }
-
-        public IQueryable<T> GetQueryable<T>(Expression<Func<T, bool>>[] predicates = null, 
-            RequestCustomizer query = null, params Expression<Func<T, object>>[] includes) where T : DomainModelBase
-        {
-            var queryable = _context.Set<T>().AsNoTracking();
-            if(query is null && predicates is null)
-            {
-                foreach(var include in includes)
-                {
-                    queryable = queryable.Include(include);
-                }
-
-                return queryable;
-            }
-
-            var index = 0;
-            if (predicates is not null && query is not null)
-            {
-                if (includes.Length > 0)
-                {
-                    while (index <= predicates.Length)
-                    {
-                        queryable = queryable.Where(predicates[index]);
-                        index++;
-                    }
-                }
-            }
-
-            return queryable;
         }
 
         public Task Update(OrderUpsertComponentModel entity)

@@ -177,7 +177,13 @@ namespace RektaManager.Server.Data
                 .HasMany(o => o.OrderedItems)
                 .WithOne(o => o.OwningOrder)
                 .HasForeignKey(o => o.OrderId)
-                .IsRequired()
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.CustomerOrders)
+                .HasForeignKey(x => x.CustomerId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Order>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using RektaManager.Shared.Abstractions;
@@ -11,6 +12,9 @@ namespace RektaManager.Server.Abstractions
         Task Save<T>() where T : DomainModelBase;
 
         Task<IEnumerable<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate) where T : DomainModelBase;
+
+        public IQueryable<T> GetQueryable<T>(Expression<Func<T, bool>>[] predicates = null,
+            RequestCustomizer query = null, params Expression<Func<T, object>>[] includes) where T : DomainModelBase;
 
         Task<T> GetOne<T>(int id) where T : DomainModelBase;
 

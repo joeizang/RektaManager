@@ -16,10 +16,6 @@ namespace RektaManager.Server.Abstractions
 
         Task<OrderItemComponentModel> GetOrderItemBy(string searchTerm);
 
-        IQueryable<T> GetQueryable<T>(Expression<Func<T, bool>>[] predicates = null,
-            RequestCustomizer query = null,
-            params Expression<Func<T, object>>[] includes) where T : DomainModelBase;
-
         Task Update(OrderUpsertComponentModel entity);
     }
 }

@@ -27,9 +27,32 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<List<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            var result = await _repo.GetQueryable<Order>(null, null,
+                    x => x.OrderedItems, x => x.Customer)
+                .Select(x => new OrderComponentModel
+                {
+                    CustomerName = x.Customer.Name,
+                    CustomerPhone = x.Customer.PhoneNumber,
+                    OrderDate = x.OrderDate,
+                    OrderId = x.Id,
+                    OrderTotal = x.Total,
+                    StaffName = x.Staff.UserName
+                }).ToListAsync().ConfigureAwait(false);
+            result.ForEach(async (r) =>
+            {
+                r.OrderedItems = await _repo.GetQueryable<OrderedItem>(null, null, o => o.OwningOrder)
+                    .Where(x => x.OrderId == r.OrderId)
+                    .Select(x => new OrderedItemComponentModel
+                    {
+                        ItemName = x.Name,
+                        ItemPrice = x.Price,
+                        Quantity = x.Quantity,
+                        ItemCode = x.ItemCode
+                    }).ToListAsync().ConfigureAwait(false);
+            });
+            return Ok(result);
         }
 
 

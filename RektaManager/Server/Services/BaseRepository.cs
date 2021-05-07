@@ -88,6 +88,36 @@ namespace RektaManager.Server.Services
             }
         }
 
+        public IQueryable<T> GetQueryable<T>(Expression<Func<T, bool>>[] predicates = null,
+            RequestCustomizer query = null, params Expression<Func<T, object>>[] includes) where T : DomainModelBase
+        {
+            var queryable = _context.Set<T>().AsNoTracking();
+            if (query is null && predicates is null)
+            {
+                foreach (var include in includes)
+                {
+                    queryable = queryable.Include(include);
+                }
+
+                return queryable;
+            }
+
+            var index = 0;
+            if (predicates is not null && query is not null)
+            {
+                if (includes.Length > 0)
+                {
+                    while (index <= predicates.Length)
+                    {
+                        queryable = queryable.Where(predicates[index]);
+                        index++;
+                    }
+                }
+            }
+
+            return queryable;
+        }
+
         public async Task Delete<T>(int id) where T : DomainModelBase
         {
             var result = await _context.Set<T>().FindAsync(id);
