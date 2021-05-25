@@ -3,7 +3,9 @@
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DialogService Dialog
+@inject IToastService Toast
 @inject IHttpService Http
+@inject IOrderService OrderService
 <h3>Add <b>@Model.ItemName</b></h3>
 <EditForm Model="@orderedItem" OnValidSubmit="HandleOrderAddition">
     <DataAnnotationsValidator />
@@ -48,7 +50,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Dialog.OnClose += HandleClose;
         AuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
     }
 
@@ -60,23 +61,15 @@
         orderedItem.ItemName = Model.ItemName;
         orderedItem.Quantity = Model.Quantity;
         orderedItem.ItemPrice = Model.Price;
-
-        var key = DateTimeOffset.UtcNow.Ticks;
-        var value = $"{orderedItem.ItemName}" +
-                    $"{DateTimeOffset.UtcNow.LocalDateTime.ToString("dd-MM-yy")}-" +
-                    $"{key}{AuthState.User.Identity?.Name}";
+        orderedItem.SalesStaff = AuthState.User.Identity?.Name;
+        orderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
+        orderedItem.CustomerName = Guid.NewGuid().ToString("N");
 
         State.OrderedItems.Add(orderedItem);
 
-        State.CurrentOrderKey.Add(key, value);
-
-        await LocalStorage.SetItemAsync(value, orderedItem);
+        await OrderService.AddToCart(State.OrderedItems);
+        Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
         Dialog.Close();
-    }
-
-    private async void HandleClose(dynamic result = null)
-    {
-        await InvokeAsync(() => { StateHasChanged(); });
     }
 
 }

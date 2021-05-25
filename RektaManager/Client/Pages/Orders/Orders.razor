@@ -1,5 +1,6 @@
 ﻿@page "/orders/make-orders"
 @using RektaManager.Shared.ComponentModels.Orders
+@using System.Timers
 @inject IHttpService HttpService
 @inject ILocalStorageService LocalStorage
 
@@ -14,17 +15,9 @@
         link
         <span class="bi bi-book-fill"></span>
     </button>
-    @if (State.OrderedItems.Any())
+    @if (ItemsLength > 0)
     {
         <OrdersOverview></OrdersOverview>
-            @*<button class="btn btn-outline-info">
-                Cancel
-                <span class="bi bi-book-fill"></span>
-            </button>
-            <button class="btn btn-outline-info">
-                Finish Sale
-                <span class="bi bi-book-fill"></span>
-            </button>*@
     }
     else
     {
@@ -42,6 +35,10 @@
     [CascadingParameter]
     public OrderState State { get; set; }
 
+    int ItemsLength;
+
+    Timer time = new();
+
     protected override async Task OnInitializedAsync()
     {
         //1. fetch OrderItems from the API
@@ -50,10 +47,7 @@
         //2. Once any OrderItem is clicked, it should be added to the OrderedItems list
         //3. Once the order is going to be finished, then the OrderedItems list should be sent to the api
         //4. Once the OrderedItems list is sent, it should be reset to 0 and the page should be refreshed.
-
-        var localStoreKey = LocalStorage.GetItemAsStringAsync(State.CurrentOrderKey);
-
-        await Task.Delay(1000);
+        ItemsLength = await LocalStorage.LengthAsync();
     }
 
 }

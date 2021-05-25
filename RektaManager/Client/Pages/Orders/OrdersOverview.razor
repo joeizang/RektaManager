@@ -1,21 +1,30 @@
 ﻿@using RektaManager.Shared.ComponentModels.Orders
-@using System.Threading
+@inject ISyncLocalStorageService LocalStorage
+@inject IOrderService OrderService
+@implements IDisposable
 
-<span>Number of Foods Ordered: <b>@OrderItems</b></span>
+<button class="btn btn-info">
+    Items in Order:
+    <span class="badge badge-pill badge-light"><b>@GetCartCount()</b></span>
+</button>
 
 
 @code {
 
-    [CascadingParameter]
-    public OrderState State { get; set; }
-
-    public int OrderItems { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        OrderItems = State.OrderedItems.Count;
-        await Task.Delay(5000);
-        await InvokeAsync(() => StateHasChanged());
+        OrderService.OnChange += StateHasChanged;
+    }
+
+    private int GetCartCount()
+    {
+        var cart = LocalStorage.GetItem<List<OrderedItemUpsertComponentModel>>("currentCart");
+        return cart?.Count ?? 0;
+    }
+
+    public void Dispose()
+    {
+        OrderService.OnChange -= StateHasChanged;
     }
 
 }

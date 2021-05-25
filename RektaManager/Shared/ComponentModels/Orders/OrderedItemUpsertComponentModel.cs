@@ -13,12 +13,17 @@ namespace RektaManager.Shared.ComponentModels.Orders
 
         public string ItemName { get; set; }
 
-
         public decimal ItemPrice { get; set; }
 
         public string ItemCode { get; set; }
 
-        //[Range(typeof(double),"1","5000", ErrorMessage = "You cannot have a quantity of 0 for an Order")]
         public double Quantity { get; set; }
+
+        public string SalesStaff { get; set; }
+
+        public DateTimeOffset OrderDate { get; set; }
+
+        public string CustomerName { get; set; }
+
     }
 }

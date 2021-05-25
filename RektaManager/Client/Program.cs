@@ -41,6 +41,8 @@ namespace RektaManager.Client
 
             builder.Services.AddScoped<DialogService>();
 
+            builder.Services.AddScoped<IOrderService, OrderService>();
+
             builder.Services.AddApiAuthorization();
 
             await builder.Build().RunAsync();
