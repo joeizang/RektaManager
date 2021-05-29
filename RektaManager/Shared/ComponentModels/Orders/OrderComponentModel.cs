@@ -20,7 +20,7 @@ namespace RektaManager.Shared.ComponentModels.Orders
 
         public string StaffName { get; set; }
 
-        public int OrderId { get; set; }
+        public string OrderId { get; set; }
 
     }
 }

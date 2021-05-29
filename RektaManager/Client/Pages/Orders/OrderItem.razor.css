@@ -2,6 +2,23 @@
     text-shadow: 0 2px 2px rgba(0,0,0,0.8);
 }
 
-@media (max-width: 640.98px) {
+div:hover {
+    transform: scale(1.02);
+}
+
+.place-price {
     
+}
+
+#price {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 0rem 0.7rem;
+    border-radius: 4px;
+    background-color: #08af08;
+    color: white;
+    line-height: 2rem;
 }

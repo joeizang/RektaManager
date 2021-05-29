@@ -6,8 +6,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile"><span class="bi bi-person-circle"></span>Welcome, @context.User.Identity.Name!</a>
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut"><span class="bi bi-signpost-fill"></span>Log out</button>
+        <a href="authentication/profile"><span class="bi bi-person-circle"></span>@context.User.Identity.Name</a>
+        <button class="nav-link btn btn-link" @onclick="BeginSignOut"><span class="bi bi-signpost-fill"></span>LogOut</button>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/register">Register</a>

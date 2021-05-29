@@ -11,6 +11,9 @@ namespace RektaManager.Shared
 {
     public class Order : DomainModelBase
     {
+        [Key]
+        public new string Id { get; set; }
+
         public Customer Customer { get; set; }
 
         public int CustomerId { get; set; }

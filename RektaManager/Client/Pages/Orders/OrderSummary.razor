@@ -19,36 +19,36 @@
 
     <table class="table table-striped table-responsive-sm table-hover">
         <thead class="thead-dark">
-        <tr>
-            <th>Order ID</th>
-            <th>Sales Person</th>
-            <th>Order Date</th>
-            <th>Amount</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Order ID</th>
+                <th>Sales Person</th>
+                <th>Order Date</th>
+                <th>Amount</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @if (_orders is null || !_orders.Any())
-        {
-            <tr class="spinner-grow-sm">No Orders to show</tr>
-        }
-        else
-        {
-            @foreach (var order in _orders)
+            @if (_orders is null || !_orders.Any())
             {
-                <tr>
-                    <td>@order.OrderId</td>
-                    <td>@order.StaffName</td>
-                    <td>@order.OrderDate.LocalDateTime.ToString("dd-MM-yy")</td>
-                    <td>@order.OrderTotal</td>
-                    @*<td>@order.OrderedItems.Count()</td>*@
-                    <td>
-                        <span><a class="bi bi-eye-fill" href="@($"details/{order.OrderId}")"></a></span>
-                    </td>
-                </tr>
+                <tr class="spinner-grow-sm">No Orders to show</tr>
             }
-        }
+            else
+            {
+                @foreach (var order in _orders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.StaffName</td>
+                        <td>@order.OrderDate.LocalDateTime.ToString("dd-MM-yy")</td>
+                        <td>@order.OrderTotal</td>
+                        @*<td>@order.OrderedItems.Count()</td>*@
+                        <td>
+                            <span><a class="bi bi-eye-fill" href="@($"details/{order.OrderId}")"></a></span>
+                        </td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>

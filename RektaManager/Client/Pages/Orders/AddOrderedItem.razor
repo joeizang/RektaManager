@@ -6,6 +6,7 @@
 @inject IToastService Toast
 @inject IHttpService Http
 @inject IOrderService OrderService
+@inject NavigationManager Navigation
 <h3>Add <b>@Model.ItemName</b></h3>
 <EditForm Model="@orderedItem" OnValidSubmit="HandleOrderAddition">
     <DataAnnotationsValidator />
@@ -69,6 +70,8 @@
 
         await OrderService.AddToCart(State.OrderedItems);
         Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
+
+        Navigation.NavigateTo("orders/make-orders");
         Dialog.Close();
     }
 

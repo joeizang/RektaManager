@@ -9,7 +9,11 @@
         <img class="card-img" src="@Item.ImageUrl" alt="cardImage" />
         <div class="card-img-overlay">
             <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
-            <h4 class="card-headings font-weight-bolder text-light bg-secondary">@Item.Price</h4>
+            <span 
+                class="card-headings place-price h6 p-2 font-weight-bolder text-light bg-secondary rounded" id="price"
+                >
+                =N= @Item.Price.ToString("N1")
+            </span>
         </div>
     </div>
 </div>

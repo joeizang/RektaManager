@@ -1,15 +1,25 @@
 ﻿@using RektaManager.Shared.ComponentModels.Orders
 @inject ISyncLocalStorageService LocalStorage
 @inject IOrderService OrderService
+@inject DialogService Dialog
 @implements IDisposable
 
-<button class="btn btn-info">
-    Items in Order:
-    <span class="badge badge-pill badge-light"><b>@GetCartCount()</b></span>
+<button class="btn btn-info" @onclick="@FinishOrder">
+    @if (GetCartCount() > 0)
+    {
+        <span>Items in Order:</span>
+        <span class="badge badge-pill badge-light"><b>@GetCartCount()</b></span>
+    }
+    else
+    {
+        <span>No Item in Order yet!</span>
+    }
 </button>
 
 
 @code {
+
+    public List<OrderedItemUpsertComponentModel> CurrentCart { get; set; }
 
     protected override void OnInitialized()
     {
@@ -18,8 +28,17 @@
 
     private int GetCartCount()
     {
-        var cart = LocalStorage.GetItem<List<OrderedItemUpsertComponentModel>>("currentCart");
-        return cart?.Count ?? 0;
+        CurrentCart = LocalStorage.GetItem<List<OrderedItemUpsertComponentModel>>("currentCart");
+        //Console.WriteLine(CurrentCart.FirstOrDefault()?.ItemName);
+        return CurrentCart?.Count ?? 0;
+    }
+
+    private void FinishOrder()
+    {
+        Dialog.Open<FinishOrder>("Finish Placing the Order", new Dictionary<string, object>()
+        {
+            { "OrderedItems", CurrentCart }
+        }, new DialogOptions { Width = "30rem" });
     }
 
     public void Dispose()

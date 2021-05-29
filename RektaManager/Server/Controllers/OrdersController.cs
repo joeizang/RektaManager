@@ -27,7 +27,7 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<List<Order>>> GetOrders()
+        public async Task<ActionResult<List<OrderComponentModel>>> GetOrders()
         {
             var result = await _repo.GetQueryable<Order>(null, null,
                     x => x.OrderedItems, x => x.Customer)
@@ -87,7 +87,7 @@ namespace RektaManager.Server.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<IActionResult> PutOrder(string id, Order order)
         {
             if (id != order.Id)
             {
@@ -142,7 +142,7 @@ namespace RektaManager.Server.Controllers
             return NoContent();
         }
 
-        private bool OrderExists(int id)
+        private bool OrderExists(string id)
         {
             return _context.Orders.Any(e => e.Id == id);
         }
