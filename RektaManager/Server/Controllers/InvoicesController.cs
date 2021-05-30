@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Data;
 using RektaManager.Shared;
+using RektaManager.Shared.ComponentModels.Invoices;
 
 namespace RektaManager.Server.Controllers
 {
@@ -23,9 +24,18 @@ namespace RektaManager.Server.Controllers
 
         // GET: api/Invoices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoice()
+        public async Task<ActionResult<IEnumerable<InvoiceListComponentModel>>> GetInvoice()
         {
-            return await _context.Invoice.ToListAsync();
+            var invoices = await _context.Invoices.AsNoTracking()
+                .Select(x => new InvoiceListComponentModel
+                {
+                    CustomerName = x.Customer.Name,
+                    DueDate = x.DueDate,
+                    InvoicePaymentStatus = x.InvoicePaymentStatus,
+                    NumberOfOrders = x.Orders.Count,
+                    TransactionDate = x.TransactionDate
+                }).ToListAsync().ConfigureAwait(false);
+            return Ok(invoices);
         }
 
         // GET: api/Invoices/5

@@ -1,7 +1,7 @@
 ﻿@page "/invoices"
 @using RektaManager.Shared
 @using RektaManager.Shared.ComponentModels.Invoices
-@inject HttpService Http
+@inject IHttpService Http
 @inject NavigationManager Navigation
 
 <div class="d-flex justify-content-center align-items-center">
@@ -10,14 +10,14 @@
 
 <RadzenGrid Data="_invoices" AllowSorting="true" AllowPaging="true">
     <Columns>
-        <RadzenGridColumn TItem="Invoice" Property="Id" Title="Invoice Id"/>
-        <RadzenGridColumn TItem="Invoice" Property="TransactionDate" Title="Date" Sortable="true" Format="dd:MMMM:yyyy"/>
-        <RadzenGridColumn TItem="Invoice" Property="CustomerName" Title="Customer's Name" Sortable="true"/>
+        <RadzenGridColumn TItem="Invoice" Property="Id" Title="Invoice Id" />
+        <RadzenGridColumn TItem="Invoice" Property="TransactionDate" Title="Date" Sortable="true" Format="dd:MMMM:yyyy" />
+        <RadzenGridColumn TItem="Invoice" Property="CustomerName" Title="Customer's Name" Sortable="true" />
         <RadzenGridColumn TItem="Invoice" Property="InvoicePaymentStatus" Title="Payment Status" />
         <RadzenGridColumn TItem="Invoice" Property="NumberOfOrders" Title="Number Of Orders Per Invoice" />
         <RadzenGridColumn TItem="Invoice" Title="Number Of Orders Per Invoice">
             <Template>
-                  
+
             </Template>
         </RadzenGridColumn>
 
@@ -31,17 +31,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync<List<Invoice>>("api/invoices");
+        var response = await Http.GetAsync<List<InvoiceListComponentModel>>("api/invoices");
 
         if (response.Success)
-            _invoices = response.Response.Select(x => new InvoiceListComponentModel
-            {
-                CustomerName = x.Customer.Name,
-                DueDate = x.DueDate,
-                InvoicePaymentStatus = x.InvoicePaymentStatus,
-                NumberOfOrders = x.Orders.Count,
-                TransactionDate = x.TransactionDate
-            }).ToList();
+        {
+            _invoices = response.Response;
+        }
+
     }
 
 }
