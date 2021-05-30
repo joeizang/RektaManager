@@ -15,7 +15,7 @@ namespace RektaManager.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("ProductVersion", "5.0.6");
 
             modelBuilder.Entity("BillChartOfAccounts", b =>
                 {
@@ -246,7 +246,7 @@ namespace RektaManager.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 7, 14, 18, 36, 373, DateTimeKind.Unspecified).AddTicks(4868), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 785, DateTimeKind.Unspecified).AddTicks(4642), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -265,7 +265,7 @@ namespace RektaManager.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 7, 14, 18, 36, 374, DateTimeKind.Unspecified).AddTicks(620), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 785, DateTimeKind.Unspecified).AddTicks(9440), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.HasKey("Id");
 
@@ -287,7 +287,7 @@ namespace RektaManager.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 7, 14, 18, 36, 365, DateTimeKind.Unspecified).AddTicks(4180), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 778, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -345,7 +345,7 @@ namespace RektaManager.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 7, 14, 18, 36, 371, DateTimeKind.Unspecified).AddTicks(9143), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 783, DateTimeKind.Unspecified).AddTicks(8375), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("UserName")
                         .HasColumnType("text");
@@ -1014,9 +1014,8 @@ namespace RektaManager.Server.Migrations
 
             modelBuilder.Entity("RektaManager.Shared.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -1176,8 +1175,9 @@ namespace RektaManager.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("varchar(767)");
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
@@ -1226,8 +1226,8 @@ namespace RektaManager.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,2)");

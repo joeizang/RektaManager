@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace RektaManager.Server.Migrations
 {
-    public partial class NewAppDb : Migration
+    public partial class InitialRektadb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,6 +13,11 @@ namespace RektaManager.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 785, DateTimeKind.Unspecified).AddTicks(4642), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 785, DateTimeKind.Unspecified).AddTicks(9440), new TimeSpan(0, 0, 0, 0, 0))),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     NormalizedName = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -111,7 +116,7 @@ namespace RektaManager.Server.Migrations
                 name: "DeviceFlowCodes",
                 columns: table => new
                 {
-                    UserCode = table.Column<string>(type: "varchar(90)", nullable: false),
+                    UserCode = table.Column<string>(type: "varchar(100)", nullable: false),
                     DeviceCode = table.Column<string>(type: "text", nullable: true),
                     SubjectId = table.Column<string>(type: "text", nullable: true),
                     SessionId = table.Column<string>(type: "text", nullable: true),
@@ -317,7 +322,7 @@ namespace RektaManager.Server.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(90)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(100)", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     NormalizedName = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -381,8 +386,8 @@ namespace RektaManager.Server.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(90)", nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(90)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(100)", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -394,8 +399,8 @@ namespace RektaManager.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 778, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 14, 40, 42, 783, DateTimeKind.Unspecified).AddTicks(8375), new TimeSpan(0, 0, 0, 0, 0))),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
@@ -427,7 +432,7 @@ namespace RektaManager.Server.Migrations
                 name: "UserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(90)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(100)", nullable: false),
                     LoginProvider = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
                     Name = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
@@ -555,7 +560,7 @@ namespace RektaManager.Server.Migrations
                     UnitMeasure = table.Column<int>(type: "int", nullable: false),
                     ProductInventoryId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    SupplierId = table.Column<int>(type: "int", nullable: true),
+                    SupplierId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -578,16 +583,16 @@ namespace RektaManager.Server.Migrations
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(type: "varchar(100)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
+                    OrderedItemsCount = table.Column<float>(type: "float", nullable: false),
                     StaffId = table.Column<string>(type: "varchar(90)", nullable: false),
                     OrderDate = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
@@ -780,7 +785,7 @@ namespace RektaManager.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(100)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Quantity = table.Column<double>(type: "double", nullable: false),
@@ -811,7 +816,7 @@ namespace RektaManager.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(100)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),

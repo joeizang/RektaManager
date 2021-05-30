@@ -16,6 +16,6 @@ namespace RektaManager.Shared
 
         public Order Order { get; set; }
 
-        public int OrderId { get; set; }
+        public string OrderId { get; set; }
     }
 }
