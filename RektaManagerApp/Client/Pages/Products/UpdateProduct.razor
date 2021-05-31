@@ -6,7 +6,7 @@
 @using System.Net
 @using RektaManagerApp.Shared.ComponentModels.Suppliers
 @inject IHttpService HttpService
-@*@inject IToastService Toast*@
+@inject IToastService Toast
 @inject NavigationManager Navigation
 
 
@@ -14,16 +14,14 @@
 
 <h3>Update Product</h3>
 
-<ProductForm
-    Model="@product"
-    ButtonText="Update Product"
-    SpinnerText="Updating..."
-    SpinnerColor="text-warning"
-    ShowSpinnerStatus="@_showSpinnerStatus"
-    Inventories="@inventories"
-    HandleFormSubmit="@HandleSubmit"
-    Suppliers="@_suppliers"
-    ></ProductForm>
+<ProductForm Model="@product"
+             ButtonText="Update Product"
+             SpinnerText="Updating..."
+             SpinnerColor="text-warning"
+             ShowSpinnerStatus="@_showSpinnerStatus"
+             Inventories="@inventories"
+             HandleFormSubmit="@HandleSubmit"
+             Suppliers="@_suppliers"></ProductForm>
 
 @code {
 
@@ -40,12 +38,20 @@
         var response = await HttpService.GetByIdAsync<ProductUpsertComponentModel>($"api/products/{ProductId}");
         var inventoryResponse = await HttpService.GetAsync<List<InventorySelectModel>>("api/selectInventories");
         var supplierResponse = await HttpService.GetAsync<IEnumerable<SupplierSelectModel>>("api/products/supplierselect");
+
+        if (response.Success == false)
+        {
+            Toast.ShowError($"Could not find a product with ID {ProductId}","Error Fetching Product");
+            Navigation.NavigateTo("products");
+        }
+        //there was a successful response
         product = response.Response;
+        Console.WriteLine(product?.Name);
         inventories = inventoryResponse.Response;
         _suppliers.AddRange(supplierResponse.Response);
 
-        if (product.Id < 1)
-            product.Id = ProductId;
+        //if (product.Id < 1)
+        //    product.Id = ProductId;
     }
 
     async Task HandleSubmit()
@@ -56,11 +62,11 @@
         if (response.Success == true || response.HttpResponseMessage.StatusCode == HttpStatusCode.NoContent ||
             response.HttpResponseMessage.StatusCode == HttpStatusCode.OK)
         {
-            //Toast.ShowSuccess("Update Successful", "Success");
+            Toast.ShowSuccess("Update Successful", "Success");
             Navigation.NavigateTo("products");
         }
-        //Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.ReasonPhrase}");
-        //_showSpinnerStatus = "none";
+        Toast.ShowError($"There was an error with error code {response.HttpResponseMessage.ReasonPhrase}");
+        _showSpinnerStatus = "none";
     }
 
 }

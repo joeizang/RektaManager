@@ -1,4 +1,4 @@
-﻿<span class="spinner-border spinner-border-sm @ColorVariant" role="status" aria-hidden="true"></span>
+﻿<span class="@SpinnerType @ColorVariant" style="@SpinnerSize" role="status" aria-hidden="true"></span>
 <span class="sr-only">@ActionName...</span>
 
 @code {
@@ -7,5 +7,11 @@
 
     [Parameter]
     public string ColorVariant { get; set; }
+
+    [Parameter]
+    public string SpinnerSize { get; set; } = "";
+
+    [Parameter]
+    public string SpinnerType { get; set; } = "spinner-border spinner-border-sm";
 
 }

@@ -23,7 +23,7 @@
 </div>
 
 <div class="pt-2">
-    <table class="table table-striped table-responsive-sm table-hover">
+    @*<table class="table table-striped table-responsive-sm table-hover">
         <thead class="thead-dark">
         <tr>
             <th>Product Id</th>
@@ -65,7 +65,31 @@
             </tr>
         }
         </tbody>
-    </table>
+    </table>*@
+
+    <SfGrid DataSource="_products" AllowPaging="true" AllowSorting="true" EnableV>
+        <GridPageSettings PageSize="10"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(ProductComponentModel.ProductId)" HeaderText="Product Id" TextAlign="TextAlign.Center" ></GridColumn>
+            <GridColumn Field="@nameof(ProductComponentModel.Name)" HeaderText="Product Name" TextAlign="TextAlign.Center" ></GridColumn>
+            <GridColumn Field="@nameof(ProductComponentModel.QuantityBought)" HeaderText="Quantity Bought" TextAlign="TextAlign.Center" ></GridColumn>
+            <GridColumn Field="@nameof(ProductComponentModel.UnitMeasure)" HeaderText="Quantity Metric" TextAlign="TextAlign.Center" ></GridColumn>
+            <GridColumn Field="@nameof(ProductComponentModel.InventoryName)" HeaderText="Inventory Category" TextAlign="TextAlign.Center" ></GridColumn>
+            <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center">
+                <Template>
+                    @{
+                        var product = (context as ProductComponentModel);
+                        <a href="products/details/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                        <a href="products/edit/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.ProductId))">
+                            <span class="bi bi-trash2-fill"></span>
+                            <span style="display: @spinnerVisibility3"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                        </button>
+                    }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
 </div>
 @code {
     int pageSize = 10;

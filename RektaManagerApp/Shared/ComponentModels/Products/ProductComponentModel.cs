@@ -12,11 +12,15 @@ namespace RektaManagerApp.Shared.ComponentModels.Products
 
         public decimal CostPrice { get; set; }
 
+        public decimal TotalCostPrice { get; set; }
+
         public double QuantityBought { get; set; }
 
         public string ProductUniqueIdentifier { get; set; }
 
         public UnitMeasure UnitMeasure { get; set; }
+
+        public int SupplierId { get; set; }
 
 
         public int ProductInventoryId { get; set; }

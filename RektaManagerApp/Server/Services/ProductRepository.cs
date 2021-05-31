@@ -90,6 +90,7 @@ namespace RektaManagerApp.Server.Services
                     .Select(p => new ProductComponentModel()
                     {
                         CostPrice = p.CostPrice,
+                        TotalCostPrice = (decimal)p.QuantityBought * p.CostPrice,
                         Description = p.Description,
                         InventoryName = p.ProductInventory.Name,
                         Name = p.Name,
@@ -107,7 +108,7 @@ namespace RektaManagerApp.Server.Services
             var deferred = _context.Products.AsNoTracking()
                 .Include(p => p.ProductInventory).AsQueryable();
 
-            if(!string.IsNullOrEmpty(query.OrderBy))
+            if (!string.IsNullOrEmpty(query.OrderBy))
                 deferred = deferred.OrderBy(query.OrderBy);
             if (!string.IsNullOrEmpty(query.SearchString))
             {
@@ -119,21 +120,28 @@ namespace RektaManagerApp.Server.Services
                     p.CostPrice.Equals(decimal.Parse(query.SearchString)) ||
                     p.QuantityBought.Equals(double.Parse(query.SearchString)));
             }
-            return await deferred.Select(p => new ProductComponentModel()
-                {
-                    CostPrice = p.CostPrice,
-                    Description = p.Description,
-                    InventoryName = p.ProductInventory.Name,
-                    Name = p.Name,
-                    ProductUniqueIdentifier = p.ProductUniqueIdentifier,
-                    ProductId = p.Id,
-                    QuantityBought = p.QuantityBought,
-                    UnitMeasure = p.UnitMeasure
-                })
+            var result = await deferred.Select(p => new ProductComponentModel()
+            {
+                CostPrice = p.CostPrice,
+                //TotalCostPrice = (decimal)p.QuantityBought * p.CostPrice,
+                Description = p.Description,
+                InventoryName = p.ProductInventory.Name,
+                Name = p.Name,
+                ProductUniqueIdentifier = p.ProductUniqueIdentifier,
+                ProductId = p.Id,
+                QuantityBought = p.QuantityBought,
+                UnitMeasure = p.UnitMeasure
+            })
                 .Skip(query.Skip)
                 .Take(query.Take)
                 .OrderBy(p => p.Name)
                 .ToListAsync();
+
+            result.ForEach(product =>
+            {
+                product.TotalCostPrice = product.CostPrice * (decimal)product.QuantityBought;
+            });
+            return result;
 
         }
     }

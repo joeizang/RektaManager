@@ -37,18 +37,32 @@ namespace RektaManagerApp.Server.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}", Name = "GetProductById")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductComponentModel>> GetProduct(int id)
         {
             var product = await _context.Products
                 .Include(p => p.ProductInventory)
                 .Include(c => c.ProductCategories)
                 .Where(p => p.Id == id)
-                .SingleOrDefaultAsync();
+                .Select(p => new ProductComponentModel
+                {
+                    CostPrice = p.CostPrice,
+                    Name = p.Name,
+                    InventoryName = p.ProductInventory.Name,
+                    ProductId = p.Id,
+                    Description = p.Description,
+                    ProductInventoryId = p.ProductInventoryId,
+                    SupplierId = p.SupplierId,
+                    ProductUniqueIdentifier = p.ProductUniqueIdentifier,
+                    QuantityBought = p.QuantityBought,
+                    UnitMeasure = p.UnitMeasure,
+                }).SingleOrDefaultAsync().ConfigureAwait(false);
 
             if (product == null)
             {
                 return NotFound();
             }
+
+            product.TotalCostPrice = product.CostPrice * (decimal)product.QuantityBought;
 
             return Ok(product);
         }
@@ -64,6 +78,13 @@ namespace RektaManagerApp.Server.Controllers
                 }).ToListAsync();
             return Ok(result);
         }
+
+        //[HttpGet("orderItemsList", Name = "GetOrderItems")]
+        //public async Task<ActionResult<OrderItem>> GetOrderItems()
+        //{
+        //    var result = await _context.OrderItems.AsNoTracking().ToListAsync().ConfigureAwait(false);
+        //    return Ok(result);
+        //}
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -149,6 +170,20 @@ namespace RektaManagerApp.Server.Controllers
 
             
             return CreatedAtAction("GetProduct", new { id = newId }, new {});
+        }
+
+        [HttpPost("orderItem", Name = "CreateOrderItem")]
+        public async Task<ActionResult<OrderItem>> PostOrderItem([FromBody] OrderItem model)
+        {
+            if(!ModelState.IsValid && await _context.OrderItems.AnyAsync(x => x.ItemName.Contains(model.ItemName)))
+            {
+                return BadRequest(new { ErrorMessage = "Your payload was in a bad state or a case of duplication!" });
+            }
+
+            _context.OrderItems.Add(model);
+            await _repo.Save<OrderItem>();
+
+            return CreatedAtAction("GetOrderItems","Orders",null,new { });
         }
 
         // DELETE: api/Products/5

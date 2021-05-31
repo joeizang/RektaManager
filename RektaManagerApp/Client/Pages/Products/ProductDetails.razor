@@ -1,15 +1,84 @@
 ﻿@page "/products/details/{ProductId:int}"
-
-
+@using RektaManagerApp.Shared.ComponentModels.Products
+@inject IHttpService Http
+@inject NavigationManager Navigation
+@inject IToastService Toast
 <h3>Product Details</h3>
-<p>
-    Product Id is : <b>@ProductId</b>
-</p>
+
+<style>
+    ul li {
+        list-style: none;
+    }
+</style>
+
+<div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-xs-6 col-sm-6 col-md-6 col-lg-10">
+    <span class="h4">@product.Name</span>
+    <ul>
+        <li>
+            <span class="mr-3">
+                <span class="bi bi-key-fill"></span>
+                <b>Product ID :</b>
+            </span>@product.ProductId</li>
+        <li>
+            <span class="mr-3">
+                <span class="bi bi-shop"></span>
+                <b>Inventory Name :</b>
+            </span>
+            @product.InventoryName
+        </li>
+        <li>
+            <span class="mr-3">
+                <span class="fas fa-money-bill-alt"></span>
+                <b>Cost Price :</b>
+            </span>
+            @product.CostPrice.ToString("C2")
+        </li>
+        <li>
+            <span class="mr-3">
+                <span class="bi bi-bag"></span>
+                <b>Quantity Metric :</b>
+            </span>
+            @product.UnitMeasure
+        </li>
+        <li>
+            <span class="mr-3">
+                <span class="bi bi-record"></span>
+                <b>Quantity Bought :</b>
+            </span>
+            @product.QuantityBought
+        </li>
+        <li>
+            <span class="mr-3">
+                <span class="fas fa-money-bill-alt"></span>
+                <b>Total Cost :</b>
+            </span>
+            @product.TotalCostPrice.ToString("C2")
+        </li>
+    </ul>
+
+    <div>
+        <button class="btn btn-outline-warning" @onclick="@(() => Navigation.NavigateTo($"products/edit/{@ProductId}"))">
+            <span class="bi bi-pencil-fill">Edit Item</span>
+        </button>
+    </div>
+</div>
 
 @code {
-    
+
     [Parameter]
     public int ProductId { get; set; }
 
+    private ProductComponentModel product = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetByIdAsync<ProductComponentModel>($"api/products/{ProductId}");
+        if (response.Success == false)
+        {
+            Toast.ShowError($"Couldn't fetch the product with ID {ProductId}");
+            Navigation.NavigateTo("products");
+        }
+
+        product = response.Response;
+    }
 }
