@@ -9,6 +9,7 @@ using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
 using RektaManagerApp.Server.Queries.Products;
 using RektaManagerApp.Shared;
+using RektaManagerApp.Shared.ComponentModels.Orders;
 using RektaManagerApp.Shared.ComponentModels.Products;
 using RektaManagerApp.Shared.ComponentModels.Suppliers;
 
@@ -184,6 +185,12 @@ namespace RektaManagerApp.Server.Controllers
             await _repo.Save<OrderItem>();
 
             return CreatedAtAction("GetOrderItems","Orders",null,new { });
+        }
+
+        [HttpPut("orderItem", Name = "UpdateOrderItem")]
+        public async Task<ActionResult<OrderItemComponentModel>> PutOrderItem([FromBody] OrderItem model)
+        {
+
         }
 
         // DELETE: api/Products/5

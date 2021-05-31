@@ -2,7 +2,7 @@
 @using RektaManagerApp.Shared
 @inject IHttpService Http
 @inject IToastService Toast
-@inject NavigationManager Navigation 
+@inject NavigationManager Navigation
 
 <h3 class="h3">Create Order Item</h3>
 
@@ -68,14 +68,20 @@
     private async Task CreateMenuItem()
     {
         _visibility = "inline";
-        await Task.Delay(3000);
-        var response = await Http.Post<OrderItem>("api/products/orderItems", orderItem);
+        Console.WriteLine("Creating Menu Item!");
+        //await Task.Delay(3000);
+        var response = await Http.Post<OrderItem>("api/products/orderItem", orderItem);
 
         if (response.Success)
         {
+            _visibility = "none";
             Toast.ShowSuccess("Menu Item created successfully!", "Menu Creation Successful");
             Navigation.NavigateTo("products");
         }
-        _visibility = "none";
+        else
+        {
+            _visibility = "none";
+            Toast.ShowError($"There was an error, {await response.HttpResponseMessage.Content.ReadAsStringAsync()}!");
+        }
     }
 }
