@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RektaManagerApp.Shared.Abstractions;
+
+namespace RektaManagerApp.Shared
+{
+    public class OrderSales : DomainModelBase
+    {
+        public Invoice Invoice { get; set; }
+
+        public int InvoiceId { get; set; }
+
+        public Order Order { get; set; }
+
+        public string OrderId { get; set; }
+    }
+}

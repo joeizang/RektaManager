@@ -1,0 +1,62 @@
+﻿@page "/products/create"
+@using RektaManagerApp.Shared.ComponentModels.Products
+@using RektaManagerApp.Client.Utils
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@using RektaManagerApp.Shared.ComponentModels.Suppliers
+@inject IHttpService HttpService
+@inject IToastService Toast
+@inject NavigationManager NavigationManager
+
+<div class="container">
+    <h3 class="d-flex justify-content-center align-items-center">Create Product</h3>
+    <ProductForm 
+        Model="@_product" 
+        HandleFormSubmit="@CreateProductAsync"
+        SpinnerColor="text-success"
+        SpinnerText="Creating Product..."
+        Inventories="@_inventories"
+        Suppliers="@_suppliers"
+        ButtonText="Add Product"
+        ShowSpinnerStatus="@_showSpinnerStatus"
+    />
+
+</div>
+@code {
+    private ProductUpsertComponentModel _product = new();
+    private List<InventorySelectModel> _inventories = new List<InventorySelectModel>();
+    private List<SupplierSelectModel> _suppliers = new List<SupplierSelectModel>();
+    private string _showSpinnerStatus = "none";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await HttpService
+            .GetAsync<IEnumerable<InventorySelectModel>>("api/selectInventories");
+        Console.WriteLine();
+
+        var supplierResponse = await HttpService.GetAsync<IEnumerable<SupplierSelectModel>>("api/products/supplierselect");
+
+        _inventories.AddRange(response.Response);
+        _suppliers.AddRange(supplierResponse.Response);
+    }
+
+
+    async Task CreateProductAsync()
+    {
+        _showSpinnerStatus = "inline";
+        var result = await HttpService.Post($"api/products", _product);
+
+        if(result.Success == false)
+        {
+            Toast.ShowError($"Could not create your Product! {result.HttpResponseMessage.ReasonPhrase}", "Error Creating Product");
+        }
+        _showSpinnerStatus = "none";
+
+        if (result.Success)
+        {
+            Toast.ShowSuccess("Product Created Successfully!", "Success");
+            NavigationManager.NavigateTo("products");
+        }
+
+    }
+}

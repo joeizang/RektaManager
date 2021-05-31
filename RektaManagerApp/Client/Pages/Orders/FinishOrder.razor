@@ -1,0 +1,95 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@using RektaManagerApp.Shared
+@using Blazored.LocalStorage
+@inject NavigationManager Navigation
+@inject IHttpService Http
+@*@inject IToastService Toast*@
+@inject ILocalStorageService LocalStorage
+<h3>Finish the Order</h3>
+<div class="table-responsive">
+    <table class="table-bordered w-100">
+        <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in OrderedItems)
+            {
+                <tr>
+                    <td>@item.ItemName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ItemPrice</td>
+                    <td>@CalculateTotal((decimal)@item.Quantity, @item.ItemPrice)</td>
+                </tr>
+            }
+        <tr class="h-25">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@_grandTotal</td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-success bi bi-award" @onclick="@MakeSale" disabled="@DisableBtn"></button></td>
+            <td>
+                <span style="display: @Visibility">
+                    <ActionSpinner ActionName="Please wait" ColorVariant="text-dark" />
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; }
+
+    public string Visibility { get; set; } = "none";
+
+    public bool DisableBtn { get; set; } = false;
+
+    decimal _grandTotal;
+
+    private decimal CalculateTotal(decimal amount, decimal amount1)
+    {
+        var result = amount * amount1;
+        _grandTotal += result;
+        return result;
+    }
+
+    private async Task MakeSale()
+    {
+        DisableBtn = true;
+        Visibility = "inline";
+
+        //create order and populate with everything needed
+        var orderedItems = new List<OrderedItem>();
+
+        OrderedItems.ForEach(item =>
+        {
+            var orderedItem = new OrderedItem
+            {
+                Name = item.ItemName,
+                ItemCode = item.ItemCode,
+                Quantity = item.Quantity,
+                Price = item.ItemPrice
+            };
+            orderedItems.Add(orderedItem);
+        });
+
+        await Task.Delay(3000);
+
+
+        DisableBtn = false;
+        Visibility = "none";
+        //Toast.ShowSuccess("Placed Order Successfully", "Order Success");
+        await LocalStorage.ClearAsync();
+        Navigation.NavigateTo("orders");
+    }
+
+}

@@ -1,0 +1,27 @@
+﻿@page "/invoices"
+@using RektaManagerApp.Shared
+@using RektaManagerApp.Shared.ComponentModels.Invoices
+@inject IHttpService Http
+@inject NavigationManager Navigation
+
+<div class="d-flex justify-content-center align-items-center">
+    <span class="h3">Invoices</span>
+</div>
+
+
+@code {
+    List<InvoiceListComponentModel> _invoices = new List<InvoiceListComponentModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<InvoiceListComponentModel>>("api/invoices");
+
+        if (response.Success)
+        {
+            _invoices = response.Response;
+        }
+
+    }
+
+}

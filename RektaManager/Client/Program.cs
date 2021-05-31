@@ -33,6 +33,8 @@ namespace RektaManager.Client
 
             builder.Services.AddScoped<IHttpService, HttpService>();
 
+            builder.Services.AddScoped<IOrderService, OrderService>();
+
             builder.Services.AddBlazoredToast();
 
             builder.Services.AddBlazoredModal();
@@ -40,8 +42,6 @@ namespace RektaManager.Client
             builder.Services.AddBlazoredLocalStorage();
 
             builder.Services.AddScoped<DialogService>();
-
-            builder.Services.AddScoped<IOrderService, OrderService>();
 
             builder.Services.AddApiAuthorization();
 

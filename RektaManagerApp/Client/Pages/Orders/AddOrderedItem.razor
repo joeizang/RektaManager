@@ -1,0 +1,79 @@
+﻿@using RektaManagerApp.Shared
+@using RektaManagerApp.Shared.ComponentModels.Orders
+@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@*@inject DialogService Dialog
+@inject IToastService Toast*@
+@inject IHttpService Http
+@inject IOrderService OrderService
+@inject NavigationManager Navigation
+<h3>Add <b>@Model.ItemName</b></h3>
+<EditForm Model="@orderedItem" OnValidSubmit="HandleOrderAddition">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="itemName"><b> Item Name :</b></label>
+        <InputText @bind-Value="@Model.ItemName" readonly class="form-control col-sm-6" id="itemName" />
+    </div>
+
+    <div class="form-group">
+        <label for="itemPrice"><b> Price :</b></label>
+        <InputNumber TValue="decimal" @bind-Value="@Model.Price" readonly class="form-control col-sm-4" id="itemPrice" />
+    </div>
+
+    <div class="form-group">
+        <label for="itemQuantity"><b> Quantity :</b></label>
+        <InputNumber TValue="float" @bind-Value="@Model.Quantity" class="form-control col-sm-4" id="itemQuantity" />
+        <ValidationMessage For="@(() => Model.Quantity)" />
+    </div>
+
+    <div class="form-group">
+        <span class="text-danger">
+            <ValidationSummary />
+        </span>
+    </div>
+    <div class="form-group"><button class="btn btn-success" type="submit">Add</button></div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public OrderItemComponentModel Model { get; set; }
+
+    [CascadingParameter]
+    public OrderState State { get; set; }
+
+
+
+    OrderedItemUpsertComponentModel orderedItem = new();
+
+    public AuthenticationState AuthState { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
+    private async Task HandleOrderAddition()
+    {
+        //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
+        //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
+        orderedItem.ItemCode = Model.ItemName;
+        orderedItem.ItemName = Model.ItemName;
+        orderedItem.Quantity = Model.Quantity;
+        orderedItem.ItemPrice = Model.Price;
+        orderedItem.SalesStaff = AuthState.User.Identity?.Name;
+        orderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
+        orderedItem.CustomerName = Guid.NewGuid().ToString("N");
+
+        State.OrderedItems.Add(orderedItem);
+
+        await OrderService.AddToCart(State.OrderedItems);
+        //Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
+
+        Navigation.NavigateTo("orders/make-orders");
+        //Dialog.Close();
+    }
+
+}

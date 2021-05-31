@@ -1,0 +1,65 @@
+﻿@page "/suppliers/create"
+@using RektaManagerApp.Client.Utils
+@using RektaManagerApp.Shared
+@inject IHttpService HttpService
+@inject NavigationManager Navigation
+@*@inject IToastService Toast*@
+
+
+<h3>Create Supplier</h3>
+<div class="container">
+    <div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
+        <EditForm Model="@supplier" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+
+            <div class="form-group">
+                <div>
+                    <label for="supplierName">Supplier's Name</label>
+                    <InputText id="supplierName" class="form-control" @bind-Value="@supplier.Name"></InputText>
+                    <ValidationSummary Model="@supplier.Name"></ValidationSummary>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label for="supplierPhoneNumber">Supplier's Phone Number</label>
+                    <InputText id="supplierPhoneNumber" class="form-control" @bind-Value="@supplier.PhoneNumber"></InputText>
+                    <ValidationSummary Model="@supplier.Name"></ValidationSummary>
+                </div>
+            </div>
+    
+            <div>
+                <input hidden value="@supplier.Timestamp" class="form-control"/>
+            </div>
+    
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-info btn-block">Add Supplier</button>
+                    <span class="@spinnerDisplay"><ActionSpinner ActionName="Create..." ColorVariant="text-dark"></ActionSpinner></span>
+                </div>
+            </div>
+        </EditForm>
+
+    </div>
+</div>
+
+@code {
+
+    Supplier supplier = new();
+    string spinnerDisplay = "d-none";
+
+    async Task HandleSubmit()
+    {
+        spinnerDisplay = "inline";
+        var result = await HttpService.Post($"api/suppliers", supplier);
+
+        if(result.Success == false)
+        {
+            //Toast.ShowError($"{result.HttpResponseMessage.ReasonPhrase}", "Create Error");
+        }
+
+        //Toast.ShowSuccess("Creation Successful");
+        Navigation.NavigateTo("suppliers");
+    }
+
+}

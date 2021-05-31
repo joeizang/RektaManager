@@ -12,10 +12,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\RektaManager.Client.csproj" />
+    <ProjectReference Include="..\..\RektaManagerApp\Client\RektaManagerApp.Client.csproj" />
+    <!--<ProjectReference Include="..\Client\RektaManager.Client.csproj" />-->
     <ProjectReference Include="..\Shared\RektaManager.Shared.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,27 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Inventories
+<h3>Product Details</h3>
+
+<div class="card shadow-md rounded d-flex">
+    <ul class="list-group list-group-flush">
+        
+        @if (Model.Products is null || !Model.Products.Any())
+        {
+            <li class="list-group-item">No Products for Now.</li>
+        }
+        
+        @if(Model.Products is not null)
+        {
+            @foreach (var name in Model.Products)
+            {
+                <li class="list-group-item">@name.Name - <span><b>@name.QuantityBought</b></span></li>
+            }
+        }
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public InventoryDetailComponentModel Model { get; set; }
+
+}

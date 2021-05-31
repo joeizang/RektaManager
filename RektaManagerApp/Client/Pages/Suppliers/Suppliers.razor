@@ -1,0 +1,72 @@
+﻿@page "/suppliers"
+@using RektaManagerApp.Shared
+@inject IHttpService HttpService
+@inject NavigationManager Navigation
+
+
+<h3>Suppliers</h3>
+
+<div class="pb-4 mb-4">
+    <span>
+        <button @onclick="@(() => Navigation.NavigateTo("suppliers/create"))" class="btn btn-outline-info">
+            <span class="bi bi-plus-circle-fill"></span>
+            Create Product
+        </button>
+    </span>
+</div>
+
+<div class="pt-2">
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Supplier Id</th>
+                <th>Supplier Name</th>
+                <th>Phone Number</th>
+                <th>Number of Products Supplied</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var supplier in _suppliers)
+            {
+            <tr>
+                <td>@supplier.Id</td>
+                <td>@supplier.Name</td>
+                <td>@supplier.PhoneNumber</td>
+                <td>@supplier.SuppliedProducts.Count</td>
+                <td>
+                    <a href="inventory/details/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                    <a href="inventory/edit/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteSupplier(@supplier.Id))">
+                        <span class="bi bi-trash2-fill"></span>
+                        <span style="display: @_spinnerShow"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    IEnumerable<Supplier> _suppliers = new List<Supplier>();
+    string _spinnerShow = "none";
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await HttpService.GetAsync<IEnumerable<Supplier>>("/api/suppliers");
+
+        _suppliers = result.Response;
+        Console.WriteLine(_suppliers.Count());
+    }
+
+    async Task DeleteSupplier(int id)
+    {
+        _spinnerShow = "inline";
+        await Task.Delay(5000);
+        _spinnerShow = "none";
+    }
+
+}

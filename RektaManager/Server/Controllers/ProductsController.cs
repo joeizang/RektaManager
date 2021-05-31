@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using RektaManager.Client.Utils;
 using RektaManager.Server.Abstractions;
 using RektaManager.Server.Data;
 using RektaManager.Server.Queries.Products;
 using RektaManager.Shared;
-using RektaManager.Shared.ComponentModels.Inventories;
 using RektaManager.Shared.ComponentModels.Products;
 using RektaManager.Shared.ComponentModels.Suppliers;
 

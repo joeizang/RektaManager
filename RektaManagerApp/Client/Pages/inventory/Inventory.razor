@@ -1,0 +1,118 @@
+﻿@page "/inventory"
+@using RektaManagerApp.Client.Utils
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@using System.Text.Json
+@using Syncfusion.Blazor.Notifications
+@inject NavigationManager NavManager
+@inject HttpClient HttpClient
+@inject IHttpService HttpService
+
+
+<h3>Inventory Module</h3>
+
+<div>
+    <button @onclick="SwitchToCreate" class="btn btn-outline-info"><i class="bi bi-bag-plus-fill"></i><b>Add
+            Inventory</b></button>
+    <span><button class="btn btn-success" @onclick="@(() => @Toast.Show())">Show Toast</button></span>
+</div>
+
+<div class="pt-2">
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Inventory Id</th>
+                <th>Inventory Name</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Supplied On</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in inventory)
+            {
+                <tr>
+                    <td>
+                        @item.InventoryId
+                    </td>
+                    <td>
+                        @item.InventoryName
+                    </td>
+                    <td>
+                        @item.QuantityInStock
+                    </td>
+                    <td>
+                        @item.CategoryName
+                    </td>
+                    <td>
+                        @item.InventoryDate
+                    </td>
+                    <td>
+                        <a href="inventory/details/@item.InventoryId" class="btn btn-outline-info"><span
+                            class="bi bi-eye-fill"></span></a>
+                        <a href="inventory/edit/@item.InventoryId" class="btn btn-outline-info"><span
+                            class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteInventory(@item.InventoryId))">
+                            <span class="bi bi-trash2-fill"></span>
+                            <span style="display: @_displayProp">
+                                <ActionSpinner ActionName="Deleting" ColorVariant="text-dark" />
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <SfToast Title="Delete" @ref="Toast" Content="@_toastContent" Timeout="3000">
+        <ToastPosition X="@_toastPosition"></ToastPosition>
+    </SfToast>
+</div>
+
+@code {
+
+    List<InventoryComponentModel> inventory = new List<InventoryComponentModel>();
+    private string _displayProp = "none";
+    private string _tdUrl = $"api/";
+    SfToast Toast;
+    private string _toastContent = "Deletion Successful";
+    private string _toastPosition = "Right";
+    private JsonSerializerOptions defaultJsonSerializerOptions => new JsonSerializerOptions()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    void SwitchToCreate()
+    {
+        NavManager.NavigateTo("inventory/create");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await Toast.Show();
+        try
+        {
+            var response = await HttpClient.GetAsync("/api/inventories");
+            if (response.IsSuccessStatusCode)
+            {
+                inventory = JsonSerializer.Deserialize<List<InventoryComponentModel>>(await response.Content.ReadAsStringAsync(),
+                defaultJsonSerializerOptions);
+                Console.WriteLine($"inventory has been fetched and has {inventory.Count} items in the list!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            //throw;
+        }
+    }
+
+    public async Task DeleteInventory(int id)
+    {
+        _displayProp = "inline";
+        await HttpService.DeleteAsync($"api/inventory/{id}");
+        _displayProp = "none";
+        await Toast.Show();
+        NavManager.NavigateTo("inventory");
+    }
+
+}

@@ -1,0 +1,72 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Inventories
+
+<div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
+    <EditForm Model="@Model" OnValidSubmit="@SubmitForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group custom-forms-preset">
+            <div>
+                <label for="inventoryId"><b>Inventory Id Number</b></label>
+                <InputNumber @bind-Value="@Model.Id" readonly id="inventoryId" class="form-control" />
+                <small class="text-warning"><b>You cannot change this value...</b></small>
+            </div>
+        </div>
+        <div class="form-group custom-forms-preset">
+            <div>
+                <label for="supplyDate"><b>Date Supplied</b></label>
+                <SfDatePicker @bind-Value=@Model.SupplyDate TValue="DateTime" Min="@DateTime.UtcNow" />
+            </div>
+        </div>
+        <div class="form-group custom-forms-preset">
+            <div>
+                <label for="inventoryName"><b>Inventory Name</b></label>
+                <InputText id="inventoryName" class="form-control custom-forms-preset" @bind-Value="@Model.Name" />
+            </div>
+        </div>
+        <div class="form-group custom-forms-preset">
+            <div>
+                <label for="totalValue"><b>Total Value</b></label>
+                <InputNumber id="totalValue" class="form-control custom-forms-preset" @bind-Value="@Model.Price" />
+            </div>
+        </div>
+        <div class="form-group custom-forms-preset">
+            <div>
+                <label for="quantity"><b>Starting Quantity</b></label>
+                <InputNumber id="quantity" class="form-control custom-forms-preset" @bind-Value="@Model.Quantity" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" disabled="@Disabled">@ButtonActionName</button>
+            <span style="display: @ShowSpinner">
+                <ActionSpinner ActionName="@SpinnerActionName" ColorVariant="@SpinnerColor" />
+            </span>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback SubmitForm { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public string ShowSpinner { get; set; } = "none";
+
+    [Parameter]
+    public string SpinnerActionName { get; set; }
+
+    [Parameter]
+    public string SpinnerColor { get; set; } = "text-dark";
+
+    [Parameter]
+    public InventoryUpsertComponentModel Model { get; set; }
+
+    [Parameter]
+    public string ButtonActionName { get; set; }
+
+
+}

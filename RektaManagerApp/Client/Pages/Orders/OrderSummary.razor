@@ -1,0 +1,35 @@
+﻿@page "/orders"
+@inject IHttpService Http
+@inject NavigationManager Navigation
+@using RektaManagerApp.Shared.ComponentModels.Orders
+
+<div class="d-flex justify-content-center align-items-center">
+    <p class="h3">Orders Made</p>
+</div>
+
+
+<div class="mt-4">
+    <div class="mb-4 d-flex justify-content-between align-content-center">
+        <span>
+            <button @onclick="@(() => Navigation.NavigateTo("orders/make-orders"))" class="btn btn-outline-info bi bi-plus-circle-fill">
+                Place Order
+            </button>
+        </span>
+    </div>
+
+    
+</div>
+
+@code {
+    List<OrderComponentModel> _orders = new List<OrderComponentModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<OrderComponentModel>>("api/orders");
+
+        if (response.Success == false)
+            _orders = new List<OrderComponentModel>();
+        _orders = response.Response;
+    }
+
+}

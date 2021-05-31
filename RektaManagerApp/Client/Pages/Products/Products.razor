@@ -1,0 +1,103 @@
+﻿@page "/products"
+@using RektaManagerApp.Shared.ComponentModels.Products
+@inject NavigationManager navigationManager
+@inject IHttpService HttpService
+
+
+<h3>Products</h3>
+
+
+<div class="pb-4 mb-4">
+    <span>
+        <button @onclick="@(() => navigationManager.NavigateTo("products/create"))" class="btn btn-outline-info">
+            <span class="bi bi-bag-plus-fill"></span>
+            Create Product
+        </button>
+    </span>
+    <span>
+        <button class="btn btn-outline-info" @onclick="@(() => navigationManager.NavigateTo("products/create-orderitem"))">
+            <span class="bi bi-plus-square-fill"></span>
+            Add Menu Item
+        </button>
+    </span>
+</div>
+
+<div class="pt-2">
+    <table class="table table-striped table-responsive-sm table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Quantity Bought</th>
+            <th>Quantity Metric</th>
+            <th>Stock Category</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in _products)
+        {
+            <tr>
+                <td>
+                    @product.ProductId
+                </td>
+                <td>
+                    @product.Name
+                </td>
+                
+                <td>
+                    @product.QuantityBought
+                </td>
+                <td>
+                    @product.UnitMeasure
+                </td>
+                <td>
+                    @product.InventoryName
+                </td>
+                <td>
+                    <a href="products/details/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                    <a href="products/edit/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.ProductId))">
+                        <span class="bi bi-trash2-fill"></span>
+                        <span style="display: @spinnerVisibility3"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+@code {
+    int pageSize = 10;
+    int _count;
+    string spinnerVisibility3 = "none";
+
+    IEnumerable<ProductComponentModel> _products = new List<ProductComponentModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await HttpService
+            .GetAsync<IEnumerable<ProductComponentModel>>($"api/products?skip={0}&take={pageSize}");
+        //_count = result.Response.Count();
+        _products = result.Response;
+
+    }
+
+    void ProductDetails(int id)
+    {
+        navigationManager.NavigateTo($"products/details/{id}");
+    }
+
+    void EditProduct(ProductComponentModel product)
+    {
+        //spinnerVisibility = "d-inline";
+        navigationManager.NavigateTo($"products/edit/{product.ProductId}");
+    }
+
+    async Task DeleteProduct(int id)
+    {
+        spinnerVisibility3 = "inline";
+        await Task.Delay(5000);
+        spinnerVisibility3 = "d-none";
+    }
+}

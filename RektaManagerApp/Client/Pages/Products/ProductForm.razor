@@ -1,0 +1,135 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Products
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@using RektaManagerApp.Shared
+@using RektaManagerApp.Shared.ComponentModels.Suppliers
+<div class="d-flex card shadow justify-content-center align-items-center rounded pt-4 pb-4 col-12">
+    <EditForm Model="@Model" OnValidSubmit="@HandleFormSubmit" class="w-75 pr-3">
+        <DataAnnotationsValidator />
+
+
+        @if (ButtonText.Contains("Update", StringComparison.CurrentCultureIgnoreCase))
+        {
+            <input hidden value="@Model.Timestamp" class="form-control" />
+
+            <div class="form-group">
+                <div>
+                    <label for="productId">Product ID</label>
+                    <InputNumber @bind-Value="@Model.Id" id="productId" class="form-control" readonly />
+                </div>
+            </div>
+        }
+
+
+        <div class="form-group">
+            <div>
+                <label for="productName">Product Name</label>
+                <InputText @bind-Value="@Model.Name" id="productName" class="form-control" />
+                <ValidationMessage For="@(() => Model.Name)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="productPrice">Product Price</label>
+                <InputNumber class="form-control" id="productPrice" @bind-Value="@Model.CostPrice" />
+                <ValidationMessage For="@(() => Model.CostPrice)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="productQuantity">Product Quantity</label>
+                <InputNumber class="form-control" id="productQuantity" @bind-Value="@Model.QuantityBought" />
+                <ValidationMessage For="@(() => Model.QuantityBought)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="uniqueId">Product Unique Id</label>
+                <InputText readonly @bind-Value="Model.ProductUniqueIdentifier" id="uniqueId" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="inventories">Inventory</label>
+                <PNInputSelect @bind-Value="@Model.ProductInventoryId" id="inventories" class="form-control" DisplayName="Inventory Id">
+                    <option value="0">Select an Inventory...</option>
+                    @foreach (var option in Inventories)
+                    {
+                        <option value="@option.InventoryId">@option.InventoryName</option>
+                    }
+                </PNInputSelect>
+                @*<SfDropDownList TValue="int" TItem="InventorySelectModel" DataSource="Inventories">
+                    <DropDownListFieldSettings Value="InventoryId" Text="InventoryName"></DropDownListFieldSettings>
+                </SfDropDownList>*@
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="suppliers">Supplier</label>
+                <PNInputSelect @bind-Value="@Model.SupplierId" id="suppliers" class="form-control" DisplayName="Supplier Id">
+                    @foreach (var supplier in Suppliers)
+                    {
+                        <option value="@supplier.SupplierId">@supplier.SupplierName</option>
+                    }
+                </PNInputSelect>
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="unitMeasure">Unit Measure</label>
+                <InputSelect id="unitMeasure" @bind-Value="@Model.UnitMeasure" class="form-control">
+                    <option value="0">Select a Measurement...</option>
+                    @foreach (var option in Enum.GetValues<UnitMeasure>())
+                    {
+                        <option>@option</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="description">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="@Model.Description" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span>
+                <button type="submit" class="btn btn-primary btn-block">@ButtonText</button>
+            </span>
+            <span style="display: @ShowSpinnerStatus">
+                <ActionSpinner ActionName="@SpinnerText" ColorVariant="@SpinnerColor"></ActionSpinner>
+            </span>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public ProductUpsertComponentModel Model { get; set; }
+
+    [Parameter]
+    public EventCallback HandleFormSubmit { get; set; }
+
+    [Parameter]
+    public List<InventorySelectModel> Inventories { get; set; }
+
+    [Parameter]
+    public List<SupplierSelectModel> Suppliers { get; set; }
+
+    [Parameter]
+    public string SpinnerText { get; set; }
+
+    [Parameter]
+    public string SpinnerColor { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; }
+
+    [Parameter]
+    public string ShowSpinnerStatus { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+      
+    }
+}

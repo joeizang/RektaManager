@@ -1,0 +1,62 @@
+﻿@page "/inventory/details/{InventoryId:int}"
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@inject IHttpService HttpService
+
+
+<h3>Inventory Detail</h3>
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card shadow p-0 bg-white rounded">
+        <h5 class="card-header bg-secondary">@_moreDetails.Name</h5>
+        <div class="card-body">
+            <p><b>Created On :</b>@_moreDetails.Date.ToString("dd-MMM-yyyy")</p>
+            <p><b>At :</b>@_moreDetails.Date.ToLocalTime().ToString("h:mm:ss tt zz")</p>
+            <p class="card-subtitle text-center font-weight-bold">Products</p>
+            <span><button class="btn btn-dark" @onclick="@ShowProducts" style="display: @_showButton">More info...</button></span>
+            <div style="display: @_displayProp;">
+                <ProductDetails Model="@_moreDetails"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public int InventoryId { get; set; }
+
+    private string _displayProp = "none";
+    private string _showButton = "inline";
+
+    private InventoryDetailComponentModel _moreDetails = new InventoryDetailComponentModel();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await HttpService.GetByIdAsync<InventoryDetailComponentModel>($"api/inventories/{InventoryId}");
+
+            if (response.Success)
+            {
+                _moreDetails = response.Response;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+
+    async Task ShowProducts()
+    {
+        _displayProp = "block";
+        _showButton = "none";
+        await Task.Delay(4000);
+
+    }
+
+}

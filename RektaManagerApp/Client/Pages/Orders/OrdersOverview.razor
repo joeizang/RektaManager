@@ -1,0 +1,55 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@using Blazored.LocalStorage
+@inject ISyncLocalStorageService LocalStorage
+@inject IOrderService OrderService
+@*@inject DialogService Dialog*@
+@implements IDisposable
+
+
+
+
+@if (GetCartCount() > 0)
+{
+    <button class="btn btn-info" @onclick="@FinishOrder">
+        <span>Items in Order:</span>
+        <span class="badge badge-pill badge-light"><b>@GetCartCount()</b></span>
+    </button>
+}
+else
+{
+    <button class="btn btn-info" disabled="disabled">
+        <span>No Item in Order yet!</span>
+    </button>
+}
+
+
+@code {
+
+    public List<OrderedItemUpsertComponentModel> CurrentCart { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OrderService.OnChange += StateHasChanged;
+    }
+
+    private int GetCartCount()
+    {
+        CurrentCart = LocalStorage.GetItem<List<OrderedItemUpsertComponentModel>>("currentCart");
+        //Console.WriteLine(CurrentCart.FirstOrDefault()?.ItemName);
+        return CurrentCart?.Count ?? 0;
+    }
+
+    private void FinishOrder()
+    {
+        //        Dialog.Open<FinishOrder>("Finish Placing the Order", new Dictionary<string, object>()
+        //{
+        //            { "OrderedItems", CurrentCart }
+        //        }, new DialogOptions { Width = "30rem" });
+    }
+
+    public void Dispose()
+    {
+        OrderService.OnChange -= StateHasChanged;
+    }
+
+}

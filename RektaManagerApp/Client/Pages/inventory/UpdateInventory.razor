@@ -1,0 +1,70 @@
+﻿@page "/inventory/edit/{InventoryId:int}"
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@using RektaManagerApp.Client.Utils
+@inject IHttpService HttpService
+@*@inject IToastService Toast*@
+@inject NavigationManager NavigationMgr
+
+
+<div class="d-flex justify-content-center align-items-center">
+    <h3 class="h3">Update Inventory</h3>
+</div>
+
+@if (!(_inventory is null))
+{
+    <InventoryForm Disabled="@_disabledState" 
+                   Model="@_inventory" 
+                   SubmitForm="@Update" 
+                   ButtonActionName="Update"
+                   ShowSpinner="@_showSpinner"
+                   SpinnerActionName="Updating..."
+                   SpinnerColor="text-warning"
+    />
+}
+
+@code {
+
+    [Parameter]
+    public int InventoryId { get; set; }
+
+    private bool _disabledState;
+
+    private string _showSpinner = "none";
+
+    private InventoryUpsertComponentModel _inventory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _inventory = new InventoryUpsertComponentModel();
+        var result = await HttpService
+        .GetByIdAsync<InventoryUpsertComponentModel>($"api/inventories/{InventoryId}");
+        _inventory = result.Response;
+        Console.WriteLine(result.Response);
+    }
+
+    private async Task Update()
+    {
+        _disabledState = true;
+        _showSpinner = "inline";
+
+        if (!(_inventory is null))
+        {
+            Console.WriteLine("inventory is not null");
+            var result = await HttpService.PutAsync($"api/inventories/{InventoryId}", _inventory);
+
+            if(result.Success)
+            {
+                _showSpinner = "none";
+                _disabledState = false;
+                //Toast.ShowSuccess("Inventory updated successfully","Updating Inventory");
+                NavigationMgr.NavigateTo("inventory");
+            }
+            else
+            {
+                Console.WriteLine($"There was an Error and here is what it says: {result.Response}");
+                //Toast.ShowError($"There was an error {result.HttpResponseMessage.StatusCode}-{result.HttpResponseMessage.ReasonPhrase}");
+            }
+        }
+    }
+
+}

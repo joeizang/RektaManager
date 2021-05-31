@@ -1,0 +1,43 @@
+﻿@using RektaManagerApp.Client.Utils
+@using System.Timers
+@using RektaManagerApp.Shared.ComponentModels.Inventories
+@inject IHttpService HttpService
+
+
+<td>
+    @TargetValue
+</td>
+
+@code {
+    public double TargetValue { get; set; }
+
+    [Parameter]
+    public InventoryComponentModel InventoryModel { get; set; }
+
+    [Parameter]
+    public string Url { get; set; }
+
+    [Parameter]
+    public int TimerDuration { get; set; }
+
+    Timer timer = new Timer();
+
+    protected override void OnInitialized()
+    {
+        if (TimerDuration > 10000)
+            TimerDuration = 6000;
+
+        timer.Interval = TimerDuration;
+        timer.Elapsed += async (_, _) =>
+        {
+            var result = await HttpService.GetAsync<double>(Url);
+
+            if (result.Success == false)
+                TargetValue = 0;
+
+            TargetValue = result.Response;
+            await InvokeAsync(StateHasChanged);
+        };
+    }
+
+}

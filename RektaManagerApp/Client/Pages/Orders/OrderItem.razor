@@ -1,0 +1,42 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@*@inject DialogService Dialog*@
+
+
+
+<div class="col-4 mb-3 d-flex">
+    <div class="card shadow-lg d-flex" @onclick="@AddOrderedItem"
+        style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
+        <img class="card-img" src="@Item.ImageUrl" alt="cardImage" />
+        <div class="card-img-overlay">
+            <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
+            <span 
+                class="card-headings place-price h6 p-2 font-weight-bolder text-light bg-secondary rounded" id="price"
+                >
+                =N= @Item.Price.ToString("N1")
+            </span>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public OrderItemComponentModel Item { get; set; }
+
+    private bool _borderSwitch = false;
+
+    private string _switch = "3px solid #bac842";
+
+
+    void AddOrderedItem()
+    {
+        //Dialog.Open<AddOrderedItem>("Confirm Selected Item", new Dictionary<string, object>()
+        //{
+        //    {"Model", Item }
+
+        //}, new DialogOptions(){ Width = "18rem" });
+
+    }
+
+}

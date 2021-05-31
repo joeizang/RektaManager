@@ -11,46 +11,26 @@
 <div class="mt-4">
     <div class="mb-4 d-flex justify-content-between align-content-center">
         <span>
-            <button @onclick="@(() => Navigation.NavigateTo("orders/make-orders"))" class="btn btn-outline-info">
+            <button @onclick="@(() => Navigation.NavigateTo("orders/make-orders"))" class="btn btn-outline-info bi bi-plus-circle-fill">
                 Place Order
             </button>
         </span>
     </div>
 
-    <table class="table table-striped table-responsive-sm table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>Order ID</th>
-                <th>Sales Person</th>
-                <th>Order Date</th>
-                <th>Amount</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (_orders is null || !_orders.Any())
-            {
-                <tr class="spinner-grow-sm">No Orders to show</tr>
-            }
-            else
-            {
-                @foreach (var order in _orders)
-                {
-                    <tr>
-                        <td>@order.OrderId</td>
-                        <td>@order.StaffName</td>
-                        <td>@order.OrderDate.LocalDateTime.ToString("dd-MM-yy")</td>
-                        <td>@order.OrderTotal</td>
-                        @*<td>@order.OrderedItems.Count()</td>*@
-                        <td>
-                            <span><a class="bi bi-eye-fill" href="@($"details/{order.OrderId}")"></a></span>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+    <RadzenDataGrid Count="_orders.Count" Style="" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowPaging="true" PageSize="10" Data="_orders" TItem="OrderComponentModel">
+        <Columns>
+            <RadzenGridColumn TItem="OrderComponentModel" Property="OrderId" Filterable="false" Title="ID" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="OrderComponentModel" Property="OrderDate" Filterable="true" Title="Order Date" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="OrderComponentModel" Property="StaffName" Filterable="true" Title="Staff Name" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="OrderComponentModel" TextAlign="TextAlign.Center" Title="Customer Name" Property="CustomerName" Filterable="true" />
+            <RadzenDataGridColumn TItem="OrderComponentModel" TextAlign="TextAlign.Center" Title="Number of Ordered Items" Filterable="true">
+                <Template Context="order">
+                    @order.OrderedItems.Count()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="OrderComponentModel" TextAlign="TextAlign.Center" Title="Order Total" Property="OrderTotal" Filterable="true"/>
+        </Columns>
+    </RadzenDataGrid>
 </div>
 
 @code {

@@ -1,0 +1,64 @@
+﻿
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">RektaManager</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-fill" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="inventory">
+                <span class="bi bi-bag-fill" aria-hidden="true"></span> Inventory
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="suppliers">
+                <span class="bi bi-truck" aria-hidden="true"></span> Suppliers
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="products">
+                <span class="bi bi-basket2-fill" aria-hidden="true"></span> Products
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="invoices">
+                <span class="bi bi-receipt-cutoff" aria-hidden="true"></span> Invoices
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="bills">
+                <span class="bi bi-wallet-fill" aria-hidden="true"></span> Bills
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="orders">
+                <span class="bi bi-credit-card-2-front-fill" aria-hidden="true"></span> Orders
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="bookings">
+                <span class="bi bi-calendar2-range-fill" aria-hidden="true"></span> Bookings
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

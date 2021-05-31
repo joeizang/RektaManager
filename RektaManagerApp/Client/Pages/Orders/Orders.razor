@@ -1,0 +1,54 @@
+﻿@page "/orders/make-orders"
+@using RektaManagerApp.Shared.ComponentModels.Orders
+@using System.Timers
+@using Blazored.LocalStorage
+@inject IHttpService HttpService
+@inject ILocalStorageService LocalStorage
+
+<h3 class="h3">Today's Menu</h3>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-outline-info" style="visibility: hidden">
+        link
+        <span class="bi bi-book-fill"></span>
+    </button>
+    <button class="btn btn-outline-info" style="visibility: hidden">
+        link
+        <span class="bi bi-book-fill"></span>
+    </button>
+    @if (ItemsLength > 0)
+    {
+        <OrdersOverview></OrdersOverview>
+    }
+    else
+    {
+        <OrdersOverview></OrdersOverview>
+    }
+</div>
+
+<div class="row">
+
+    <OrderItemList></OrderItemList>
+</div>
+
+
+@code {
+    [CascadingParameter]
+    public OrderState State { get; set; }
+
+    int ItemsLength;
+
+    Timer time = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //1. fetch OrderItems from the API
+        //var orderItems = await HttpService.GetAsync<List<OrderItemComponentModel>>("api/orders/orderItems");
+        //if (orderItems is not null && orderItems.Success) state.OrderItems = orderItems.Response;
+        //2. Once any OrderItem is clicked, it should be added to the OrderedItems list
+        //3. Once the order is going to be finished, then the OrderedItems list should be sent to the api
+        //4. Once the OrderedItems list is sent, it should be reset to 0 and the page should be refreshed.
+        ItemsLength = await LocalStorage.LengthAsync();
+    }
+
+}
