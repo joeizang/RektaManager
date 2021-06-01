@@ -1,17 +1,29 @@
 ﻿@page "/orders/make-orders"
 @using RektaManagerApp.Shared.ComponentModels.Orders
-@using System.Timers
 @using Blazored.LocalStorage
 @inject IHttpService HttpService
 @inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h3 class="h3">Today's Menu</h3>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <button class="btn btn-outline-info" style="visibility: hidden">
-        link
-        <span class="bi bi-book-fill"></span>
-    </button>
+
+    @if (ShowConditionalEdit())
+    {
+        <button class="btn btn-outline-info" @onclick="@(() => Navigation.NavigateTo("products/edit-menu"))">
+            <span class="bi bi-pencil-fill"></span>
+            Edit Menu Item
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-outline-info" style="visibility: hidden">
+            <span class="bi bi-book-fill"></span>
+            Edit Menu Item
+        </button>
+    }
     <button class="btn btn-outline-info" style="visibility: hidden">
         link
         <span class="bi bi-book-fill"></span>
@@ -38,7 +50,9 @@
 
     int ItemsLength;
 
-    Timer time = new();
+    private string _visible = "hidden";
+
+    public AuthenticationState AuthState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,6 +63,25 @@
         //3. Once the order is going to be finished, then the OrderedItems list should be sent to the api
         //4. Once the OrderedItems list is sent, it should be reset to 0 and the page should be refreshed.
         ItemsLength = await LocalStorage.LengthAsync();
+        AuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
+    private bool ShowConditionalEdit()
+    {
+        //Console.WriteLine(AuthState?.User?.Identity?.IsAuthenticated);
+        if (AuthState is not null && AuthState.User.Identity.IsAuthenticated)
+        {
+            return true;
+        }
+        else if (AuthState is not null && AuthState.User.Identity.Name.Contains("admin"))
+        {
+            return true;
+        }
+        else if (AuthState is not null && AuthState.User.Identity.Name.Contains("owner"))
+        {
+            return true;
+        }
+        return false;
     }
 
 }

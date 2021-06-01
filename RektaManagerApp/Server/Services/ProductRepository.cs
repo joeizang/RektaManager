@@ -24,49 +24,6 @@ namespace RektaManagerApp.Server.Services
             _httpContext = htttpContext;
         }
 
-
-        public async Task Update(ProductUpsertComponentModel entity)
-        {
-            try
-            {
-                var target = await _context.Products.FindAsync(entity.Id);
-
-                if (Convert.ToBase64String(entity.Timestamp) == Convert.ToBase64String(target.Timestamp))
-                {
-                    target.Id = entity.Id;
-                    target.CostPrice = entity.CostPrice;
-                    target.QuantityBought = entity.QuantityBought;
-                    target.Name = entity.Name;
-                    target.Timestamp = entity.Timestamp;
-                    target.ProductInventory = new Inventory { Id = entity.ProductInventoryId };
-                    target.ProductUniqueIdentifier = entity.ProductUniqueIdentifier;
-                    target.UnitMeasure = entity.UnitMeasure;
-                    target.ProductInventoryId = entity.ProductInventoryId;
-                    target.Description = entity.Description;
-                    _context.Entry(target).State = EntityState.Modified;
-                }
-                else
-                {
-                    entity.Timestamp = target.Timestamp; //once serious concurrency is attained, update this strategy
-                    target.Id = entity.Id;
-                    target.CostPrice = entity.CostPrice;
-                    target.QuantityBought = entity.QuantityBought;
-                    target.Name = entity.Name;
-                    target.ProductInventory = new Inventory { Id = entity.ProductInventoryId };
-                    target.ProductUniqueIdentifier = entity.ProductUniqueIdentifier;
-                    target.UnitMeasure = entity.UnitMeasure;
-                    target.ProductInventoryId = entity.ProductInventoryId;
-                    target.Description = entity.Description;
-                    _context.Products.Update(target);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
         public async Task<Product> GetProductBy(string searchTerm)
         {
             var result = await _context.Products.AsNoTracking()

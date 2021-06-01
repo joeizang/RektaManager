@@ -11,7 +11,5 @@ namespace RektaManagerApp.Server.Abstractions
         Task<Product> GetProductBy(string searchTerm);
 
         Task<IEnumerable<ProductComponentModel>> Get(RequestCustomizer query = null);
-
-        Task Update(ProductUpsertComponentModel entity);
     }
 }

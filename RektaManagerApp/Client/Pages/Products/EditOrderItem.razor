@@ -1,0 +1,32 @@
+﻿@page "/products/edit-menu"
+@using RektaManagerApp.Shared
+@inject IHttpService Http
+
+<div class="d-flex justify-content-center align-items-center">
+    <h3 class="h3">Edit Menu Items</h3>
+</div>
+<div class="d-flex">
+    <SfGrid DataSource="@orderItems" AllowSorting="true" AllowSelection="true" AllowPaging="true" Toolbar="@(new List<string>() { "Edit", "Update" })">
+        <GridPageSettings PageSizes="10"></GridPageSettings>
+        <GridEditSettings AllowEditing="true"></GridEditSettings>
+        <GridColumns>
+            <GridColumn HeaderText="Menu ID" TextAlign="TextAlign.Center" Field="@nameof(OrderItem.Id)" AllowSorting="false" AllowEditing="false"></GridColumn>
+            <GridColumn Field="@nameof(OrderItem.ItemName)" TextAlign="TextAlign.Center" HeaderText="Menu Name"></GridColumn>
+            <GridColumn Field="@nameof(OrderItem.ItemCode)" TextAlign="TextAlign.Center" HeaderText="Menu Code"></GridColumn>
+            <GridColumn Field="@nameof(OrderItem.ImageUrl)" TextAlign="TextAlign.Center" HeaderText="Path To Image"></GridColumn>
+            <GridColumn Field="@nameof(OrderItem.Price)" TextAlign="TextAlign.Center" HeaderText="Menu Price"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+@code {
+    private List<OrderItem> orderItems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<OrderItem>>("api/orders/menuItems");
+
+        if (response.Success == false)
+            Console.WriteLine(response.HttpResponseMessage.StatusCode);
+        orderItems = response.Response;
+    }
+}

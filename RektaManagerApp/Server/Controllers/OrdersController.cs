@@ -70,6 +70,13 @@ namespace RektaManagerApp.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("menuItems", Name = "GetOrderItemsList")]
+        public async Task<ActionResult<List<OrderItem>>> GetMenuItems()
+        {
+            var result = await _context.OrderItems.AsNoTracking().ToListAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
+
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)

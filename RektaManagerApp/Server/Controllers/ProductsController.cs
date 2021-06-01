@@ -9,6 +9,7 @@ using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
 using RektaManagerApp.Server.Queries.Products;
 using RektaManagerApp.Shared;
+using RektaManagerApp.Shared.Abstractions;
 using RektaManagerApp.Shared.ComponentModels.Orders;
 using RektaManagerApp.Shared.ComponentModels.Products;
 using RektaManagerApp.Shared.ComponentModels.Suppliers;
@@ -97,29 +98,37 @@ namespace RektaManagerApp.Server.Controllers
                 return BadRequest();
             }
 
-            await _repo.Update(product);
+            var target = await _context.Products.FindAsync(product.Id).ConfigureAwait(false);
+            target.Id = product.Id;
+            target.CostPrice = product.CostPrice;
+            target.QuantityBought = product.QuantityBought;
+            target.Name = product.Name;
+            target.Timestamp = product.Timestamp;
+            target.ProductInventory = new Inventory { Id = product.ProductInventoryId };
+            target.ProductUniqueIdentifier = product.ProductUniqueIdentifier;
+            target.UnitMeasure = product.UnitMeasure;
+            target.ProductInventoryId = product.ProductInventoryId;
+            target.Description = product.Description;
 
-            var modified = _context.ChangeTracker.Entries<Product>()
-                .Where(x => x.State == EntityState.Modified)
-                .SingleOrDefault();
-
-            var inventory = await _context.Inventories.SingleOrDefaultAsync(i => i.Products.First().Id == id)
-                .ConfigureAwait(false);
-
-            var dbVal = await modified.GetDatabaseValuesAsync();
-            var fromDb = dbVal.ToObject() as Product;
-
-            var changes = new PropertyChanges<Product>(modified, fromDb);
-
-            var auditTrack = new ProductActionsAudit
+            var product1 = new Product
             {
-                Actions = ActionPerformed.Updated,
-                Changes = JsonSerializer.Serialize(changes),
+                Id = product.Id,
+                CostPrice = product.CostPrice,
+                QuantityBought = product.QuantityBought,
+                Name = product.Name,
+                Timestamp = product.Timestamp,
+                ProductInventory = new Inventory { Id = product.ProductInventoryId },
+                ProductUniqueIdentifier = product.ProductUniqueIdentifier,
+                UnitMeasure = product.UnitMeasure,
+                ProductInventoryId = product.ProductInventoryId,
+                Description = product.Description
             };
-
+            _context.Entry(target).State = EntityState.Modified;
+            var audit = new ProductActionsAudit();
 
             try
             {
+                await _repo.Update<Product>(product1, target, audit);
                 await _repo.Save<Product>();
                 await _repo.Save<ProductActionsAudit>();
                 return RedirectToRoute("GetProductById", new { id = product.Id });
@@ -198,10 +207,12 @@ namespace RektaManagerApp.Server.Controllers
             targetOrder.Price = model.Price;
             targetOrder.Timestamp = model.Timestamp;
             _context.Entry(targetOrder).State = EntityState.Modified;
-
+            var audit = new OrderItemActionsAudit();
             try
             {
+                await _repo.Update<OrderItem>(model, targetOrder, audit);
                 await _repo.Save<OrderItem>();
+                await _repo.Save<OrderItemActionsAudit>();
             }
             catch (Exception e)
             {

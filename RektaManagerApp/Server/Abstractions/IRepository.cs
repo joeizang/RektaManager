@@ -20,7 +20,7 @@ namespace RektaManagerApp.Server.Abstractions
 
         Task Add<T>(T entity) where T : DomainModelBase;
 
-        Task Update<T>(T entity, T target) where T : DomainModelBase;
+        Task Update<T>(T entity, T target, BaseActionsAudit audit) where T : DomainModelBase;
 
         Task Delete<T>(int id) where T : DomainModelBase;
     }

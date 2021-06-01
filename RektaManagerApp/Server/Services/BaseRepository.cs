@@ -93,7 +93,7 @@ namespace RektaManagerApp.Server.Services
 
                     _context.Set<T>().Update(entity);
                 }
-                await Save<BaseActionsAudit>().ConfigureAwait(false);
+                
             }
             catch (Exception e)
             {
