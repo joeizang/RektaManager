@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
+using RektaManagerApp.Shared;
 using RektaManagerApp.Shared.Abstractions;
 
 namespace RektaManagerApp.Server.Services
@@ -64,11 +66,22 @@ namespace RektaManagerApp.Server.Services
             await _context.Set<T>().AddAsync(entity);
         }
 
-        public async Task Update<T>(T entity) where T : DomainModelBase
+        public async Task Update<T>(T entity, T target, BaseActionsAudit audit) where T : DomainModelBase
         {
+            var modified = _context.ChangeTracker.Entries<T>()
+                .Where(x => x.State == EntityState.Modified)
+                .SingleOrDefault();
+
+            var dbVal = await modified.GetDatabaseValuesAsync();
+            var fromDb = dbVal.ToObject() as T;
+
+            var changes = new PropertyChanges<T>(modified, fromDb);
+
+            audit.Actions = ActionPerformed.Updated;
+            audit.Changes = JsonSerializer.Serialize(changes);
+            
             try
             {
-                var target = await _context.Set<T>().FindAsync(entity.Id);
 
                 if (Convert.ToBase64String(entity.Timestamp) == Convert.ToBase64String(target.Timestamp))
                 {
@@ -80,6 +93,7 @@ namespace RektaManagerApp.Server.Services
 
                     _context.Set<T>().Update(entity);
                 }
+                await Save<BaseActionsAudit>().ConfigureAwait(false);
             }
             catch (Exception e)
             {

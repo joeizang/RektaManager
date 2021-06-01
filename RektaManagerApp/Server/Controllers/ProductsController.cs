@@ -90,7 +90,7 @@ namespace RektaManagerApp.Server.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, [FromBody]ProductUpsertComponentModel product)
+        public async Task<IActionResult> PutProduct(int id, [FromBody] ProductUpsertComponentModel product)
         {
             if (id != product.Id)
             {
@@ -166,17 +166,17 @@ namespace RektaManagerApp.Server.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest(new { e.Message});
+                return BadRequest(new { e.Message });
             }
 
-            
-            return CreatedAtAction("GetProduct", new { id = newId }, new {});
+
+            return CreatedAtAction("GetProduct", new { id = newId }, new { });
         }
 
         [HttpPost("orderItem", Name = "CreateOrderItem")]
         public async Task<ActionResult<OrderItem>> PostOrderItem([FromBody] OrderItem model)
         {
-            if(!ModelState.IsValid && await _context.OrderItems.AnyAsync(x => x.ItemName.Contains(model.ItemName)))
+            if (!ModelState.IsValid && await _context.OrderItems.AnyAsync(x => x.ItemName.Contains(model.ItemName)))
             {
                 return BadRequest(new { ErrorMessage = "Your payload was in a bad state or a case of duplication!" });
             }
@@ -184,13 +184,31 @@ namespace RektaManagerApp.Server.Controllers
             _context.OrderItems.Add(model);
             await _repo.Save<OrderItem>();
 
-            return CreatedAtAction("GetOrderItems","Orders",null,new { });
+            return CreatedAtAction("GetOrderItems", "Orders", null, new { });
         }
 
         [HttpPut("orderItem", Name = "UpdateOrderItem")]
-        public async Task<ActionResult<OrderItemComponentModel>> PutOrderItem([FromBody] OrderItem model)
+        public async Task<ActionResult<OrderItemComponentModel>> PutOrderItem(int id, [FromBody] OrderItem model)
         {
+            var targetOrder = await _context.OrderItems.FindAsync(id).ConfigureAwait(false);
+            targetOrder.Id = model.Id;
+            targetOrder.ImageUrl = model.ImageUrl;
+            targetOrder.ItemCode = model.ItemCode;
+            targetOrder.ItemName = model.ItemName;
+            targetOrder.Price = model.Price;
+            targetOrder.Timestamp = model.Timestamp;
+            _context.Entry(targetOrder).State = EntityState.Modified;
 
+            try
+            {
+                await _repo.Save<OrderItem>();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return Ok();
         }
 
         // DELETE: api/Products/5

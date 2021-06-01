@@ -7,9 +7,8 @@ using RektaManagerApp.Shared.Abstractions;
 
 namespace RektaManagerApp.Shared
 {
-    public class ProductActionsAudit : DomainModelBase, IBaseAudit
+    public class ProductActionsAudit : BaseActionsAudit
     {
-        public string Changes { get; set; }
-        public ActionPerformed Actions { get; set; }
+        
     }
 }
