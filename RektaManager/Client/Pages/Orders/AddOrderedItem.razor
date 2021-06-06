@@ -38,16 +38,8 @@
     [Parameter]
     public OrderItemComponentModel Model { get; set; }
 
-    [CascadingParameter]
-    public OrderState State { get; set; }
-
-
-
-    OrderedItemUpsertComponentModel orderedItem = new();
-
-    public AuthenticationState AuthState { get; set; }
-
-
+	[Parameter]
+	public Event
 
     protected override async Task OnInitializedAsync()
     {

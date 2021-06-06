@@ -1,10 +1,11 @@
 ﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IOrderService OrderService
 @*@inject DialogService Dialog*@
 
-
-
 <div class="col-4 mb-3 d-flex">
-    <div class="card shadow-lg d-flex" @onclick="@AddOrderedItem"
+    <div class="card shadow-lg d-flex" @onclick="@(() => _showDialog = true)"
         style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
         <img class="card-img" src="@Item.ImageUrl" alt="cardImage" />
         <div class="card-img-overlay">
@@ -18,25 +19,90 @@
     </div>
 </div>
 
+<SfDialog IsModal="true" @bind-Visible="@_showDialog" Width="18rem">
+    <DialogEvents OnOverlayModalClick="@(() => _showDialog = false )"></DialogEvents>
+    <DialogTemplates>
+        <Header>Customize Item Quantity</Header>
+        <Content>
+            <AddOrderedItem Model="@Item" HandleOrderAddition="HandleModalFormAdjustments" NewOrderedItem="OrderedItem"/>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+<div class="col-lg-12 control-section toast-default-section">
+    <SfToast @ref="Toast" Timeout="3000" Content="@ToastContentMessage" Title="Success!" Icon="bi bi-thumbs-up">
+        <ToastPosition X="@ToastPosition"></ToastPosition>
+    </SfToast>
+</div>
+<div class="col-lg-12 control-section toast-default-section">
+    <SfToast @ref="Toast" Timeout="3000" Content="@ToastErrorMessage" Title="Error!" Icon="bi bi-thumbs-down">
+        <ToastPosition X="@ToastPosition"></ToastPosition>
+    </SfToast>
+</div>
 
 @code {
 
     [Parameter]
     public OrderItemComponentModel Item { get; set; }
 
+    [CascadingParameter]
+    public OrderState State { get; set; }
+
+    public OrderedItemUpsertComponentModel OrderedItem { get; set; } = new();
+
+    public AuthenticationState AuthState { get; set; }
+
     private bool _borderSwitch = false;
 
     private string _switch = "3px solid #bac842";
 
+    private bool _showDialog = false;
 
-    void AddOrderedItem()
+    private bool _showSuccessNotification = false;
+
+    private bool _showErrorNotification = false;
+
+    private SfToast Toast;
+
+    private const string ToastPosition = "Right";
+
+    private const string ToastContentMessage = "Added to order successfully!";
+
+    private const string ToastErrorMessage = "There was an error modifying the order!";
+
+
+    protected override async Task OnInitializedAsync()
     {
-        //Dialog.Open<AddOrderedItem>("Confirm Selected Item", new Dictionary<string, object>()
-        //{
-        //    {"Model", Item }
+        AuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
 
-        //}, new DialogOptions(){ Width = "18rem" });
+    private async Task HandleModalFormAdjustments()
+    {
+        //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
+        //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
+        try
+        {
+            OrderedItem.ItemCode = Item.ItemName;
+            OrderedItem.ItemName = Item.ItemName;
+            OrderedItem.Quantity = Item.Quantity;
+            OrderedItem.ItemPrice = Item.Price;
+            OrderedItem.SalesStaff = AuthState.User.Identity?.Name;
+            OrderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
+            OrderedItem.CustomerName = Guid.NewGuid().ToString("N");
 
+            State.OrderedItems.Add(OrderedItem);
+
+            await OrderService.AddToCart(State.OrderedItems);
+            _showSuccessNotification = true;
+
+            Navigation.NavigateTo("orders/make-orders");
+            _showDialog = false;
+        }
+        catch (Exception e)
+        {
+            _showErrorNotification = true;
+
+        }
     }
 
 }

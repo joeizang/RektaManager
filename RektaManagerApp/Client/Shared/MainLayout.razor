@@ -1,4 +1,5 @@
 ﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@inject IHttpService Http 
 @inherits LayoutComponentBase
 
 
@@ -34,5 +35,17 @@
 
 @code
 {
+    //get all the orderItems from the server and prepare them as part of the whole app.
     OrderState state = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<OrderItemComponentModel>>("api/orders/orderItems");
+
+        if (response.Success)
+            state.OrderItems = response.Response;
+
+        if(state.OrderItems is null)
+            state.OrderItems = DummyOrderItemList.OrderItems;
+    }
 }
