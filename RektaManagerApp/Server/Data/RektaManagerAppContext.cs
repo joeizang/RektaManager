@@ -67,6 +67,36 @@ namespace RektaManagerApp.Server.Data
 
         public DbSet<Supplier> Suppliers { get; set; }
 
+        public DbSet<BillActionAudit> BillActionAudits { get; set; }
+
+        public DbSet<BillPaymentActionAudit> BillPaymentActionAudits { get; set; }
+
+        public DbSet<BookedItemActionAudit> BookedItemActionAudits { get; set; }
+
+        public DbSet<ChartOfAccountsActionAudit> ChartOfAccountsActionAudits { get; set; }
+
+        public DbSet<CustomerActionAudit> CustomerActionAudits { get; set; }
+
+        public DbSet<InventoryActionsAudit> InventoryActionsAudits { get; set; }
+
+        public DbSet<InventoryCategoryActionAudit> InventoryCategoryActionAudits { get; set; }
+
+        public DbSet<OrderActionsAudit> OrderActionsAudits { get; set; }
+
+        public DbSet<OrderedItemActionAudit> OrderedItemActionAudits { get; set; }
+
+        public DbSet<OrderItemActionsAudit> OrderItemActionsAudits { get; set; }
+
+        public DbSet<ProductActionsAudit> ProductActionsAudits { get; set; }
+
+        public DbSet<ProductCategoryActionAudit> ProductCategoryActionsAudits { get; set; }
+
+        public DbSet<ServiceActionAudit> ServiceActionsAudits { get; set; }
+
+        public DbSet<SupplierActionAudit> SupplierActionsAudits { get; set; }
+
+        public DbSet<StaffShiftActionsAudit> StaffShiftActionsAudit { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -247,7 +277,78 @@ namespace RektaManagerApp.Server.Data
             .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
             builder.Entity<ApplicationRole>(entity => entity.Property(m => m.UpdatedAt)
                 .ForMySQLHasDefaultValue(DateTimeOffset.UtcNow));
-
+            builder.Entity<Bill>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BillPayment>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BookedItem>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Booking>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ChartOfAccounts>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BookingSales>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Customer>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Inventory>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InventoryActionsAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InventoryCategory>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Invoice>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InvoiceActionsAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InvoicePayment>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Order>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderActionsAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderedItem>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderItem>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderItemActionsAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderSales>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Product>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ProductActionsAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ProductCategory>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Service>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<StaffShift>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<Supplier>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<SupplierActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ServiceActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ProductCategoryActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<OrderedItemActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InvoicePaymentsActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<InventoryCategoryActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<CustomerActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<ChartOfAccountsActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BookedItemActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BillPaymentActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
+            builder.Entity<BillActionAudit>()
+                .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
 
         }
 

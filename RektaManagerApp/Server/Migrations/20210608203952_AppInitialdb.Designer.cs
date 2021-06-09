@@ -9,7 +9,7 @@ using RektaManagerApp.Server.Data;
 namespace RektaManagerApp.Server.Migrations
 {
     [DbContext(typeof(RektaManagerAppContext))]
-    [Migration("20210530183151_AppInitialdb")]
+    [Migration("20210608203952_AppInitialdb")]
     partial class AppInitialdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace RektaManagerApp.Server.Migrations
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
                 {
                     b.Property<string>("UserCode")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("ClientId")
                         .HasColumnType("text");
@@ -86,7 +86,7 @@ namespace RektaManagerApp.Server.Migrations
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.PersistedGrant", b =>
                 {
                     b.Property<string>("Key")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("ClientId")
                         .HasColumnType("text");
@@ -123,7 +123,7 @@ namespace RektaManagerApp.Server.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
@@ -205,10 +205,10 @@ namespace RektaManagerApp.Server.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -218,7 +218,7 @@ namespace RektaManagerApp.Server.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(90)
@@ -248,7 +248,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 332, DateTimeKind.Unspecified).AddTicks(1410), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 336, DateTimeKind.Unspecified).AddTicks(8491), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -267,7 +267,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 333, DateTimeKind.Unspecified).AddTicks(1975), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 337, DateTimeKind.Unspecified).AddTicks(2521), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.HasKey("Id");
 
@@ -289,7 +289,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 322, DateTimeKind.Unspecified).AddTicks(729), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 329, DateTimeKind.Unspecified).AddTicks(6614), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -347,7 +347,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 329, DateTimeKind.Unspecified).AddTicks(2013), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 335, DateTimeKind.Unspecified).AddTicks(1390), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("UserName")
                         .HasColumnType("text");
@@ -396,10 +396,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(20,2)");
@@ -421,6 +421,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.BillActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BillActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.BillPayment", b =>
@@ -447,10 +486,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(20,2)");
@@ -468,6 +507,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BillPayments");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.BillPaymentActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BillPaymentActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.BookedItem", b =>
@@ -499,10 +577,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("double");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -516,6 +594,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("BookingId");
 
                     b.ToTable("BookedItems");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.BookedItemActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookedItemActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Booking", b =>
@@ -555,10 +672,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<string>("StaffProcessingId")
                         .HasColumnType("varchar(90)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(20,2)");
@@ -603,10 +720,9 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -642,10 +758,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -684,10 +800,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -699,6 +815,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChartOfAccounts");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.ChartOfAccountsActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChartOfAccountsActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Customer", b =>
@@ -726,10 +881,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(44)
                         .HasColumnType("varchar(44)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -741,6 +896,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.CustomerActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomerActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Inventory", b =>
@@ -767,10 +961,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("SupplyDate")
                         .HasColumnType("timestamp");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("TotalInventoryValuation")
                         .HasColumnType("decimal(20,2)");
@@ -809,10 +1003,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -823,7 +1017,7 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InventoryAudits");
+                    b.ToTable("InventoryActionsAudit");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.InventoryCategory", b =>
@@ -854,10 +1048,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -871,6 +1065,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("InventoryId");
 
                     b.ToTable("InventoryCategories");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.InventoryCategoryActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InventoryCategoryActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Invoice", b =>
@@ -904,10 +1137,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("TransactionDate")
                         .HasColumnType("timestamp");
@@ -950,10 +1183,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -991,10 +1224,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(20,2)");
@@ -1014,10 +1247,49 @@ namespace RektaManagerApp.Server.Migrations
                     b.ToTable("InvoicePayments");
                 });
 
+            modelBuilder.Entity("RektaManagerApp.Shared.InvoicePaymentsActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvoicePaymentsActionAudit");
+                });
+
             modelBuilder.Entity("RektaManagerApp.Shared.Order", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -1045,10 +1317,10 @@ namespace RektaManagerApp.Server.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(90)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(20,2)");
@@ -1091,10 +1363,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1105,7 +1377,7 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderAudits");
+                    b.ToTable("OrderActionsAudit");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.OrderItem", b =>
@@ -1141,10 +1413,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,2)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1156,6 +1428,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.OrderItemActionsAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderItemActionsAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.OrderSales", b =>
@@ -1179,12 +1490,12 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.Property<string>("OrderId")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1229,7 +1540,7 @@ namespace RektaManagerApp.Server.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("OrderId")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,2)");
@@ -1237,10 +1548,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("double");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1254,6 +1565,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderedItems");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.OrderedItemActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderedItemActionAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Product", b =>
@@ -1293,10 +1643,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("UnitMeasure")
                         .HasColumnType("int");
@@ -1339,10 +1689,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1353,7 +1703,7 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductActions");
+                    b.ToTable("ProductActionsAudit");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.ProductCategory", b =>
@@ -1384,10 +1734,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1401,6 +1751,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.ProductCategoryActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductCategoryActionsAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Service", b =>
@@ -1430,10 +1819,10 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int>("ServiceBookingId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1447,6 +1836,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("ServiceBookingId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.ServiceActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceActionsAudits");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.StaffShift", b =>
@@ -1481,10 +1909,10 @@ namespace RektaManagerApp.Server.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(90)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1500,6 +1928,44 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("StaffId");
 
                     b.ToTable("StaffShifts");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.StaffShiftActionsAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StaffShiftActionsAudit");
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.Supplier", b =>
@@ -1528,10 +1994,10 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(44)
                         .HasColumnType("varchar(44)");
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp");
@@ -1543,6 +2009,45 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("RektaManagerApp.Shared.SupplierActionAudit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Actions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupplierActionsAudits");
                 });
 
             modelBuilder.Entity("BillChartOfAccounts", b =>

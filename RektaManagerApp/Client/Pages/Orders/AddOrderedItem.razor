@@ -1,11 +1,12 @@
-﻿@using RektaManagerApp.Shared
-@using RektaManagerApp.Shared.ComponentModels.Orders
+﻿@using RektaManagerApp.Shared.ComponentModels.Orders
 @using Blazored.LocalStorage
+@inject AuthenticationStateProvider AuthProvider
 @inject ILocalStorageService LocalStorage
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHttpService Http
 @inject IOrderService OrderService
 @inject NavigationManager Navigation
+@inject IToastService Toast
+@inject IModalService Modal
 <h3>Add <b>@Model.ItemName</b></h3>
 <EditForm Model="@NewOrderedItem" OnValidSubmit="HandleOrderAddition">
     <DataAnnotationsValidator />
@@ -38,9 +39,39 @@
     public OrderItemComponentModel Model { get; set; }
 
     [Parameter]
-    public EventCallback HandleOrderAddition { get; set; }
-
-    [Parameter]
     public OrderedItemUpsertComponentModel NewOrderedItem { get; set; }
 
+    [CascadingParameter]
+    public OrderState State { get; set; }
+
+    [CascadingParameter]
+    public BlazoredModalInstance ModalInstance { get; set; }
+
+    public AuthenticationState AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthState = await AuthProvider.GetAuthenticationStateAsync();
+    }
+
+    public async Task HandleOrderAddition()
+    {
+        //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
+        //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
+        NewOrderedItem.ItemCode = Model.ItemName;
+        NewOrderedItem.ItemName = Model.ItemName;
+        NewOrderedItem.Quantity = Model.Quantity;
+        NewOrderedItem.ItemPrice = Model.Price;
+        NewOrderedItem.SalesStaff = AuthState.User.Identity?.Name;
+        NewOrderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
+        NewOrderedItem.CustomerName = Guid.NewGuid().ToString("N");
+
+        State.OrderedItems.Add(NewOrderedItem);
+
+        await OrderService.AddToCart(State.OrderedItems);
+        Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
+
+        Navigation.NavigateTo("orders/make-orders");
+        await ModalInstance.CloseAsync();
+    }
 }

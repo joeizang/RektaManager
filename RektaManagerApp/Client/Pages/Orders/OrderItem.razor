@@ -1,44 +1,22 @@
 ﻿@using RektaManagerApp.Shared.ComponentModels.Orders
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IOrderService OrderService
-@*@inject DialogService Dialog*@
+@inject IModalService Modal
 
 <div class="col-4 mb-3 d-flex">
-    <div class="card shadow-lg d-flex" @onclick="@(() => _showDialog = true)"
-        style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
+    <div class="card shadow-lg d-flex" @onclick="@(() => AddOrderedItem())"
+         style="border: @(_borderSwitch ? _switch : ""); width: 13rem;">
         <img class="card-img" src="@Item.ImageUrl" alt="cardImage" />
         <div class="card-img-overlay">
             <h3 class="card-title card-headings font-weight-bolder text-light">@Item.ItemName</h3>
-            <span 
-                class="card-headings place-price h6 p-2 font-weight-bolder text-light bg-secondary rounded" id="price"
-                >
+            <span class="card-headings place-price h6 p-2 font-weight-bolder text-light bg-secondary rounded" id="price">
                 =N= @Item.Price.ToString("N1")
             </span>
         </div>
     </div>
 </div>
 
-<SfDialog IsModal="true" @bind-Visible="@_showDialog" Width="18rem">
-    <DialogEvents OnOverlayModalClick="@(() => _showDialog = false )"></DialogEvents>
-    <DialogTemplates>
-        <Header>Customize Item Quantity</Header>
-        <Content>
-            <AddOrderedItem Model="@Item" HandleOrderAddition="HandleModalFormAdjustments" NewOrderedItem="OrderedItem"/>
-        </Content>
-    </DialogTemplates>
-</SfDialog>
 
-<div class="col-lg-12 control-section toast-default-section">
-    <SfToast @ref="Toast" Timeout="3000" Content="@ToastContentMessage" Title="Success!" Icon="bi bi-thumbs-up">
-        <ToastPosition X="@ToastPosition"></ToastPosition>
-    </SfToast>
-</div>
-<div class="col-lg-12 control-section toast-default-section">
-    <SfToast @ref="Toast" Timeout="3000" Content="@ToastErrorMessage" Title="Error!" Icon="bi bi-thumbs-down">
-        <ToastPosition X="@ToastPosition"></ToastPosition>
-    </SfToast>
-</div>
 
 @code {
 
@@ -56,53 +34,22 @@
 
     private string _switch = "3px solid #bac842";
 
-    private bool _showDialog = false;
-
-    private bool _showSuccessNotification = false;
-
-    private bool _showErrorNotification = false;
-
-    private SfToast Toast;
-
-    private const string ToastPosition = "Right";
-
-    private const string ToastContentMessage = "Added to order successfully!";
-
-    private const string ToastErrorMessage = "There was an error modifying the order!";
-
-
     protected override async Task OnInitializedAsync()
     {
         AuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
     }
 
-    private async Task HandleModalFormAdjustments()
+    private void AddOrderedItem()
     {
-        //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
-        //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
-        try
-        {
-            OrderedItem.ItemCode = Item.ItemName;
-            OrderedItem.ItemName = Item.ItemName;
-            OrderedItem.Quantity = Item.Quantity;
-            OrderedItem.ItemPrice = Item.Price;
-            OrderedItem.SalesStaff = AuthState.User.Identity?.Name;
-            OrderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
-            OrderedItem.CustomerName = Guid.NewGuid().ToString("N");
+        var parameters = new ModalParameters();
+        parameters.Add("Model", Item);
+        parameters.Add(nameof(OrderedItemUpsertComponentModel), OrderedItem);
+        parameters.Add(nameof(AuthState), AuthState);
 
-            State.OrderedItems.Add(OrderedItem);
-
-            await OrderService.AddToCart(State.OrderedItems);
-            _showSuccessNotification = true;
-
-            Navigation.NavigateTo("orders/make-orders");
-            _showDialog = false;
-        }
-        catch (Exception e)
-        {
-            _showErrorNotification = true;
-
-        }
+        var options = new ModalOptions();
+        options.Position = ModalPosition.Center;
+        options.HideCloseButton = true;
+        Modal.Show<AddOrderedItem>("Finish Adding Item", parameters, options);
     }
 
 }

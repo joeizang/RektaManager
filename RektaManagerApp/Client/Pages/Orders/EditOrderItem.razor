@@ -1,0 +1,84 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Orders
+@inject IHttpService Http
+@inject IToastService Toast  
+@inject NavigationManager Navigation 
+
+<div class="d-flex">
+    <EditForm Model="Model" OnValidSubmit="@HandleItemEdit">
+        <DataAnnotationsValidator />
+
+        <input type="hidden" value="@Model.OrderItemId" />
+
+        <div class="form-group">
+            <label>
+                <b>Menu Item Name :</b>
+            </label>
+            <InputText class="form-control" @bind-Value="@Model.ItemName" />
+            <span class="text-danger">
+                <b>
+                    <ValidationMessage For="@(() => Model.ItemName)" />
+                </b>
+            </span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Item Price :</b>
+            </label>
+            <InputNumber class="form-control" @bind-Value="@Model.Price" />
+            <span class="text-danger">
+                <b>
+                    <ValidationMessage For="@(() => Model.Price)" />
+                </b>
+            </span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Quantity</b>
+            </label>
+            <InputNumber class="form-control" @bind-Value="@Model.Quantity" />
+            <span class="text-danger">
+                <b>
+                    <ValidationMessage For="@(() => Model.Quantity)" />
+                </b>
+            </span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Image Url :</b>
+            </label>
+            <InputText class="form-control" @bind-Value="@Model.ImageUrl" />
+            <span class="text-danger">
+                <b>
+                    <ValidationMessage For="@(() => Model.ImageUrl)" />
+                </b>
+            </span>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-block btn-outline-info">
+                <span class="bi bi-pencil-fill"></span>
+                Update Item
+            </button>
+            <span class="spinner-grow text-warning"></span>
+        </div>
+
+    </EditForm>
+</div>
+
+@code {
+
+    [Parameter]
+    public OrderItemUpsertComponentModel Model { get; set; }
+
+    private async Task HandleItemEdit()
+    {
+        var response = await Http.PutAsync("api/orders", Model);
+
+        if(!response.Success)
+        {
+            Toast.ShowError("Error Updating Menu Item", "Error!");
+        }
+        Toast.ShowSuccess("Upated Successfully!!", "Success!");
+        Navigation.NavigateTo("orders/make-orders",true);
+    }
+
+}

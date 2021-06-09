@@ -79,20 +79,27 @@ namespace RektaManagerApp.Server.Services
 
             audit.Actions = ActionPerformed.Updated;
             audit.Changes = JsonSerializer.Serialize(changes);
+
+            //var compareTimestampResult = Xor(entity.Timestamp, target.Timestamp);
+
+            _context.Entry(target).State = EntityState.Modified;
             
             try
             {
 
-                if (Convert.ToBase64String(entity.Timestamp) == Convert.ToBase64String(target.Timestamp))
-                {
-                    _context.Entry(target).State = EntityState.Modified;
-                }
-                else
-                {
-                    entity.Timestamp = target.Timestamp; //once serious concurrency is attained, update this strategy
+                //if (compareTimestampResult)
+                //{
+                //    _context.Entry(target).State = EntityState.Modified;
+                //}
+                //else
+                //{
+                //    entity.Timestamp = target.Timestamp; //once serious concurrency is attained, update this strategy
 
-                    _context.Set<T>().Update(entity);
-                }
+                //    _context.Set<T>().Update(entity);
+                //}
+
+                entity.Timestamp = target.Timestamp;
+                _context.Set<T>().Update(target);
                 
             }
             catch (Exception e)
@@ -137,6 +144,22 @@ namespace RektaManagerApp.Server.Services
             var result = await _context.Set<T>().FindAsync(id);
             result.IsDeleted = true;
             _context.Set<T>().Update(result);
+
+        }
+
+        private static bool Xor(byte[] a, byte[] b)
+        {
+
+            int x = a.Length ^ b.Length;
+
+            for (int i = 0; i < a.Length && i < b.Length; ++i)
+            {
+
+                x |= a[i] ^ b[i];
+
+            }
+
+            return x == 0;
 
         }
     }

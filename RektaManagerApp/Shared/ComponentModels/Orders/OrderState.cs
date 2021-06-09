@@ -14,6 +14,6 @@ namespace RektaManagerApp.Shared.ComponentModels.Orders
         }
         public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; } = new();
 
-        public List<OrderItemComponentModel> OrderItems { get; set; }
+        public List<OrderItemComponentModel> OrderItems { get; set; } = new();
     }
 }

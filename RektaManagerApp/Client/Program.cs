@@ -8,6 +8,7 @@ using Blazored.LocalStorage;
 using RektaManagerApp.Client.Utils;
 using Syncfusion.Blazor;
 using Blazored.Toast;
+using Blazored.Modal;
 
 namespace RektaManagerApp.Client
 {
@@ -31,6 +32,7 @@ namespace RektaManagerApp.Client
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredToast();
+            builder.Services.AddBlazoredModal();
 
             builder.Services.AddSyncfusionBlazor();
 

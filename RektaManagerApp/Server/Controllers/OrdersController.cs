@@ -77,6 +77,20 @@ namespace RektaManagerApp.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetOrderItem", Name = "GetOrderItemById")]
+        public async Task<ActionResult<OrderItemComponentModel>> GetOrderItemById(int id)
+        {
+            var result = await _repo.GetQueryable<OrderItem>().Select(o => new OrderItemComponentModel
+            {
+                Id = o.Id,
+                ImageUrl = o.ImageUrl,
+                ItemName = o.ItemName,
+                Price = o.Price
+            }).ToListAsync().ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
@@ -131,6 +145,31 @@ namespace RektaManagerApp.Server.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<OrderItem>> PutOrderItem(OrderItemUpsertComponentModel model)
+        {
+            var target = await _context.OrderItems.FindAsync(model.OrderItemId).ConfigureAwait(false);
+            var fromClient = new OrderItem { Id = model.OrderItemId, ImageUrl = model.ImageUrl, ItemName = model.ItemName, Price = model.Price };
+            target.ItemName = model.ItemName;
+            target.ImageUrl = model.ImageUrl;
+            target.Price = model.Price;
+            _context.Entry(target).State = EntityState.Modified;
+            try
+            {
+                var audit = new OrderItemActionsAudit();
+                await _repo.Update<OrderItem>(fromClient, target, audit);
+                await _repo.Save<OrderItem>();
+                await _repo.Save<OrderItemActionsAudit>();
+                return Ok();
+            }
+            catch (DbUpdateException e)
+            {
+                await e.Entries.Single().ReloadAsync();
+                await _repo.Save<OrderItem>();
+                return Ok();
+            }
         }
 
         // DELETE: api/Orders/5

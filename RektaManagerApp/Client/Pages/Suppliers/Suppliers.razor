@@ -10,42 +10,35 @@
     <span>
         <button @onclick="@(() => Navigation.NavigateTo("suppliers/create"))" class="btn btn-outline-info">
             <span class="bi bi-plus-circle-fill"></span>
-            Create Product
+            Create Supplier
         </button>
     </span>
 </div>
 
 <div class="pt-2">
-    <table class="table table-striped table-responsive-sm table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>Supplier Id</th>
-                <th>Supplier Name</th>
-                <th>Phone Number</th>
-                <th>Number of Products Supplied</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var supplier in _suppliers)
-            {
-            <tr>
-                <td>@supplier.Id</td>
-                <td>@supplier.Name</td>
-                <td>@supplier.PhoneNumber</td>
-                <td>@supplier.SuppliedProducts.Count</td>
-                <td>
-                    <a href="inventory/details/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
-                    <a href="inventory/edit/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
-                    <button class="btn btn-outline-danger" @onclick="@(() => DeleteSupplier(@supplier.Id))">
-                        <span class="bi bi-trash2-fill"></span>
-                        <span style="display: @_spinnerShow"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
-                    </button>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+    <SfGrid DataSource="@_suppliers" AllowSorting="true" AllowPaging="true">
+        <GridPageSettings PageSize="10"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(Supplier.Id)" HeaderText="Supplier ID" TextAlign="TextAlign.Center" AllowSorting="false"></GridColumn>
+            <GridColumn Field="@nameof(Supplier.Name)" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(Supplier.PhoneNumber)" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(Supplier.SupplierBills.Count)" HeaderText="Bills Submitted" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(Supplier.SuppliedProducts.Count)" HeaderText="Products Supplied" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn>
+                <Template>
+                    @{
+                        var supplier = (context as Supplier);
+                        <a href="inventory/details/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
+                        <a href="inventory/edit/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteSupplier(@supplier.Id))">
+                            <span class="bi bi-trash2-fill"></span>
+                            <span style="display: @_spinnerShow"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
+                        </button>
+                    }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
 </div>
 
 @code {

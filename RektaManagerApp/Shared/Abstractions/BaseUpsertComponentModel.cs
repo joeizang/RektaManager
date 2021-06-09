@@ -9,7 +9,7 @@ namespace RektaManagerApp.Shared.Abstractions
 {
     public class BaseUpsertComponentModel
     {
-        public byte[] Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
         public int Id { get; set; }
 

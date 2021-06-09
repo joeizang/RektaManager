@@ -25,9 +25,8 @@ namespace RektaManagerApp.Shared.Abstractions
         
         public bool IsDeleted { get; set; }
 
-        [ConcurrencyCheck, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
+        [ConcurrencyCheck]
+        public DateTime Timestamp { get; set; }
 
     }
 }

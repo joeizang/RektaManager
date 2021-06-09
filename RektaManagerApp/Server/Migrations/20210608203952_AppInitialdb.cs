@@ -13,8 +13,8 @@ namespace RektaManagerApp.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 332, DateTimeKind.Unspecified).AddTicks(1410), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 333, DateTimeKind.Unspecified).AddTicks(1975), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 336, DateTimeKind.Unspecified).AddTicks(8491), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 337, DateTimeKind.Unspecified).AddTicks(2521), new TimeSpan(0, 0, 0, 0, 0))),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
@@ -25,6 +25,48 @@ namespace RektaManagerApp.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationRole", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BillActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillActionAudits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BillPaymentActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillPaymentActionAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,12 +84,33 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BillPayments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookedItemActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookedItemActionAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,8 +126,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                    Timestamp = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,12 +145,54 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChartOfAccounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChartOfAccountsActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChartOfAccountsActionAudits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerActionAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +208,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -116,7 +220,7 @@ namespace RektaManagerApp.Server.Migrations
                 name: "DeviceFlowCodes",
                 columns: table => new
                 {
-                    UserCode = table.Column<string>(type: "varchar(100)", nullable: false),
+                    UserCode = table.Column<string>(type: "varchar(150)", nullable: false),
                     DeviceCode = table.Column<string>(type: "text", nullable: true),
                     SubjectId = table.Column<string>(type: "text", nullable: true),
                     SessionId = table.Column<string>(type: "text", nullable: true),
@@ -145,7 +249,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -154,7 +258,7 @@ namespace RektaManagerApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InventoryAudits",
+                name: "InventoryActionsAudit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -166,12 +270,33 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InventoryAudits", x => x.Id);
+                    table.PrimaryKey("PK_InventoryActionsAudit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InventoryCategoryActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryCategoryActionAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,7 +312,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -210,7 +335,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -219,7 +344,28 @@ namespace RektaManagerApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderAudits",
+                name: "InvoicePaymentsActionAudit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoicePaymentsActionAudit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderActionsAudit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -231,12 +377,54 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderAudits", x => x.Id);
+                    table.PrimaryKey("PK_OrderActionsAudit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderedItemActionAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderedItemActionAudits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItemActionsAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItemActionsAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +442,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -266,7 +454,7 @@ namespace RektaManagerApp.Server.Migrations
                 name: "PersistedGrants",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Key = table.Column<string>(type: "varchar(150)", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: true),
                     SubjectId = table.Column<string>(type: "text", nullable: true),
                     SessionId = table.Column<string>(type: "text", nullable: true),
@@ -283,24 +471,45 @@ namespace RektaManagerApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductActions",
+                name: "ProductActionsAudit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Changes = table.Column<string>(type: "text", nullable: true),
-                    Actions = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductActions", x => x.Id);
+                    table.PrimaryKey("PK_ProductActionsAudit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCategoryActionsAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategoryActionsAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,7 +531,7 @@ namespace RektaManagerApp.Server.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(150)", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     NormalizedName = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -330,6 +539,68 @@ namespace RektaManagerApp.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceActionsAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceActionsAudits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StaffShiftActionsAudit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffShiftActionsAudit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupplierActionsAudits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupplierActionsAudits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -345,7 +616,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -386,8 +657,8 @@ namespace RektaManagerApp.Server.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(100)", nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(100)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(150)", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -399,8 +670,8 @@ namespace RektaManagerApp.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 322, DateTimeKind.Unspecified).AddTicks(729), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 5, 30, 18, 31, 51, 329, DateTimeKind.Unspecified).AddTicks(2013), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 329, DateTimeKind.Unspecified).AddTicks(6614), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 8, 20, 39, 52, 335, DateTimeKind.Unspecified).AddTicks(1390), new TimeSpan(0, 0, 0, 0, 0))),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
@@ -432,7 +703,7 @@ namespace RektaManagerApp.Server.Migrations
                 name: "UserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(100)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(150)", nullable: false),
                     LoginProvider = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
                     Name = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
@@ -456,7 +727,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -487,7 +758,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -527,7 +798,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -566,7 +837,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -590,7 +861,7 @@ namespace RektaManagerApp.Server.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(150)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     OrderedItemsCount = table.Column<float>(type: "float", nullable: false),
                     StaffId = table.Column<string>(type: "varchar(90)", nullable: false),
@@ -602,7 +873,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -638,7 +909,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -677,7 +948,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -765,7 +1036,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -785,7 +1056,7 @@ namespace RektaManagerApp.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OrderId = table.Column<string>(type: "varchar(100)", nullable: true),
+                    OrderId = table.Column<string>(type: "varchar(150)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Quantity = table.Column<double>(type: "double", nullable: false),
@@ -795,7 +1066,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -816,13 +1087,13 @@ namespace RektaManagerApp.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<string>(type: "varchar(100)", nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(150)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -857,7 +1128,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -884,7 +1155,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -916,7 +1187,7 @@ namespace RektaManagerApp.Server.Migrations
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
+                    Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -1057,7 +1328,16 @@ namespace RektaManagerApp.Server.Migrations
                 name: "ApplicationRole");
 
             migrationBuilder.DropTable(
+                name: "BillActionAudits");
+
+            migrationBuilder.DropTable(
                 name: "BillChartOfAccounts");
+
+            migrationBuilder.DropTable(
+                name: "BillPaymentActionAudits");
+
+            migrationBuilder.DropTable(
+                name: "BookedItemActionAudits");
 
             migrationBuilder.DropTable(
                 name: "BookedItems");
@@ -1069,25 +1349,43 @@ namespace RektaManagerApp.Server.Migrations
                 name: "BookingSales");
 
             migrationBuilder.DropTable(
+                name: "ChartOfAccountsActionAudits");
+
+            migrationBuilder.DropTable(
                 name: "ChartOfAccountsInvoice");
+
+            migrationBuilder.DropTable(
+                name: "CustomerActionAudits");
 
             migrationBuilder.DropTable(
                 name: "DeviceFlowCodes");
 
             migrationBuilder.DropTable(
-                name: "InventoryAudits");
+                name: "InventoryActionsAudit");
 
             migrationBuilder.DropTable(
                 name: "InventoryCategories");
 
             migrationBuilder.DropTable(
+                name: "InventoryCategoryActionAudits");
+
+            migrationBuilder.DropTable(
                 name: "InvoiceAudits");
 
             migrationBuilder.DropTable(
-                name: "OrderAudits");
+                name: "InvoicePaymentsActionAudit");
+
+            migrationBuilder.DropTable(
+                name: "OrderActionsAudit");
+
+            migrationBuilder.DropTable(
+                name: "OrderedItemActionAudits");
 
             migrationBuilder.DropTable(
                 name: "OrderedItems");
+
+            migrationBuilder.DropTable(
+                name: "OrderItemActionsAudits");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
@@ -1099,10 +1397,13 @@ namespace RektaManagerApp.Server.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "ProductActions");
+                name: "ProductActionsAudit");
 
             migrationBuilder.DropTable(
                 name: "ProductCategories");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategoryActionsAudits");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
@@ -1111,10 +1412,19 @@ namespace RektaManagerApp.Server.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "ServiceActionsAudits");
+
+            migrationBuilder.DropTable(
                 name: "Services");
 
             migrationBuilder.DropTable(
+                name: "StaffShiftActionsAudit");
+
+            migrationBuilder.DropTable(
                 name: "StaffShifts");
+
+            migrationBuilder.DropTable(
+                name: "SupplierActionsAudits");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

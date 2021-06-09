@@ -27,4 +27,23 @@ namespace RektaManagerApp.Shared.ComponentModels.Orders
 
         public int Id { get; set; }
     }
+
+    public class OrderItemUpsertComponentModel
+    {
+        [StringLength(300)]
+        public string ImageUrl { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string ItemName { get; set; }
+
+        [Required]
+        public int OrderItemId { get; set; }
+
+        [Required]
+        public float Quantity { get; set; }
+    }
 }
