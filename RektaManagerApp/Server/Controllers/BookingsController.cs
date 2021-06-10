@@ -29,16 +29,20 @@ namespace RektaManagerApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingComponentModel>>> GetBookings()
         {
-            var result = await _repo.GetQueryable<Booking>(null, null, b => b.BookedItems,
+            var query = _repo.GetQueryable<Booking>(null, null, b => b.BookedItems,
                 b => b.BookedServices, b => b.Customer, b => b.Invoice,
-                b => b.StaffProcessing).Select(b => new BookingComponentModel
+                b => b.StaffProcessing);
+            var result = await query.Select(b => new BookingComponentModel
                 {
                     BookedBy = b.StaffProcessing.UserName,
                     BookingDate = b.BookingDate.LocalDateTime,
                     CustomerName = b.Customer.Name,
                     EventDate = b.EventDate.LocalDateTime,
-                    BookingId = b.Id
+                    BookingId = b.Id,
+                    IsFullyPaid = b.IsFullyPaid,
+                    IsPartPaid = b.IsPartPayment
                 }).ToListAsync().ConfigureAwait(false);
+
             return result;
         }
 

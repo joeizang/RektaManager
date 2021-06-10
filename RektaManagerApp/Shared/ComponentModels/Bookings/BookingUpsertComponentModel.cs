@@ -21,6 +21,10 @@ namespace RektaManagerApp.Shared.ComponentModels.Bookings
 
         public string CustomerName { get; set; }
 
+        public string Description { get; set; }
 
+        public bool IsPartPaid { get; set; }
+
+        public bool IsFullyPaid { get; set; }
     }
 }

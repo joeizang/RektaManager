@@ -1,16 +1,23 @@
 ﻿@page "/bookings"
 @using RektaManagerApp.Shared.ComponentModels.Bookings
 @inject IHttpService Http
- 
+
 
 <div class="d-flex justify-content-center align-items-center mb-3">
     <h3 class="h3">Bookings List</h3>
 </div>
 
 <div>
-    <SfGrid DataSource="@_bookings">
+    <SfGrid DataSource="@_bookings" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
+        <GridPageSettings PageSize="10"></GridPageSettings>
         <GridColumns>
-
+            <GridColumn Field="@nameof(BookingComponentModel.BookingId)" HeaderText="Booking ID" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.BookedBy)" HeaderText="Booked By" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.BookingDate)" HeaderText="Date" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.EventDate)" HeaderText="Booked Date" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.CustomerName)" HeaderText="Customer" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.IsFullyPaid)" HeaderText="Fully Paid" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookingComponentModel.IsPartPaid)" HeaderText="Partly paid" TextAlign="TextAlign.Center"></GridColumn>
         </GridColumns>
     </SfGrid>
 </div>
@@ -21,6 +28,11 @@
     protected override async Task OnInitializedAsync()
     {
         var response = await Http.GetAsync<List<BookingComponentModel>>("api/bookings");
+    }
+
+    private void DeleteBooking()
+    {
+
     }
 
 }
