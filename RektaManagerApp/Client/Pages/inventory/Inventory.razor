@@ -29,13 +29,13 @@
                 <Template>
                     @{
                         var item = (context as InventoryComponentModel);
-                        <a href="inventory/details/@item.InventoryId" class="btn btn-outline-info">
+                        <a href="inventory/details/@item.InventoryId" class="btn btn-outline-info btn-sm">
                             <span class="bi bi-eye-fill"></span>
                         </a>
-                        <a href="inventory/edit/@item.InventoryId" class="btn btn-outline-info">
+                        <a href="inventory/edit/@item.InventoryId" class="btn btn-outline-info btn-sm">
                             <span class="bi bi-pencil-square"></span>
                         </a>
-                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteInventory(@item.InventoryId))">
+                        <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteInventory(@item.InventoryId))">
                             <span class="bi bi-trash2-fill"></span>
                             <span style="display: @_displayProp">
                                 <ActionSpinner ActionName="Deleting" ColorVariant="text-dark" />

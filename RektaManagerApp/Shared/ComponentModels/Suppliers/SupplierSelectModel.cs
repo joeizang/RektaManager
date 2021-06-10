@@ -13,4 +13,17 @@ namespace RektaManagerApp.Shared.ComponentModels.Suppliers
         public string SupplierName { get; set; }
 
     }
+
+    public class SupplierComponentModel
+    {
+        public int SupplierId { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public int NumberOfBillsSubmitted { get; set; }
+
+        public int NumberOfProductsSupplied { get; set; }
+    }
 }

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
 using RektaManagerApp.Shared;
+using RektaManagerApp.Shared.ComponentModels.Bookings;
 
 namespace RektaManagerApp.Server.Controllers
 {
@@ -15,17 +17,29 @@ namespace RektaManagerApp.Server.Controllers
     public class BookingsController : ControllerBase
     {
         private readonly RektaManagerAppContext _context;
+        private readonly IRepository _repo;
 
-        public BookingsController(RektaManagerAppContext context)
+        public BookingsController(RektaManagerAppContext context, IRepository repo)
         {
             _context = context;
+            _repo = repo;
         }
 
         // GET: api/Bookings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
+        public async Task<ActionResult<IEnumerable<BookingComponentModel>>> GetBookings()
         {
-            return await _context.Bookings.ToListAsync();
+            var result = await _repo.GetQueryable<Booking>(null, null, b => b.BookedItems,
+                b => b.BookedServices, b => b.Customer, b => b.Invoice,
+                b => b.StaffProcessing).Select(b => new BookingComponentModel
+                {
+                    BookedBy = b.StaffProcessing.UserName,
+                    BookingDate = b.BookingDate.LocalDateTime,
+                    CustomerName = b.Customer.Name,
+                    EventDate = b.EventDate.LocalDateTime,
+                    BookingId = b.Id
+                }).ToListAsync().ConfigureAwait(false);
+            return result;
         }
 
         // GET: api/Bookings/5

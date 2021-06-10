@@ -1,7 +1,26 @@
 ﻿@page "/bookings"
+@using RektaManagerApp.Shared.ComponentModels.Bookings
+@inject IHttpService Http
+ 
 
-<h3>Bookings</h3>
+<div class="d-flex justify-content-center align-items-center mb-3">
+    <h3 class="h3">Bookings List</h3>
+</div>
+
+<div>
+    <SfGrid DataSource="@_bookings">
+        <GridColumns>
+
+        </GridColumns>
+    </SfGrid>
+</div>
 
 @code {
+    private List<BookingComponentModel> _bookings = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<BookingComponentModel>>("api/bookings");
+    }
 
 }

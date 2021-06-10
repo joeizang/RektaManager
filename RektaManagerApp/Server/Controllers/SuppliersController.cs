@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Data;
 using RektaManagerApp.Shared;
+using RektaManagerApp.Shared.ComponentModels.Suppliers;
 
 namespace RektaManagerApp.Server.Controllers
 {
@@ -23,11 +24,19 @@ namespace RektaManagerApp.Server.Controllers
 
         // GET: api/Suppliers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
+        public async Task<ActionResult<IEnumerable<SupplierComponentModel>>> GetSuppliers()
         {
             return await _context.Suppliers
                 .Include(s => s.SuppliedProducts)
-                .ToListAsync();
+                .Include(s => s.SupplierBills)
+                .Select(s => new SupplierComponentModel
+                {
+                    SupplierId = s.Id,
+                    SupplierName = s.Name,
+                    NumberOfBillsSubmitted = s.SupplierBills.Count,
+                    NumberOfProductsSupplied = s.SuppliedProducts.Count,
+                    PhoneNumber = s.PhoneNumber
+                }).ToListAsync().ConfigureAwait(false);
         }
 
         // GET: api/Suppliers/5

@@ -11,6 +11,11 @@ namespace RektaManagerApp.Shared
 {
     public class Supplier : DomainModelBase
     {
+        public Supplier()
+        {
+            SuppliedProducts = new List<Product>();
+            SupplierBills = new List<Bill>();
+        }
         public  List<Product> SuppliedProducts { get; set; }
 
         public  List<Bill> SupplierBills { get; set; }

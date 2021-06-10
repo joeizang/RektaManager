@@ -214,10 +214,12 @@ namespace RektaManagerApp.Server.Controllers
                 await _repo.Save<OrderItem>();
                 await _repo.Save<OrderItemActionsAudit>();
             }
-            catch (Exception e)
+            catch (DbUpdateConcurrencyException e)
             {
 
-                throw;
+                await e.Entries.Single().ReloadAsync();
+                await _repo.Save<Product>();
+                return Ok();
             }
             return Ok();
         }

@@ -41,9 +41,9 @@
                 <Template>
                     @{
                         var product = (context as ProductComponentModel);
-                        <a href="products/details/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
-                        <a href="products/edit/@product.ProductId" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
-                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteProduct(product.ProductId))">
+                        <a href="products/details/@product.ProductId" class="btn btn-outline-info btn-sm"><span class="bi bi-eye-fill"></span></a>
+                        <a href="products/edit/@product.ProductId" class="btn btn-outline-info btn-sm"><span class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteProduct(product.ProductId))">
                             <span class="bi bi-trash2-fill"></span>
                             <span style="display: @spinnerVisibility3"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
                         </button>
@@ -55,7 +55,6 @@
 </div>
 @code {
     int pageSize = 10;
-    int _count;
     string spinnerVisibility3 = "none";
 
     IEnumerable<ProductComponentModel> _products = new List<ProductComponentModel>();

@@ -37,6 +37,7 @@ namespace RektaManagerApp.Server
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RektaManagerAppContext>();
 
+            services.AddScoped<IRepository, BaseRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 

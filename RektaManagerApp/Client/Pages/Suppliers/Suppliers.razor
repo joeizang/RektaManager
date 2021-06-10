@@ -1,5 +1,5 @@
 ﻿@page "/suppliers"
-@using RektaManagerApp.Shared
+@using RektaManagerApp.Shared.ComponentModels.Suppliers
 @inject IHttpService HttpService
 @inject NavigationManager Navigation
 
@@ -19,18 +19,18 @@
     <SfGrid DataSource="@_suppliers" AllowSorting="true" AllowPaging="true">
         <GridPageSettings PageSize="10"></GridPageSettings>
         <GridColumns>
-            <GridColumn Field="@nameof(Supplier.Id)" HeaderText="Supplier ID" TextAlign="TextAlign.Center" AllowSorting="false"></GridColumn>
-            <GridColumn Field="@nameof(Supplier.Name)" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field="@nameof(Supplier.PhoneNumber)" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field="@nameof(Supplier.SupplierBills.Count)" HeaderText="Bills Submitted" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field="@nameof(Supplier.SuppliedProducts.Count)" HeaderText="Products Supplied" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn>
+            <GridColumn Field="@nameof(SupplierComponentModel.SupplierId)" HeaderText="Supplier ID" TextAlign="TextAlign.Center" AllowSorting="false"></GridColumn>
+            <GridColumn Field="@nameof(SupplierComponentModel.SupplierName)" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(SupplierComponentModel.PhoneNumber)" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(SupplierComponentModel.NumberOfBillsSubmitted)" HeaderText="Bills Submitted" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(SupplierComponentModel.NumberOfProductsSupplied)" HeaderText="Products Supplied" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn HeaderText="Actions" HeaderTextAlign="TextAlign.Center">
                 <Template>
                     @{
-                        var supplier = (context as Supplier);
-                        <a href="inventory/details/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-eye-fill"></span></a>
-                        <a href="inventory/edit/@supplier.Id" class="btn btn-outline-info"><span class="bi bi-pencil-square"></span></a>
-                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteSupplier(@supplier.Id))">
+                        var supplier = (context as SupplierComponentModel);
+                        <a href="inventory/details/@supplier.SupplierId" class="btn btn-outline-info btn-sm"><span class="bi bi-eye-fill"></span></a>
+                        <a href="inventory/edit/@supplier.SupplierId" class="btn btn-outline-info btn-sm"><span class="bi bi-pencil-square"></span></a>
+                        <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteSupplier(@supplier.SupplierId))">
                             <span class="bi bi-trash2-fill"></span>
                             <span style="display: @_spinnerShow"><ActionSpinner ActionName="Deleting" ColorVariant="text-dark" /></span>
                         </button>
@@ -43,16 +43,16 @@
 
 @code {
 
-    IEnumerable<Supplier> _suppliers = new List<Supplier>();
+    IEnumerable<SupplierComponentModel> _suppliers = new List<SupplierComponentModel>();
     string _spinnerShow = "none";
     
     
     protected override async Task OnInitializedAsync()
     {
-        var result = await HttpService.GetAsync<IEnumerable<Supplier>>("/api/suppliers");
+        var result = await HttpService.GetAsync<IEnumerable<SupplierComponentModel>>("/api/suppliers");
 
         _suppliers = result.Response;
-        Console.WriteLine(_suppliers.Count());
+        //Console.WriteLine(_suppliers.Count());
     }
 
     async Task DeleteSupplier(int id)

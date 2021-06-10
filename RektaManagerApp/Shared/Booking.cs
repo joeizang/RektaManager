@@ -29,6 +29,8 @@ namespace RektaManagerApp.Shared
 
         public int CustomerId { get; set; }
 
+        public string Description { get; set; }
+
         public  List<BookingSales> BookingSalesInvoices { get; set; }
 
         public int InvoiceId { get; set; }
