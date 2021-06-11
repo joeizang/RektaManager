@@ -27,7 +27,7 @@ namespace RektaManagerApp.Shared
 
         public InvoicePayment InvoicePayment { get; set; }
 
-        public int InvoicePaymentId { get; set; }
+        public string InvoicePaymentId { get; set; }
 
         public List<ChartOfAccounts> ChartOfAccounts { get; set; }
 

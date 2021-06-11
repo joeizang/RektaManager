@@ -192,11 +192,27 @@ namespace RektaManagerApp.Server.Controllers
 
             var invoice = new Invoice
             {
+                Id = _repo.GenerateStringId(),
                 CustomerId = newOrder.CustomerId,
                 TransactionDate = newOrder.OrderDate,
                 DueDate = newOrder.OrderDate,
-                Description = "Food or Drink Order"
+                Description = "Food or Drink Order",
             };
+
+            var invoicePayment = new InvoicePayment
+            {
+                Id = _repo.GenerateStringId(),
+                Description = invoice.Description,
+                Total = newOrder.Total,
+                Reference = $"Order Id Number :{newOrder.Id}",
+                TransactionDate = newOrder.OrderDate
+            };
+
+            invoice.InvoicePayment = invoicePayment;
+            invoice.InvoicePaymentId = invoicePayment.Id;
+
+            newOrder.InvoiceId = invoice.Id;
+
 
 
 

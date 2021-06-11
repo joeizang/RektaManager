@@ -28,7 +28,7 @@ namespace RektaManagerApp.Server.Controllers
 
         // GET: api/Bills/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bill>> GetBill(int id)
+        public async Task<ActionResult<Bill>> GetBill(string id)
         {
             var bill = await _context.Bills.FindAsync(id);
 
@@ -43,7 +43,7 @@ namespace RektaManagerApp.Server.Controllers
         // PUT: api/Bills/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBill(int id, Bill bill)
+        public async Task<IActionResult> PutBill(string id, Bill bill)
         {
             if (id != bill.Id)
             {
@@ -98,7 +98,7 @@ namespace RektaManagerApp.Server.Controllers
             return NoContent();
         }
 
-        private bool BillExists(int id)
+        private bool BillExists(string id)
         {
             return _context.Bills.Any(e => e.Id == id);
         }

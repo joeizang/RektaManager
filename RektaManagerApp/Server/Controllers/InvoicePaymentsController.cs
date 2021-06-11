@@ -28,7 +28,7 @@ namespace RektaManagerApp.Server.Controllers
 
         // GET: api/InvoicePayments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<InvoicePayment>> GetInvoicePayment(int id)
+        public async Task<ActionResult<InvoicePayment>> GetInvoicePayment(string id)
         {
             var invoicePayment = await _context.InvoicePayments.FindAsync(id);
 
@@ -43,7 +43,7 @@ namespace RektaManagerApp.Server.Controllers
         // PUT: api/InvoicePayments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInvoicePayment(int id, InvoicePayment invoicePayment)
+        public async Task<IActionResult> PutInvoicePayment(string id, InvoicePayment invoicePayment)
         {
             if (id != invoicePayment.Id)
             {
@@ -98,7 +98,7 @@ namespace RektaManagerApp.Server.Controllers
             return NoContent();
         }
 
-        private bool InvoicePaymentExists(int id)
+        private bool InvoicePaymentExists(string id)
         {
             return _context.InvoicePayments.Any(e => e.Id == id);
         }

@@ -55,17 +55,17 @@
         var response = await Http.GetAsync<List<BookingComponentModel>>("api/bookings");
     }
 
-    private void DeleteBooking(int id)
+    private void DeleteBooking(string id)
     {
         Modal.Show<DeleteBooking>();
     }
 
-    private async Task BookingDetail(int id)
+    private async Task BookingDetail(string id)
     {
         Modal.Show<UpdateBooking>();
     }
 
-    private async Task UpdateBooking(int id)
+    private async Task UpdateBooking(string id)
     {
         Modal.Show<UpdateBooking>();
     }

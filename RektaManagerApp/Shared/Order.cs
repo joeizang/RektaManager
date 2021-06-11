@@ -35,7 +35,7 @@ namespace RektaManagerApp.Shared
 
         public List<OrderSales> OrderSalesInvoices { get; set; }
 
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
 
         public Order()
         {

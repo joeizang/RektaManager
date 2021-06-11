@@ -38,6 +38,6 @@ namespace RektaManagerApp.Shared
 
         public BillPayment BillPayment { get; set; }
 
-        public int BillPaymentId { get; set; }
+        public string BillPaymentId { get; set; }
     }
 }

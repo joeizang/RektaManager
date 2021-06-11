@@ -8,7 +8,7 @@ namespace RektaManagerApp.Shared.ComponentModels.Bookings
 {
     public class BookingComponentModel
     {
-        public int BookingId { get; set; }
+        public string BookingId { get; set; }
 
         public string CustomerName { get; set; }
 

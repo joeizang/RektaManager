@@ -75,7 +75,7 @@ namespace RektaManagerApp.Server.Controllers
         // PUT: api/Bookings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, Booking booking)
+        public async Task<IActionResult> PutBooking(string id, Booking booking)
         {
             if (id != booking.Id)
             {
@@ -130,7 +130,7 @@ namespace RektaManagerApp.Server.Controllers
             return NoContent();
         }
 
-        private bool BookingExists(int id)
+        private bool BookingExists(string id)
         {
             return _context.Bookings.Any(e => e.Id == id);
         }

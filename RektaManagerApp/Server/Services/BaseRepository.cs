@@ -80,8 +80,6 @@ namespace RektaManagerApp.Server.Services
             audit.Actions = ActionPerformed.Updated;
             audit.Changes = JsonSerializer.Serialize(changes);
 
-            //var compareTimestampResult = Xor(entity.Timestamp, target.Timestamp);
-
             _context.Entry(target).State = EntityState.Modified;
             
             try

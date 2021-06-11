@@ -9,8 +9,8 @@ using RektaManagerApp.Server.Data;
 namespace RektaManagerApp.Server.Migrations
 {
     [DbContext(typeof(RektaManagerAppContext))]
-    [Migration("20210610171217_ModifyBooking")]
-    partial class ModifyBooking
+    [Migration("20210611221507_MorphOrder")]
+    partial class MorphOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,8 +21,8 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("BillChartOfAccounts", b =>
                 {
-                    b.Property<int>("BillsId")
-                        .HasColumnType("int");
+                    b.Property<string>("BillsId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<int>("ChartOfAccountsId")
                         .HasColumnType("int");
@@ -39,8 +39,8 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int>("ChartOfAccountsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoicesId")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoicesId")
+                        .HasColumnType("varchar(767)");
 
                     b.HasKey("ChartOfAccountsId", "InvoicesId");
 
@@ -248,7 +248,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 10, 17, 12, 17, 187, DateTimeKind.Unspecified).AddTicks(3556), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 976, DateTimeKind.Unspecified).AddTicks(8046), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -267,7 +267,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 10, 17, 12, 17, 187, DateTimeKind.Unspecified).AddTicks(7853), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 977, DateTimeKind.Unspecified).AddTicks(2678), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.HasKey("Id");
 
@@ -289,7 +289,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 10, 17, 12, 17, 179, DateTimeKind.Unspecified).AddTicks(9466), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 969, DateTimeKind.Unspecified).AddTicks(725), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -347,7 +347,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 10, 17, 12, 17, 185, DateTimeKind.Unspecified).AddTicks(4218), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 974, DateTimeKind.Unspecified).AddTicks(9888), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("UserName")
                         .HasColumnType("text");
@@ -359,12 +359,11 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("RektaManagerApp.Shared.Bill", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
-                    b.Property<int>("BillPaymentId")
-                        .HasColumnType("int");
+                    b.Property<string>("BillPaymentId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<int>("ChartOfAccountsId")
                         .HasColumnType("int");
@@ -464,9 +463,8 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("RektaManagerApp.Shared.BillPayment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -554,8 +552,8 @@ namespace RektaManagerApp.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
+                    b.Property<string>("BookingId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -637,9 +635,8 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("RektaManagerApp.Shared.Booking", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("BookingDate")
                         .HasColumnType("timestamp");
@@ -665,6 +662,9 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int");
+
+                    b.Property<string>("InvoiceId1")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -700,7 +700,7 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("InvoiceId1");
 
                     b.HasIndex("StaffProcessingId");
 
@@ -751,8 +751,9 @@ namespace RektaManagerApp.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
+                    b.Property<string>("BookingId")
+                        .IsRequired()
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -761,8 +762,9 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoiceId")
+                        .IsRequired()
+                        .HasColumnType("varchar(767)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -1117,9 +1119,8 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("RektaManagerApp.Shared.Invoice", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -1137,8 +1138,8 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("DueDate")
                         .HasColumnType("timestamp");
 
-                    b.Property<int>("InvoicePaymentId")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoicePaymentId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<bool>("InvoicePaymentStatus")
                         .HasColumnType("tinyint(1)");
@@ -1211,9 +1212,8 @@ namespace RektaManagerApp.Server.Migrations
 
             modelBuilder.Entity("RektaManagerApp.Shared.InvoicePayment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -1310,8 +1310,8 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -1491,8 +1491,9 @@ namespace RektaManagerApp.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoiceId")
+                        .IsRequired()
+                        .HasColumnType("varchar(767)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -1825,8 +1826,9 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(20,2)");
 
-                    b.Property<int>("ServiceBookingId")
-                        .HasColumnType("int");
+                    b.Property<string>("ServiceBookingId")
+                        .IsRequired()
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
@@ -2094,8 +2096,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasOne("RektaManagerApp.Shared.BillPayment", "BillPayment")
                         .WithMany("Bills")
                         .HasForeignKey("BillPaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RektaManagerApp.Shared.Supplier", "Supplier")
                         .WithMany("SupplierBills")
@@ -2113,8 +2114,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasOne("RektaManagerApp.Shared.Booking", "RequiredBooking")
                         .WithMany("BookedItems")
                         .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("RequiredBooking");
                 });
@@ -2129,9 +2129,7 @@ namespace RektaManagerApp.Server.Migrations
 
                     b.HasOne("RektaManagerApp.Shared.Invoice", "Invoice")
                         .WithMany()
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InvoiceId1");
 
                     b.HasOne("RektaManagerApp.Shared.ApplicationUser", "StaffProcessing")
                         .WithMany("HandledBookings")
