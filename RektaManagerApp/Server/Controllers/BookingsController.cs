@@ -46,6 +46,18 @@ namespace RektaManagerApp.Server.Controllers
             return result;
         }
 
+        [HttpGet("bookedItemDropDown", Name = "GetBookedItemDropDown")]
+        public async Task<ActionResult<IEnumerable<BookedItemDropdownModel>>> GetDropDown()
+        {
+            var result = await _context.BookedItems.AsNoTracking()
+                .Select(s => new BookedItemDropdownModel
+                {
+                    BookedItemId = s.Id,
+                    ItemName = s.Name
+                }).ToListAsync().ConfigureAwait(false);
+            return result;
+        }
+
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Booking>> GetBooking(int id)

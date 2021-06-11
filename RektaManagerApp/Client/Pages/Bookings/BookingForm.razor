@@ -1,5 +1,138 @@
-﻿<h3>BookingForm</h3>
+﻿@using RektaManagerApp.Shared.ComponentModels.Bookings
+@using RektaManagerApp.Shared.ComponentModels.Services
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider Provider
+<div class="card shadow d-flex justify-content-center align-items-center p-1 mb-4 col-12">
+    <EditForm Model="@Model" OnInvalidSubmit="@HandleSubmit" class="w-75 pr-3 pt-3">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>
+                <b>Booking Date :</b>
+            </label>
+            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.BookingDate" Min="@minDate" Max="@maxDate" @ref="@DatePicker" Format="dd-MM-yyyy">
+                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => DatePicker.Show())"></DatePickerEvents>
+            </SfDatePicker>
+            <span class="text-danger"><ValidationMessage For="@(() => Model.BookingDate)" /></span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Customer Name :</b>
+            </label>
+            <InputText class="form-control" @bind-Value="@Model.CustomerName" />
+            <span class="text-danger"><ValidationMessage For="@(() => Model.CustomerName)" /></span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Deposit :</b>
+            </label>
+            <InputNumber class="form-control" @bind-Value="@Model.Deposit" />
+            <span class="text-danger"><ValidationMessage For="@(() => Model.Deposit)" /></span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Select Service :</b>
+                <SfDropDownList CssClass="form-control" TItem="ServiceDropdownModel" DataSource="@ServicesDropdown" TValue="int" AllowFiltering="true" Placeholder="Select a Service">
+                    <DropDownListFieldSettings Text="ServiceName" Value="ServiceId"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Bookable Items :</b>
+                <SfDropDownList CssClass="form-control" TItem="BookedItemDropdownModel" DataSource="@BookedItemDropdown" TValue="int" AllowFiltering="true" Placeholder="Select a Item">
+                    <DropDownListFieldSettings Text="ItemName" Value="BookedItemId"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Part Payment? :</b>
+            </label>
+            <SfSwitch @bind-Checked="@Model.IsPartPaid" />
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Description :</b>
+            </label>
+            <InputTextArea class="form-control" @bind-Value="@Model.Description" />
+            <span class="text-danger"><ValidationMessage For="@(() => Model.Description)" /></span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Attending Staff :</b>
+            </label>
+            <InputText class="form-control" @bind-Value="@Model.StaffUsername" readonly />
+            <span class="text-danger"><ValidationMessage For="@(() => Model.StaffUsername)" /></span>
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Event Date :</b>
+            </label>
+            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.EventDate" Min="@minDate" Max="@maxDate" @ref="@DatePicker" Format="dd-MM-yyyy">
+                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => DatePicker.Show())"></DatePickerEvents>
+            </SfDatePicker>
+            <span class="text-danger"><ValidationMessage For="@(() => Model.EventDate)" /></span>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-block btn-outline-primary">
+                <span class="bi bi-bookmark-plus-fill">Create Booking</span>
+            </button>
+        </div>
+    </EditForm>
+    <style>
+        .e-ddl.e-input-group.e-control-wrapper.e-input-focus::before, .e-ddl.e-input-group.e-control-wrapper.e-input-focus::after {
+            background: #78C2AD;
+        }
+        .e-outline.e-input-group.e-input-focus:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left), .e-outline.e-input-group.e-input-focus.e-control-wrapper:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left), .e-outline.e-input-group.e-input-focus:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled), .e-outline.e-input-group.e-control-wrapper.e-input-focus:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled) {
+            border-color: #78C2AD;
+            box-shadow: inset 1px 1px #78C2AD, inset -1px 0 #78C2AD, inset 0 -1px #78C2AD;
+        }
+        .e-dropdownbase .e-list-item.e-item-focus, .e-dropdownbase .e-list-item.e-active, .e-dropdownbase .e-list-item.e-active.e-hover, .e-dropdownbase .e-list-item.e-hover {
+            background-color: #78C2AD;
+            color: #78C2AD;
+        }
+        e-dropdownbase .e-list-item, .e-dropdownbase .e-list-item.e-item-focus {
+            background-color: maroon;
+            color: pink;
+            @*font-family: emoji;*@
+            min-height: 29px;
+        }
+        .e-ddl.e-input-group.e-control-wrapper .e-input {
+            font-size: 20px;
+            @*font-family: emoji;*@
+            color: #78C2AD;
+            background: #78C2AD;
+        }
+    </style>
+</div>
 
 @code {
+    SfDatePicker<DateTime> DatePicker;
+
+    [Parameter]
+    public EventCallback HandleSubmit { get; set; }
+
+    [Parameter]
+    public BookingUpsertComponentModel Model { get; set; }
+
+    [Parameter]
+    public List<ServiceDropdownModel> ServicesDropdown { get; set; }
+
+    [Parameter]
+    public List<BookedItemDropdownModel> BookedItemDropdown { get; set; }
+
+
+    private DateTime minDate = new DateTime(2020, 01, 01);
+
+    private DateTime maxDate = DateTime.UtcNow.AddMonths(6);
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await Provider.GetAuthenticationStateAsync();
+        Model.StaffUsername = user.User.Identity.Name;
+        await LocalStorage.SetItemAsync<BookingUpsertComponentModel>("createBooking", Model);
+    }
 
 }

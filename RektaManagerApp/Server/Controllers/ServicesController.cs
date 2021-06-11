@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Data;
 using RektaManagerApp.Shared;
+using RektaManagerApp.Shared.ComponentModels.Services;
 
 namespace RektaManagerApp.Server.Controllers
 {
@@ -26,6 +27,18 @@ namespace RektaManagerApp.Server.Controllers
         public async Task<ActionResult<IEnumerable<Service>>> GetServices()
         {
             return await _context.Services.ToListAsync();
+        }
+
+        [HttpGet("servicesDropDown", Name = "GetServicesDropDown")]
+        public async Task<ActionResult<IEnumerable<ServiceDropdownModel>>> GetDropDown()
+        {
+            var result = await _context.Services.AsNoTracking()
+                .Select(s => new ServiceDropdownModel
+                {
+                    ServiceId = s.Id,
+                    ServiceName = s.Name
+                }).ToListAsync().ConfigureAwait(false);
+            return result;
         }
 
         // GET: api/Services/5

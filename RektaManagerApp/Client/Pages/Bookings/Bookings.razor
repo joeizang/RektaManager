@@ -1,11 +1,20 @@
 ﻿@page "/bookings"
 @using RektaManagerApp.Shared.ComponentModels.Bookings
 @inject IHttpService Http
-
+@inject IToastService Toast
+@inject IModalService Modal 
 
 <div class="d-flex justify-content-center align-items-center mb-3">
     <h3 class="h3">Bookings List</h3>
 </div>
+
+<span class="btn-group" role="group">
+    <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(1))"><span class="bi bi-eye-fill"></span></button>
+    <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(1))"><span class="bi bi-pencil-square"></span></button>
+    <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBooking(1))">
+        <span class="bi bi-trash2-fill"></span>
+    </button>
+</span>
 
 <div>
     <SfGrid DataSource="@_bookings" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
@@ -18,6 +27,20 @@
             <GridColumn Field="@nameof(BookingComponentModel.CustomerName)" HeaderText="Customer" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field="@nameof(BookingComponentModel.IsFullyPaid)" HeaderText="Fully Paid" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field="@nameof(BookingComponentModel.IsPartPaid)" HeaderText="Partly paid" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn AllowFiltering="false">
+                <Template>
+                    @{
+                        var booking = (context as BookingComponentModel);
+                                        <span class="btn-group" role="group">
+                                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-eye-fill"></span></button>
+                                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-pencil-square"></span></button>
+                                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBooking(booking.BookingId))">
+                                                <span class="bi bi-trash2-fill"></span>
+                                            </button>
+                                        </span>
+                    }
+                </Template>
+            </GridColumn>
         </GridColumns>
     </SfGrid>
 </div>
@@ -30,9 +53,19 @@
         var response = await Http.GetAsync<List<BookingComponentModel>>("api/bookings");
     }
 
-    private void DeleteBooking()
+    private void DeleteBooking(int id)
     {
+        Modal.Show<DeleteBooking>();
+    }
 
+    private async Task BookingDetail(int id)
+    {
+        Modal.Show<UpdateBooking>();
+    }
+
+    private async Task UpdateBooking(int id)
+    {
+        Modal.Show<UpdateBooking>();
     }
 
 }

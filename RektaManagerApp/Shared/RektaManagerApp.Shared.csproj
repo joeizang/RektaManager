@@ -12,8 +12,4 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ComponentModels\Services\" />
-  </ItemGroup>
 </Project>
