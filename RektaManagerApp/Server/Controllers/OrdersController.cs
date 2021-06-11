@@ -213,12 +213,22 @@ namespace RektaManagerApp.Server.Controllers
 
             newOrder.InvoiceId = invoice.Id;
 
+            _context.Invoices.Add(invoice);
+            _context.InvoicePayments.Add(invoicePayment);
 
+            await _repo.Update<Order>(persistOrder, newOrder, new OrderActionsAudit()).ConfigureAwait(false);
+            await _repo.Save<Invoice>().ConfigureAwait(false);
+            await _repo.Save<InvoicePayment>().ConfigureAwait(false);
+            await _repo.Save<OrderActionsAudit>().ConfigureAwait(false);
 
-
-
-
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            return Created($"api/orders/{newOrder.Id}", new OrderComponentModel
+            {
+                OrderId = newOrder.Id,
+                CustomerName = order.CustomerName,
+                OrderDate = newOrder.OrderDate,
+                OrderTotal = newOrder.Total,
+                StaffName = order.StaffId
+            });
         }
 
         [HttpPut]
