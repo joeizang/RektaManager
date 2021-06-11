@@ -68,8 +68,8 @@
             <label>
                 <b>Event Date :</b>
             </label>
-            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.EventDate" Min="@minDate" Max="@maxDate" @ref="@DatePicker" Format="dd-MM-yyyy">
-                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => DatePicker.Show())"></DatePickerEvents>
+            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.EventDate" Min="@minDate" Max="@maxDate" @ref="@EventDatePicker" Format="dd-MM-yyyy">
+                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => EventDatePicker.Show())"></DatePickerEvents>
             </SfDatePicker>
             <span class="text-danger"><ValidationMessage For="@(() => Model.EventDate)" /></span>
         </div>
@@ -109,6 +109,8 @@
 
 @code {
     SfDatePicker<DateTime> DatePicker;
+
+    SfDatePicker<DateTime> EventDatePicker;
 
     [Parameter]
     public EventCallback HandleSubmit { get; set; }

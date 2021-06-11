@@ -9,7 +9,7 @@ namespace RektaManagerApp.Server.Abstractions
 {
     public interface IRepository
     {
-        Task Save<T>() where T : DomainModelBase;
+        Task<int> Save<T>() where T : DomainModelBase;
 
         Task<IEnumerable<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate) where T : DomainModelBase;
 
@@ -23,5 +23,7 @@ namespace RektaManagerApp.Server.Abstractions
         Task Update<T>(T entity, T target, BaseActionsAudit audit) where T : DomainModelBase;
 
         Task Delete<T>(int id) where T : DomainModelBase;
+
+        string GenerateStringId();
     }
 }

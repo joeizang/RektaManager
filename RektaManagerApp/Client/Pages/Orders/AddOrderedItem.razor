@@ -47,31 +47,34 @@
     [CascadingParameter]
     public BlazoredModalInstance ModalInstance { get; set; }
 
+    [Parameter]
     public AuthenticationState AuthState { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    @*protected override async Task OnInitializedAsync()
     {
         AuthState = await AuthProvider.GetAuthenticationStateAsync();
-    }
+    }*@
 
-    public async Task HandleOrderAddition()
-    {
-        //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
-        //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
-        NewOrderedItem.ItemCode = Model.ItemName;
-        NewOrderedItem.ItemName = Model.ItemName;
-        NewOrderedItem.Quantity = Model.Quantity;
-        NewOrderedItem.ItemPrice = Model.Price;
-        NewOrderedItem.SalesStaff = AuthState.User.Identity?.Name;
-        NewOrderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
-        NewOrderedItem.CustomerName = Guid.NewGuid().ToString("N");
+public async Task HandleOrderAddition()
+{
+    //TODO: Now notification badge to indicate order and work on finishing order (order->invoice->invoicepayment)
+    //once the item has been added. Close the dialog. also we need to store the order summary in localstorage
+    NewOrderedItem.ItemCode = Model.ItemName;
+    NewOrderedItem.ItemName = Model.ItemName;
+    NewOrderedItem.Quantity = Model.Quantity;
+    NewOrderedItem.ItemPrice = Model.Price;
+    NewOrderedItem.SalesStaff = AuthState.User.Identity?.Name;
+    NewOrderedItem.OrderDate = DateTimeOffset.UtcNow.LocalDateTime;
+    NewOrderedItem.CustomerName = Guid.NewGuid().ToString("N");
 
-        State.OrderedItems.Add(NewOrderedItem);
+    //State.OrderedItems.Add(NewOrderedItem);
+    var order = new List<OrderedItemUpsertComponentModel>();
+    order.Add(NewOrderedItem);
 
-        await OrderService.AddToCart(State.OrderedItems);
-        Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
+    await OrderService.AddToCart(order);
+    Toast.ShowSuccess("Added to Order Successfully!", "Order Updated!");
 
-        Navigation.NavigateTo("orders/make-orders");
-        await ModalInstance.CloseAsync();
-    }
+    Navigation.NavigateTo("orders/make-orders");
+    await ModalInstance.CloseAsync();
+}
 }

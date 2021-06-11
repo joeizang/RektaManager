@@ -2,19 +2,21 @@
 @using RektaManagerApp.Shared.ComponentModels.Bookings
 @inject IHttpService Http
 @inject IToastService Toast
-@inject IModalService Modal 
+@inject IModalService Modal
+@inject NavigationManager Navigation
 
 <div class="d-flex justify-content-center align-items-center mb-3">
     <h3 class="h3">Bookings List</h3>
 </div>
 
-<span class="btn-group" role="group">
-    <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(1))"><span class="bi bi-eye-fill"></span></button>
-    <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(1))"><span class="bi bi-pencil-square"></span></button>
-    <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBooking(1))">
-        <span class="bi bi-trash2-fill"></span>
-    </button>
-</span>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <span>
+        <button @onclick="@(() => Navigation.NavigateTo("bookings/create-booking"))" class="btn btn-outline-primary">
+            <span class="bi bi-plus-circle-fill"></span>
+            Make Booking
+        </button>
+    </span>
+</div>
 
 <div>
     <SfGrid DataSource="@_bookings" AllowPaging="true" AllowSorting="true" AllowFiltering="true">

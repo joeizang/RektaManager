@@ -5,16 +5,16 @@
 @inject IHttpService Http
 @*@inject IToastService Toast*@
 @inject ILocalStorageService LocalStorage
-<h3>Finish the Order</h3>
+
 <div class="table-responsive">
     <table class="table-bordered w-100">
         <thead class="thead-light">
-        <tr>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-        </tr>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in OrderedItems)
@@ -26,20 +26,20 @@
                     <td>@CalculateTotal((decimal)@item.Quantity, @item.ItemPrice)</td>
                 </tr>
             }
-        <tr class="h-25">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>@_grandTotal</td>
-        </tr>
-        <tr>
-            <td><button class="btn btn-success bi bi-award" @onclick="@MakeSale" disabled="@DisableBtn"></button></td>
-            <td>
-                <span style="display: @Visibility">
-                    <ActionSpinner ActionName="Please wait" ColorVariant="text-dark" />
-                </span>
-            </td>
-        </tr>
+            <tr class="h-25">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@_grandTotal</td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-success bi bi-award" @onclick="@MakeSale" disabled="@DisableBtn"></button></td>
+                <td>
+                    <span style="display: @Visibility">
+                        <ActionSpinner ActionName="Please wait" ColorVariant="text-dark" />
+                    </span>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -53,12 +53,15 @@
 
     public bool DisableBtn { get; set; } = false;
 
+    [Parameter]
+    public AuthenticationState AuthState { get; set; }
+
     decimal _grandTotal;
 
     private decimal CalculateTotal(decimal amount, decimal amount1)
     {
         var result = amount * amount1;
-        _grandTotal += result;
+        _grandTotal = result;
         return result;
     }
 
@@ -68,19 +71,16 @@
         Visibility = "inline";
 
         //create order and populate with everything needed
-        var orderedItems = new List<OrderedItem>();
+        var order = new OrderUpsertComponentModel();
 
-        OrderedItems.ForEach(item =>
-        {
-            var orderedItem = new OrderedItem
-            {
-                Name = item.ItemName,
-                ItemCode = item.ItemCode,
-                Quantity = item.Quantity,
-                Price = item.ItemPrice
-            };
-            orderedItems.Add(orderedItem);
-        });
+        order.OrderedItems = OrderedItems;
+        order.OrderDate = DateTimeOffset.UtcNow;
+        order.CustomerName = OrderedItems.First().CustomerName;
+        order.StaffId = AuthState.User.Identity.Name;
+        order.Timestamp = DateTimeOffset.UtcNow.LocalDateTime;
+        order.OrderTotal = _grandTotal;
+
+        var response = await Http.Post<OrderUpsertComponentModel>("api/orders", order);
 
         await Task.Delay(3000);
 

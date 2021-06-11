@@ -26,6 +26,7 @@ namespace RektaManagerApp.Shared.ComponentModels.Orders
         [Required]
         public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; }
 
+        public decimal OrderTotal { get; set; }
 
     }
 }

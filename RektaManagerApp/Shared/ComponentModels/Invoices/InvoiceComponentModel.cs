@@ -44,4 +44,26 @@ namespace RektaManagerApp.Shared.ComponentModels.Invoices
         public int InvoiceId { get; set; }
 
     }
+
+
+    public class InvoiceUpsertComponentModel
+    {
+        public DateTime TransactionDate { get; set; }
+
+        public DateTime DueDate { get; set; }
+
+        public string Description { get; set; }
+
+        public bool InvoicePaymentStatus { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string CustomerPhone { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public decimal Total { get; set; }
+
+        public bool IsPartPayment { get; set; }
+    }
 }

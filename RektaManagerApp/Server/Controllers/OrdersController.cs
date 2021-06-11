@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Abstractions;
@@ -18,11 +19,13 @@ namespace RektaManagerApp.Server.Controllers
     {
         private readonly RektaManagerAppContext _context;
         private readonly IOrderRepository _repo;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrdersController(RektaManagerAppContext context, IOrderRepository repo)
+        public OrdersController(RektaManagerAppContext context, IOrderRepository repo, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _repo = repo;
+            _userManager = userManager;
         }
 
         // GET: api/Orders
@@ -139,10 +142,65 @@ namespace RektaManagerApp.Server.Controllers
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder([FromBody]OrderUpsertComponentModel order)
         {
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+            var orderId = _repo.GenerateStringId();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var staff = await _userManager.Users.Where(u => u.UserName.Equals(order.StaffId) || 
+                u.Email.Equals(order.StaffId))
+                .SingleOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            var orderedItems = order.OrderedItems.Select(item =>
+                new OrderedItem
+                {
+                    ItemCode = item.ItemCode,
+                    Name = item.ItemName,
+                    Price = item.ItemPrice,
+                    Quantity = item.Quantity,
+                    OrderId = orderId
+                }).ToList();
+
+            
+
+            var persistOrder = new Order
+            {
+                Total = order.OrderTotal,
+                OrderDate = order.OrderDate,
+                OrderedItemsCount = order.OrderedItems.Count,
+                Staff = staff,
+                Customer = new Customer { Name = order.CustomerName },
+                Id = orderId,
+                OrderedItems = orderedItems
+            };
+            _context.Orders.Add(persistOrder);
+            await _repo.Save<Order>().ConfigureAwait(false);
+
+            var newOrder = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderedItems)
+                .Include(o => o.Staff)
+                .Where(o => o.Id.Equals(orderId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+
+
+            var invoice = new Invoice
+            {
+                CustomerId = newOrder.CustomerId,
+                TransactionDate = newOrder.OrderDate,
+                DueDate = newOrder.OrderDate,
+                Description = "Food or Drink Order"
+            };
+
+
+
+
 
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }

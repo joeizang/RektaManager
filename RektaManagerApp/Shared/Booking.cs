@@ -11,6 +11,8 @@ namespace RektaManagerApp.Shared
 {
     public class Booking : DomainModelBase
     {
+        [Key]
+        public new string Id { get; set; }
         [Column(TypeName = "decimal(20,2)")]
         public decimal Deposit { get; set; }
 
@@ -35,15 +37,15 @@ namespace RektaManagerApp.Shared
 
         public bool IsFullyPaid { get; set; }
 
-        public  List<BookingSales> BookingSalesInvoices { get; set; }
+        public List<BookingSales> BookingSalesInvoices { get; set; }
 
         public int InvoiceId { get; set; }
 
         public Invoice Invoice { get; set; }
 
-        public  List<BookedItem> BookedItems { get; set; }
+        public List<BookedItem> BookedItems { get; set; }
 
-        public  List<Service> BookedServices { get; set; }
+        public List<Service> BookedServices { get; set; }
 
     }
 }

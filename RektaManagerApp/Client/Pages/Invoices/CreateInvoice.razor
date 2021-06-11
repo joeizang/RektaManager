@@ -1,4 +1,17 @@
-﻿<h3>CreateInvoice</h3>
+﻿@page "/invoices/issue-invoice"
+@using RektaManagerApp.Shared.ComponentModels
+@inject IHttpService Http
+@inject IToastService Toast
+
+
+<div class="d-flex justify-content-center align-items-center">
+    <h3 class="h3">Issue an Invoice</h3>
+</div>
+
+<div class="col-12">
+    <InvoiceForm></InvoiceForm>
+</div>
+
 
 @code {
 

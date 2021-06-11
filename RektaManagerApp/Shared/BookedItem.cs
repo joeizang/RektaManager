@@ -15,11 +15,11 @@ namespace RektaManagerApp.Shared
         public decimal Price { get; set; }
 
         public double Quantity { get; set; }
-        
+
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int BookingId { get; set; }
+        public string BookingId { get; set; }
 
         public Booking RequiredBooking { get; set; }
     }

@@ -12,7 +12,7 @@ namespace RektaManagerApp.Shared
     {
         public Invoice Invoice { get; set; }
 
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
 
         public Order Order { get; set; }
 

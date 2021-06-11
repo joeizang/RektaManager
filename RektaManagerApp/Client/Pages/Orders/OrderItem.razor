@@ -43,7 +43,7 @@
     {
         var parameters = new ModalParameters();
         parameters.Add("Model", Item);
-        parameters.Add(nameof(OrderedItemUpsertComponentModel), OrderedItem);
+        parameters.Add("NewOrderedItem", OrderedItem);
         parameters.Add(nameof(AuthState), AuthState);
 
         var options = new ModalOptions();

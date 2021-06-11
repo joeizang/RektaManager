@@ -24,7 +24,7 @@ namespace RektaManagerApp.Server.Services
             _context = context;
             _httpContext = httpContext;
         }
-        public async Task Save<T>() where T : DomainModelBase
+        public async Task<int> Save<T>() where T : DomainModelBase
         {
             var user = _httpContext.HttpContext.User.Identity.Name ?? "Unknown";
             foreach (var entity in _context.ChangeTracker.Entries<T>())
@@ -47,7 +47,7 @@ namespace RektaManagerApp.Server.Services
                 }
             }
 
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
         
         public async Task<IEnumerable<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate) where T : DomainModelBase
@@ -161,6 +161,14 @@ namespace RektaManagerApp.Server.Services
 
             return x == 0;
 
+        }
+
+        public string GenerateStringId()
+        {
+            var temp = Guid.NewGuid().ToString();
+            var stamp = DateTimeOffset.UtcNow.LocalDateTime.TimeOfDay.ToString();
+
+            return $"{temp}-{stamp}";
         }
     }
 }

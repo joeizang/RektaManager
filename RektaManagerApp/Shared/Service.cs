@@ -21,7 +21,7 @@ namespace RektaManagerApp.Shared
 
         public Booking ServiceBooking { get; set; }
 
-        public int ServiceBookingId { get; set; }
+        public string ServiceBookingId { get; set; }
 
     }
 }

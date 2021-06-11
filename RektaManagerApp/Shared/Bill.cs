@@ -11,6 +11,8 @@ namespace RektaManagerApp.Shared
 {
     public class Bill : DomainModelBase
     {
+        [Key]
+        public new string Id { get; set; }
         public DateTimeOffset TransactionDate { get; set; }
 
         public DateTimeOffset DueDate { get; set; }
@@ -26,7 +28,7 @@ namespace RektaManagerApp.Shared
 
         public bool PaymentStatus { get; set; }
 
-        public  List<ChartOfAccounts> ChartOfAccounts { get; set; }
+        public List<ChartOfAccounts> ChartOfAccounts { get; set; }
 
         public int ChartOfAccountsId { get; set; }
 

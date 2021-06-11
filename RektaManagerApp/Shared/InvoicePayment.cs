@@ -11,6 +11,8 @@ namespace RektaManagerApp.Shared
 {
     public class InvoicePayment : DomainModelBase
     {
+        [Key]
+        public new string Id { get; set; }
         public DateTimeOffset TransactionDate { get; set; }
 
         [StringLength(300)]
@@ -22,6 +24,6 @@ namespace RektaManagerApp.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        public  List<Invoice> Invoices { get; set; }
+        public List<Invoice> Invoices { get; set; }
     }
 }

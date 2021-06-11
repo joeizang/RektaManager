@@ -12,6 +12,8 @@ using System.Linq;
 using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Services;
 using RektaManagerApp.Shared;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace RektaManagerApp.Server
 {
@@ -43,6 +45,8 @@ namespace RektaManagerApp.Server
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, RektaManagerAppContext>();
+
+            services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

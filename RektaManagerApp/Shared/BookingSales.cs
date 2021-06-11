@@ -11,11 +11,11 @@ namespace RektaManagerApp.Shared
     {
         public Booking Booking { get; set; }
 
-        public int BookingId { get; set; }
+        public string BookingId { get; set; }
 
         public Invoice Invoice { get; set; }
 
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
 
     }
 }

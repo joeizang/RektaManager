@@ -2,7 +2,7 @@
 @using Blazored.LocalStorage
 @inject ISyncLocalStorageService LocalStorage
 @inject IOrderService OrderService
-@*@inject DialogService Dialog*@
+@inject IModalService Modal 
 @implements IDisposable
 
 
@@ -23,9 +23,20 @@ else
 }
 
 
+<SfDialog IsModal="true" @bind-Visible="@_showDialog" Width="30rem" ShowCloseIcon="true">
+    <DialogTemplates>
+        <Header><h3 class="h3">Finish the Order</h3></Header>
+        <Content>
+            <FinishOrder OrderedItems="@CurrentCart" />
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
 @code {
 
     public List<OrderedItemUpsertComponentModel> CurrentCart { get; set; }
+
+    private bool _showDialog = false;
 
     protected override void OnInitialized()
     {
@@ -41,7 +52,8 @@ else
 
     private void FinishOrder()
     {
-        //        Dialog.Open<FinishOrder>("Finish Placing the Order", new Dictionary<string, object>()
+        _showDialog = true;
+        //Modal.Open<FinishOrder>("Finish Placing the Order", new Dictionary<string, object>()
         //{
         //            { "OrderedItems", CurrentCart }
         //        }, new DialogOptions { Width = "30rem" });
