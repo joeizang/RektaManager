@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MySql.EntityFrameworkCore.Extensions;
+using RektaManagerApp.Server.Extensions;
 using RektaManagerApp.Shared;
 
 namespace RektaManagerApp.Server.Data
@@ -100,6 +101,7 @@ namespace RektaManagerApp.Server.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.SeedData();
             builder.Entity<OrderSales>()
                 .HasOne(o => o.Order)
                 .WithMany(i => i.OrderSalesInvoices)
@@ -168,14 +170,14 @@ namespace RektaManagerApp.Server.Data
                 .HasMany(c => c.CustomerBookings)
                 .WithOne(b => b.Customer)
                 .HasForeignKey(b => b.CustomerId)
-                .IsRequired()
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Customer>()
                 .HasMany(c => c.CustomerOrders)
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId)
-                .IsRequired()
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Customer>()

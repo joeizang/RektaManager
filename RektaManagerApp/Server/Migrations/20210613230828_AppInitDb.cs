@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace RektaManagerApp.Server.Migrations
 {
-    public partial class DatabaseInit : Migration
+    public partial class AppInitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,8 @@ namespace RektaManagerApp.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 11, 21, 38, 4, 183, DateTimeKind.Unspecified).AddTicks(4699), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 11, 21, 38, 4, 183, DateTimeKind.Unspecified).AddTicks(8953), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 625, DateTimeKind.Unspecified).AddTicks(4231), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 625, DateTimeKind.Unspecified).AddTicks(8129), new TimeSpan(0, 0, 0, 0, 0))),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Timestamp = table.Column<byte[]>(type: "varbinary(4000)", rowVersion: true, nullable: true)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
@@ -368,15 +368,15 @@ namespace RektaManagerApp.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Changes = table.Column<string>(type: "text", nullable: true),
-                    Actions = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UpdatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime", rowVersion: true, nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    Changes = table.Column<string>(type: "text", nullable: true),
+                    Actions = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -668,8 +668,8 @@ namespace RektaManagerApp.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(90)", maxLength: 90, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 11, 21, 38, 4, 175, DateTimeKind.Unspecified).AddTicks(8207), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 11, 21, 38, 4, 181, DateTimeKind.Unspecified).AddTicks(3193), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 618, DateTimeKind.Unspecified).AddTicks(2949), new TimeSpan(0, 0, 0, 0, 0))),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 623, DateTimeKind.Unspecified).AddTicks(7312), new TimeSpan(0, 0, 0, 0, 0))),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
@@ -863,7 +863,7 @@ namespace RektaManagerApp.Server.Migrations
                     StaffId = table.Column<string>(type: "varchar(90)", nullable: false),
                     OrderDate = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceId = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp", nullable: false),
                     CreatedBy = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -1198,6 +1198,80 @@ namespace RektaManagerApp.Server.Migrations
                         principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "InventoryCategories",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "InventoryId", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(5032), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM", "Non Alcoholic drinks", null, false, "SOFT DRINKS", new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(5355), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM" },
+                    { 2, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6120), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM", "Alcoholic Beverage drinks", null, false, "DRINKS", new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6122), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM" },
+                    { 3, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6128), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM", "Both alcoholic and non alcoholic drinks", null, false, "WINE AND SPIRITS", new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6129), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM" },
+                    { 4, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6135), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM", "Cooked Food and other types of Food", null, false, "FOODS", new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6136), new TimeSpan(0, 1, 0, 0, 0)), "SYSTEM" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderItems",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "ImageUrl", "IsDeleted", "ItemCode", "ItemName", "Price", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 30, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9730), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "ExSmooth", "Extra Smooth", 400m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9732), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 31, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9737), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Smirnoff", "Smirnoff Ice", 500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9738), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 32, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9743), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Big-Origin", "Big Origin", 450m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9745), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 33, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9750), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Tiger", "Tiger", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9751), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 34, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9756), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Radler", "Radler", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9758), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 35, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9763), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Gulder", "Gulder", 350m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9764), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 36, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9769), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Golfberg", "Golfberg", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9771), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 37, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9776), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Star", "Star", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9777), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 38, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9782), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "StarLite", "StarLite", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9784), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 39, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9788), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Legend", "Legend", 450m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9790), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 40, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9795), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "CastleLite", "Castle-Lite", 350m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9796), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 41, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9801), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "D-Black", "Double-Black", 350m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9803), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 43, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9814), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Trophy", "Trophy", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9815), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 29, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9724), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "MedStout", "Medium Stout", 400m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9725), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 44, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9820), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Budweiser", "Budweiser", 450m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9822), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 45, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9826), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Coke", "Coke", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9828), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 46, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9833), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Sprite", "Sprite", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9834), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 47, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9839), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Fanta", "Fanta", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9840), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 48, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9845), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Can-Malt", "Can Malt", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9846), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 49, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9852), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "MaltBottle", "Bottled Malt", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9853), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 50, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9858), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Juice", "Juice", 500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9860), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 51, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9864), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Water", "Water", 100m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9866), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 52, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9870), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "EnergyDnk", "Energy Drink", 500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9872), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 53, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9877), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Mateaus", "Mateaus", 3000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9878), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 54, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9883), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Donfed", "DonFelder", 3000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9885), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 42, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9807), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Hero", "Hero", 300m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9809), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 28, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9718), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Heineken", "Heineken", 450m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9719), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 26, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9705), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "CatfishSm", "Steamed Catfish", 3000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9706), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 55, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9890), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Donfed", "Four Cousins", 2700m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9892), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 1, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9424), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Semo-Any", "Semovita/Any Soup", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9433), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 2, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9441), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Eba-Any", "Eba/Any Soup", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9444), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 3, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9451), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Beans-P", "Beans-Plantain", 500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9452), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 4, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9458), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "F-Rice", "Fried Rice", 700m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9459), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 5, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9466), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "J-Rice", "Jollof Rice", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9467), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 6, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9473), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Rice-Stew", "Rice-Stew", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9475), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 7, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9481), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Chips-Eggs", "Chips-Eggs", 700m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9482), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 8, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9488), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "IndomieEgg", "Indomie-Egg", 700m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9490), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 9, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9498), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "LeafMoimoi", "Leaf Moimoi", 200m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9500), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 10, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9505), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "CowLeg", "CowLeg P.Soup", 1000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9506), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 11, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9600), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Cowtail", "CowTail P.Soup", 1000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9602), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 12, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9609), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Fresh-Fish", "Fresh Fish", 800m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9611), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 13, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9618), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Intestine", "Intestine", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9620), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 14, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9625), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "PepChicken", "Peppered Chicken", 800m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9627), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 15, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9632), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "PepGoat", "Asun", 700m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9633), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 16, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9638), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Gizdodo", "Gizdodo", 600m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9640), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 17, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9645), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Coleslaw", "Coleslaw", 200m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9647), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 18, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9652), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "MixedSalad", "Mixed Salad", 500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9653), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 19, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9659), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Semo-Any", "Potato Salad", 1000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9660), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 20, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9666), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "ShwmChick", "Shawarma Chicken", 1200m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9668), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 21, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9673), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "ShwmBeef", "Shawarma Beef", 800m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9674), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 22, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9680), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "ShwmChick", "Burger", 1000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9681), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 23, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9686), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "TilapiaBig", "Roasted Tilapia", 2000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9688), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 24, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9692), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "TilapiaSm", "Roasted Tilapia", 1800m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9694), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 25, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9699), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "StmCatfish", "Steamed Catfish", 3500m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9700), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 27, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9711), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Isiewu", "Isiewu", 800m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9713), new TimeSpan(0, 1, 0, 0, 0)), null },
+                    { 56, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9897), new TimeSpan(0, 1, 0, 0, 0)), null, null, false, "Baron", "Baron", 2000m, new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9899), new TimeSpan(0, 1, 0, 0, 0)), null }
                 });
 
             migrationBuilder.CreateIndex(

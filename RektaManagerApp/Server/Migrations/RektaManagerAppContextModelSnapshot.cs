@@ -246,7 +246,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 976, DateTimeKind.Unspecified).AddTicks(8046), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 625, DateTimeKind.Unspecified).AddTicks(4231), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -265,7 +265,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 977, DateTimeKind.Unspecified).AddTicks(2678), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 625, DateTimeKind.Unspecified).AddTicks(8129), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.HasKey("Id");
 
@@ -287,7 +287,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 969, DateTimeKind.Unspecified).AddTicks(725), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 618, DateTimeKind.Unspecified).AddTicks(2949), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -345,7 +345,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 11, 22, 15, 6, 974, DateTimeKind.Unspecified).AddTicks(9888), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2021, 6, 13, 23, 8, 27, 623, DateTimeKind.Unspecified).AddTicks(7312), new TimeSpan(0, 0, 0, 0, 0)));
 
                     b.Property<string>("UserName")
                         .HasColumnType("text");
@@ -1074,6 +1074,56 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasIndex("InventoryId");
 
                     b.ToTable("InventoryCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(5032), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedBy = "SYSTEM",
+                            Description = "Non Alcoholic drinks",
+                            IsDeleted = false,
+                            Name = "SOFT DRINKS",
+                            Timestamp = new DateTime(2021, 6, 13, 23, 8, 27, 596, DateTimeKind.Utc).AddTicks(5855),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(5355), new TimeSpan(0, 1, 0, 0, 0)),
+                            UpdatedBy = "SYSTEM"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6120), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedBy = "SYSTEM",
+                            Description = "Alcoholic Beverage drinks",
+                            IsDeleted = false,
+                            Name = "DRINKS",
+                            Timestamp = new DateTime(2021, 6, 13, 23, 8, 27, 596, DateTimeKind.Utc).AddTicks(6123),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6122), new TimeSpan(0, 1, 0, 0, 0)),
+                            UpdatedBy = "SYSTEM"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6128), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedBy = "SYSTEM",
+                            Description = "Both alcoholic and non alcoholic drinks",
+                            IsDeleted = false,
+                            Name = "WINE AND SPIRITS",
+                            Timestamp = new DateTime(2021, 6, 13, 23, 8, 27, 596, DateTimeKind.Utc).AddTicks(6131),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6129), new TimeSpan(0, 1, 0, 0, 0)),
+                            UpdatedBy = "SYSTEM"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6135), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedBy = "SYSTEM",
+                            Description = "Cooked Food and other types of Food",
+                            IsDeleted = false,
+                            Name = "FOODS",
+                            Timestamp = new DateTime(2021, 6, 13, 23, 8, 27, 596, DateTimeKind.Utc).AddTicks(6139),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 596, DateTimeKind.Unspecified).AddTicks(6136), new TimeSpan(0, 1, 0, 0, 0)),
+                            UpdatedBy = "SYSTEM"
+                        });
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.InventoryCategoryActionAudit", b =>
@@ -1435,6 +1485,624 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9424), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Semo-Any",
+                            ItemName = "Semovita/Any Soup",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9433), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9441), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Eba-Any",
+                            ItemName = "Eba/Any Soup",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9444), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9451), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Beans-P",
+                            ItemName = "Beans-Plantain",
+                            Price = 500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9452), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9458), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "F-Rice",
+                            ItemName = "Fried Rice",
+                            Price = 700m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9459), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9466), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "J-Rice",
+                            ItemName = "Jollof Rice",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9467), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9473), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Rice-Stew",
+                            ItemName = "Rice-Stew",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9475), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9481), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Chips-Eggs",
+                            ItemName = "Chips-Eggs",
+                            Price = 700m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9482), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9488), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "IndomieEgg",
+                            ItemName = "Indomie-Egg",
+                            Price = 700m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9490), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9498), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "LeafMoimoi",
+                            ItemName = "Leaf Moimoi",
+                            Price = 200m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9500), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9505), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "CowLeg",
+                            ItemName = "CowLeg P.Soup",
+                            Price = 1000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9506), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9600), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Cowtail",
+                            ItemName = "CowTail P.Soup",
+                            Price = 1000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9602), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9609), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Fresh-Fish",
+                            ItemName = "Fresh Fish",
+                            Price = 800m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9611), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9618), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Intestine",
+                            ItemName = "Intestine",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9620), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9625), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "PepChicken",
+                            ItemName = "Peppered Chicken",
+                            Price = 800m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9627), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9632), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "PepGoat",
+                            ItemName = "Asun",
+                            Price = 700m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9633), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9638), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Gizdodo",
+                            ItemName = "Gizdodo",
+                            Price = 600m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9640), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9645), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Coleslaw",
+                            ItemName = "Coleslaw",
+                            Price = 200m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9647), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9652), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "MixedSalad",
+                            ItemName = "Mixed Salad",
+                            Price = 500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9653), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9659), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Semo-Any",
+                            ItemName = "Potato Salad",
+                            Price = 1000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9660), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9666), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "ShwmChick",
+                            ItemName = "Shawarma Chicken",
+                            Price = 1200m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9668), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9673), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "ShwmBeef",
+                            ItemName = "Shawarma Beef",
+                            Price = 800m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9674), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9680), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "ShwmChick",
+                            ItemName = "Burger",
+                            Price = 1000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9681), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9686), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "TilapiaBig",
+                            ItemName = "Roasted Tilapia",
+                            Price = 2000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9688), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9692), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "TilapiaSm",
+                            ItemName = "Roasted Tilapia",
+                            Price = 1800m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9694), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9699), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "StmCatfish",
+                            ItemName = "Steamed Catfish",
+                            Price = 3500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9700), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9705), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "CatfishSm",
+                            ItemName = "Steamed Catfish",
+                            Price = 3000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9706), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9711), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Isiewu",
+                            ItemName = "Isiewu",
+                            Price = 800m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9713), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9718), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Heineken",
+                            ItemName = "Heineken",
+                            Price = 450m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9719), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9724), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "MedStout",
+                            ItemName = "Medium Stout",
+                            Price = 400m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9725), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9730), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "ExSmooth",
+                            ItemName = "Extra Smooth",
+                            Price = 400m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9732), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9737), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Smirnoff",
+                            ItemName = "Smirnoff Ice",
+                            Price = 500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9738), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9743), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Big-Origin",
+                            ItemName = "Big Origin",
+                            Price = 450m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9745), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9750), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Tiger",
+                            ItemName = "Tiger",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9751), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9756), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Radler",
+                            ItemName = "Radler",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9758), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9763), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Gulder",
+                            ItemName = "Gulder",
+                            Price = 350m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9764), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 36,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9769), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Golfberg",
+                            ItemName = "Golfberg",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9771), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 37,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9776), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Star",
+                            ItemName = "Star",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9777), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9782), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "StarLite",
+                            ItemName = "StarLite",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9784), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9788), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Legend",
+                            ItemName = "Legend",
+                            Price = 450m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9790), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9795), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "CastleLite",
+                            ItemName = "Castle-Lite",
+                            Price = 350m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9796), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 41,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9801), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "D-Black",
+                            ItemName = "Double-Black",
+                            Price = 350m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9803), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9807), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Hero",
+                            ItemName = "Hero",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9809), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 43,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9814), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Trophy",
+                            ItemName = "Trophy",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9815), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 44,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9820), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Budweiser",
+                            ItemName = "Budweiser",
+                            Price = 450m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9822), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 45,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9826), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Coke",
+                            ItemName = "Coke",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9828), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9833), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Sprite",
+                            ItemName = "Sprite",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9834), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 47,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9839), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Fanta",
+                            ItemName = "Fanta",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9840), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 48,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9845), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Can-Malt",
+                            ItemName = "Can Malt",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9846), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 49,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9852), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "MaltBottle",
+                            ItemName = "Bottled Malt",
+                            Price = 300m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9853), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 50,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9858), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Juice",
+                            ItemName = "Juice",
+                            Price = 500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9860), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9864), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Water",
+                            ItemName = "Water",
+                            Price = 100m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9866), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 52,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9870), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "EnergyDnk",
+                            ItemName = "Energy Drink",
+                            Price = 500m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9872), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9877), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Mateaus",
+                            ItemName = "Mateaus",
+                            Price = 3000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9878), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 54,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9883), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Donfed",
+                            ItemName = "DonFelder",
+                            Price = 3000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9885), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9890), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Donfed",
+                            ItemName = "Four Cousins",
+                            Price = 2700m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9892), new TimeSpan(0, 1, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CreatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9897), new TimeSpan(0, 1, 0, 0, 0)),
+                            IsDeleted = false,
+                            ItemCode = "Baron",
+                            ItemName = "Baron",
+                            Price = 2000m,
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTimeOffset(new DateTime(2021, 6, 14, 0, 8, 27, 597, DateTimeKind.Unspecified).AddTicks(9899), new TimeSpan(0, 1, 0, 0, 0))
+                        });
                 });
 
             modelBuilder.Entity("RektaManagerApp.Shared.OrderItemActionsAudit", b =>
@@ -2122,8 +2790,7 @@ namespace RektaManagerApp.Server.Migrations
                     b.HasOne("RektaManagerApp.Shared.Customer", "Customer")
                         .WithMany("CustomerBookings")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("RektaManagerApp.Shared.Invoice", "Invoice")
                         .WithMany()
