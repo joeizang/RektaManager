@@ -44,6 +44,17 @@ namespace RektaManagerApp.Server.Extensions
                     UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                     UpdatedBy = "SYSTEM",
                     Timestamp = DateTime.UtcNow
+                },
+                new InventoryCategory
+                {
+                    Id = 4,
+                    Name = "FOODS",
+                    Description = "Cooked Food and other types of Food",
+                    CreatedBy = "SYSTEM",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedBy = "SYSTEM",
+                    Timestamp = DateTime.UtcNow
                 });
             builder.Entity<OrderItem>().HasData(
                 new OrderItem
@@ -459,8 +470,98 @@ namespace RektaManagerApp.Server.Extensions
                     ItemCode = "Sprite",
                     CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                     UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 47,
+                    ItemName = "Fanta",
+                    Price = 300,
+                    ItemCode = "Fanta",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 48,
+                    ItemName = "Can Malt",
+                    Price = 300,
+                    ItemCode = "Can-Malt",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 49,
+                    ItemName = "Bottled Malt",
+                    Price = 300,
+                    ItemCode = "MaltBottle",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 50,
+                    ItemName = "Juice",
+                    Price = 500,
+                    ItemCode = "Juice",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 51,
+                    ItemName = "Water",
+                    Price = 100,
+                    ItemCode = "Water",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 52,
+                    ItemName = "Energy Drink",
+                    Price = 500,
+                    ItemCode = "EnergyDnk",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 53,
+                    ItemName = "Mateaus",
+                    Price = 3000,
+                    ItemCode = "Mateaus",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 54,
+                    ItemName = "DonFelder",
+                    Price = 3000,
+                    ItemCode = "Donfed",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 55,
+                    ItemName = "Four Cousins",
+                    Price = 2700,
+                    ItemCode = "Donfed",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
+                },
+                new OrderItem
+                {
+                    Id = 56,
+                    ItemName = "Baron",
+                    Price = 2000,
+                    ItemCode = "Baron",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime
                 }
-                )
+            );
         }
     }
 }
