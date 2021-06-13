@@ -50,10 +50,6 @@
     [Parameter]
     public AuthenticationState AuthState { get; set; }
 
-    @*protected override async Task OnInitializedAsync()
-    {
-        AuthState = await AuthProvider.GetAuthenticationStateAsync();
-    }*@
 
 public async Task HandleOrderAddition()
 {

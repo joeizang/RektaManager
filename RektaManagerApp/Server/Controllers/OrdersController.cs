@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
+using RektaManagerApp.Server.Notifications.Orders;
 using RektaManagerApp.Shared;
 using RektaManagerApp.Shared.ComponentModels.Orders;
 
@@ -20,12 +22,15 @@ namespace RektaManagerApp.Server.Controllers
         private readonly RektaManagerAppContext _context;
         private readonly IOrderRepository _repo;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public OrdersController(RektaManagerAppContext context, IOrderRepository repo, UserManager<ApplicationUser> userManager)
+        public OrdersController(RektaManagerAppContext context, IOrderRepository repo, 
+            UserManager<ApplicationUser> userManager, IMediator mediator)
         {
             _context = context;
             _repo = repo;
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         // GET: api/Orders
@@ -165,9 +170,7 @@ namespace RektaManagerApp.Server.Controllers
                     Quantity = item.Quantity,
                     OrderId = orderId
                 }).ToList();
-
             
-
             var persistOrder = new Order
             {
                 Total = order.OrderTotal,
@@ -187,9 +190,7 @@ namespace RektaManagerApp.Server.Controllers
                 .Include(o => o.Staff)
                 .Where(o => o.Id.Equals(orderId))
                 .SingleOrDefaultAsync().ConfigureAwait(false);
-
-
-
+            
             var invoice = new Invoice
             {
                 Id = _repo.GenerateStringId(),
@@ -215,11 +216,21 @@ namespace RektaManagerApp.Server.Controllers
 
             _context.Invoices.Add(invoice);
             _context.InvoicePayments.Add(invoicePayment);
-
+            
             await _repo.Update<Order>(persistOrder, newOrder, new OrderActionsAudit()).ConfigureAwait(false);
             await _repo.Save<Invoice>().ConfigureAwait(false);
             await _repo.Save<InvoicePayment>().ConfigureAwait(false);
             await _repo.Save<OrderActionsAudit>().ConfigureAwait(false);
+
+            var orderNotification = new OrderCompletedNotification
+            {
+                OrderDate = newOrder.OrderDate,
+                OrderedItems = newOrder.OrderedItems,
+                OrderId = newOrder.Id,
+                OrderTotal = newOrder.Total
+            };
+
+            await _mediator.Publish(orderNotification).ConfigureAwait(false);
 
             return Created($"api/orders/{newOrder.Id}", new OrderComponentModel
             {

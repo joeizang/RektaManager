@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,8 @@ namespace RektaManagerApp.Server
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RektaManagerAppContext>();
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddScoped<IRepository, BaseRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();

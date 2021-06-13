@@ -106,8 +106,13 @@ namespace RektaManagerApp.Server.Controllers
         // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+        public async Task<ActionResult<Booking>> PostBooking([FromBody]BookingUpsertComponentModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var booking = new Booking();
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 

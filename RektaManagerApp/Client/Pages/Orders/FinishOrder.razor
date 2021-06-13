@@ -3,7 +3,7 @@
 @using Blazored.LocalStorage
 @inject NavigationManager Navigation
 @inject IHttpService Http
-@*@inject IToastService Toast*@
+@inject IToastService Toast
 @inject ILocalStorageService LocalStorage
 
 <div class="table-responsive">
@@ -82,12 +82,13 @@
 
         var response = await Http.Post<OrderUpsertComponentModel>("api/orders", order);
 
-        await Task.Delay(3000);
-
-
         DisableBtn = false;
         Visibility = "none";
-        //Toast.ShowSuccess("Placed Order Successfully", "Order Success");
+
+        if (!response.Success)
+            Toast.ShowError("There was an error placing your order!", "Order Failed!");
+
+        Toast.ShowSuccess("Placed Order Successfully", "Order Success");
         await LocalStorage.ClearAsync();
         Navigation.NavigateTo("orders");
     }

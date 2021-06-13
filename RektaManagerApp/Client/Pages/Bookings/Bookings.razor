@@ -33,13 +33,13 @@
                 <Template>
                     @{
                         var booking = (context as BookingComponentModel);
-                                        <span class="btn-group" role="group">
-                                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-eye-fill"></span></button>
-                                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-pencil-square"></span></button>
-                                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBooking(booking.BookingId))">
-                                                <span class="bi bi-trash2-fill"></span>
-                                            </button>
-                                        </span>
+                        <span class="btn-group" role="group">
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-eye-fill"></span></button>
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => BookingDetail(booking.BookingId))"><span class="bi bi-pencil-square"></span></button>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBooking(booking.BookingId))">
+                                <span class="bi bi-trash2-fill"></span>
+                            </button>
+                        </span>
                     }
                 </Template>
             </GridColumn>

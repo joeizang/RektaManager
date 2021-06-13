@@ -1,5 +1,5 @@
 ﻿@page "/invoices/issue-invoice"
-@using RektaManagerApp.Shared.ComponentModels
+@using RektaManagerApp.Shared.ComponentModels.Invoices
 @inject IHttpService Http
 @inject IToastService Toast
 
@@ -9,10 +9,15 @@
 </div>
 
 <div class="col-12">
-    <InvoiceForm></InvoiceForm>
+    <InvoiceForm Model="@_invoice" HandleSubmit="@HandleCreateInvoice"></InvoiceForm>
 </div>
 
 
 @code {
+    private InvoiceUpsertComponentModel _invoice = new();
 
+    private void HandleCreateInvoice()
+    {
+        
+    }
 }

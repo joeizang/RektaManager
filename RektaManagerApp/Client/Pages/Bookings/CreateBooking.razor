@@ -1,19 +1,28 @@
 ﻿@page "/bookings/create-booking"
 @using RektaManagerApp.Shared.ComponentModels.Bookings
+@using RektaManagerApp.Shared.ComponentModels.Services
 @inject IToastService Toast 
 
     <div class="d-flex justify-content-center align-items-center mb-3">
         <h3 class="h3">Create Booking</h3>
     </div>
 
-<BookingForm Model="@booking" HandleSubmit="@HandleCreate"/>
+<BookingForm 
+        BookedItemDropdown="@_bookedItemDropdown" 
+        ServicesDropdown="@_serviceDropdown"
+        Model="@booking"
+        HandleSubmit="HandleCreate"></BookingForm>
 
 @code {
     private BookingUpsertComponentModel booking = new();
 
+    private List<ServiceDropdownModel> _serviceDropdown = new();
 
+    private List<BookedItemDropdownModel> _bookedItemDropdown = new();
+    
     private async Task HandleCreate()
     {
+        Console.WriteLine("Form submitted!!!");
         await Task.Delay(2000);
         Toast.ShowInfo("Clicked and Submitted the form", "Form Submit");
     }

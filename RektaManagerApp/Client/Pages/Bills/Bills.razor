@@ -1,7 +1,64 @@
 ﻿@page "/bills"
+@using RektaManagerApp.Shared.ComponentModels.Bills
+@inject NavigationManager Navigation
 
-<h3>Bills</h3>
+<div class="d-flex justify-content-center align-items-center">
+    <h3 class="h3">Bill Listing</h3>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <span>
+        <button @onclick="@(() => Navigation.NavigateTo("bills/process-bill"))" class="btn btn-outline-primary">
+            <span class="bi bi-plus-circle-fill"></span>
+            Create Bill
+        </button>
+    </span>
+</div>
+
+<div class="d-flex">
+    <SfGrid DataSource="@_bill" AllowFiltering="true" AllowPaging="true" AllowSorting="true">
+        <GridPageSettings PageSize="10"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(BillComponentModel.BillId)" HeaderText="Bill ID" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BillComponentModel.PaymentStatus)" HeaderText="Status" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BillComponentModel.TransactionDate)" HeaderText="Bill Date" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BillComponentModel.DueDate)" HeaderText="Due Date" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BillComponentModel.Total)" HeaderText="Bill Total" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center">
+                <Template>
+                    @{
+                        var bill = (context as BillComponentModel);
+                        <span class="btn-group" role="group">
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => ViewBillDetail())"><span class="bi bi-eye-fill"></span></button>
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => UpdateBill())"><span class="bi bi-pencil-square"></span></button>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteBill(bill.BillId))">
+                                <span class="bi bi-trash2-fill"></span>
+                            </button>
+                        </span>
+                    }
+                </Template>
+            </GridColumn>
+
+        </GridColumns>
+    </SfGrid>
+</div>
 
 @code {
 
+    private List<BillComponentModel> _bill = new();
+
+    private void ViewBillDetail()
+    {
+
+    }
+
+    private void UpdateBill()
+    {
+
+    }
+
+    private void DeleteBill(string id)
+    {
+
+    }
 }

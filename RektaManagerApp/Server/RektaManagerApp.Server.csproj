@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.6" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.10" />
   </ItemGroup>
@@ -38,6 +40,14 @@
   <ItemGroup>
     <Watch Include="..\Client\**\*.razor" />
     <Watch Include="..\Client\**\*.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Notifications\Bills" />
+    <Folder Include="Notifications\Bookings" />
+    <Folder Include="Notifications\Invoices" />
+    <Folder Include="Notifications\Products" />
+    <Folder Include="Notifications\Suppliers" />
   </ItemGroup>
 
   <!--<ItemGroup>
