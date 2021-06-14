@@ -148,6 +148,8 @@ namespace RektaManagerApp.Server.Controllers
         public async Task<ActionResult<Product>> PostProduct([FromBody] ProductUpsertComponentModel model)
         {
             var newId = 0;
+            if (!ModelState.IsValid)
+                return BadRequest();
             try
             {
                 var product = new Product

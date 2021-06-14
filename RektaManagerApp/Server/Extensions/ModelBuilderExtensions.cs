@@ -1,5 +1,6 @@
 // unset
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Shared;
@@ -9,7 +10,7 @@ namespace RektaManagerApp.Server.Extensions
 {
     public static class ModelBuilderExtensions
     {
-        public static void SeedData(this ModelBuilder builder)
+        public static void SeedData(this ModelBuilder builder, UserManager<ApplicationUser> userManager)
         {
             builder.Entity<InventoryCategory>().HasData(
                 new InventoryCategory
