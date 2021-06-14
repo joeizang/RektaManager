@@ -19,9 +19,5 @@ namespace RektaManagerApp.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
 
-        public Booking ServiceBooking { get; set; }
-
-        public string ServiceBookingId { get; set; }
-
     }
 }

@@ -148,14 +148,12 @@ namespace RektaManagerApp.Server.Data
 
             builder.Entity<Booking>()
                 .HasMany(b => b.BookedItems)
-                .WithOne(b => b.RequiredBooking)
-                .HasForeignKey(b => b.BookingId)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Booking>()
                 .HasMany(b => b.BookedServices)
-                .WithOne(s => s.ServiceBooking)
-                .HasForeignKey(s => s.ServiceBookingId)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ChartOfAccounts>()
@@ -229,13 +227,6 @@ namespace RektaManagerApp.Server.Data
             builder.Entity<Product>()
                 .HasMany(p => p.ProductCategories)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Service>()
-                .HasOne(s => s.ServiceBooking)
-                .WithMany(sb => sb.BookedServices)
-                .HasForeignKey(s => s.ServiceBookingId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<StaffShift>()

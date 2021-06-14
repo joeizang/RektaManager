@@ -14,13 +14,7 @@ namespace RektaManagerApp.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
 
-        public double Quantity { get; set; }
-
         [StringLength(50)]
         public string Name { get; set; }
-
-        public string BookingId { get; set; }
-
-        public Booking RequiredBooking { get; set; }
     }
 }

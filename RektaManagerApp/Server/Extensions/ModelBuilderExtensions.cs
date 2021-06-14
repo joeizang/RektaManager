@@ -10,8 +10,223 @@ namespace RektaManagerApp.Server.Extensions
 {
     public static class ModelBuilderExtensions
     {
-        public static void SeedData(this ModelBuilder builder, UserManager<ApplicationUser> userManager)
+        public static void SeedData(this ModelBuilder builder)
         {
+            builder.Entity<Service>().HasData(
+                new Service
+                {
+                    Id = 1,
+                    Name = "Wedding",
+                    Price = 100000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 2,
+                    Name = "BirthdaysAnniversaries",
+                    Price = 40000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 3,
+                    Name = "ChildBirthdays",
+                    Price = 20000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 4,
+                    Name = "Hangouts",
+                    Price = 40000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 5,
+                    Name = "Concerts",
+                    Price = 100000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 6,
+                    Name = "Picnics",
+                    Price = 5000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 7,
+                    Name = "Corporate Events",
+                    Price = 50000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 8,
+                    Name = "Party (Indoor)",
+                    Price = 30000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new Service
+                {
+                    Id = 9,
+                    Name = "MiniConference-Training",
+                    Price = 20000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                });
+
+            builder.Entity<BookedItem>().HasData(
+                new BookedItem
+                {
+                    Id = 1,
+                    Name = "500 Capacity Tent",
+                    Price = 40000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 2,
+                    Name = "350 Capacity Tent",
+                    Price = 30000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 3,
+                    Name = "250 Capacity Tent",
+                    Price = 20000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 4,
+                    Name = "100 Capacity Tent",
+                    Price = 8000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 5,
+                    Name = "Tiffany Chairs",
+                    Price = 200m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 6,
+                    Name = "Plastic Chairs",
+                    Price = 30m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 7,
+                    Name = "Banquet Tables",
+                    Price = 1000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 8,
+                    Name = "Plastic Tables",
+                    Price = 300m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 9,
+                    Name = "Light Decoration",
+                    Price = 20000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 10,
+                    Name = "Medium Decoration",
+                    Price = 100000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 11,
+                    Name = "Heavy Decoration",
+                    Price = 200000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                },
+                new BookedItem
+                {
+                    Id = 12,
+                    Name = "Very Heavy Decoration",
+                    Price = 300000m,
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    CreatedBy = "owner@rektaparkgardens.com",
+                    UpdatedBy = "owner@rektaparkgardens.com"
+                }
+            );
+            
             builder.Entity<InventoryCategory>().HasData(
                 new InventoryCategory
                 {
