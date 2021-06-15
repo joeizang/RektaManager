@@ -2,6 +2,9 @@
 @using RektaManagerApp.Shared.ComponentModels.Services
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider Provider
+
+
+
 <div class="card shadow d-flex justify-content-center align-items-center p-1 mb-4 col-12">
     <EditForm Model="@Model" OnInvalidSubmit="@HandleSubmit" class="w-75 pr-3 pt-3">
         <DataAnnotationsValidator />
@@ -31,17 +34,31 @@
         <div class="form-group">
             <label>
                 <b>Select Service :</b>
-                <SfDropDownList CssClass="form-control" TItem="ServiceDropdownModel" DataSource="@ServicesDropdown" TValue="int" AllowFiltering="true" Placeholder="Select a Service">
-                    <DropDownListFieldSettings Text="ServiceName" Value="ServiceId"></DropDownListFieldSettings>
-                </SfDropDownList>
+                @*<SfMultiSelect CssClass="custom-select-lg" @bind-Value="@ServiceChoices" TItem="ServiceDropdownModel" DataSource="@ServicesDropdown" TValue="int[]" Placeholder="Select a Service">
+                    <MultiSelectFieldSettings Text="ServiceName" Value="ServiceId"></MultiSelectFieldSettings>
+                </SfMultiSelect>*@
+            <select class="custom-select" multiple>
+                <option selected> Please select Services desired...</option>
+                @foreach(var item in ServicesDropdown)
+                {
+                    <option value="@item.ServiceId" @onclick="@(() => ServiceChoices.Add(item.ServiceId))">@item.ServiceName</option>
+                }
+            </select>
             </label>
         </div>
         <div class="form-group">
             <label>
                 <b>Bookable Items :</b>
-                <SfDropDownList CssClass="form-control" TItem="BookedItemDropdownModel" DataSource="@BookedItemDropdown" TValue="int" AllowFiltering="true" Placeholder="Select a Item">
-                    <DropDownListFieldSettings Text="ItemName" Value="BookedItemId"></DropDownListFieldSettings>
-                </SfDropDownList>
+                @*<SfMultiSelect CssClass="custom-select-lg" @bind-Value="@BookedItemChoices" TItem="BookedItemDropdownModel" DataSource="@BookedItemDropdown" TValue="int[]" Placeholder="Select a Service">
+                    <MultiSelectFieldSettings Text="ItemName" Value="BookedItemId"></MultiSelectFieldSettings>
+                </SfMultiSelect>*@
+            <select class="custom-select" multiple>
+                <option selected>Pick Items desired...</option>
+                    @foreach (var item in BookedItemDropdown)
+                    {
+                        <option value="@item.BookedItemId" @onclick="@(() => BookedItemChoices.Add(item.BookedItemId))">@item.ItemName</option>
+                    }
+            </select>
             </label>
         </div>
         <div class="form-group">
@@ -124,15 +141,20 @@
     [Parameter]
     public List<BookedItemDropdownModel> BookedItemDropdown { get; set; }
 
+    [Parameter]
+    public List<int> ServiceChoices { get; set; }
+
+    [Parameter]
+    public List<int> BookedItemChoices { get; set; }
 
     private DateTime minDate = new DateTime(2020, 01, 01);
 
     private DateTime maxDate = DateTime.UtcNow.AddMonths(6);
 
-
     protected override async Task OnInitializedAsync()
     {
         var user = await Provider.GetAuthenticationStateAsync();
+        Console.WriteLine($"bookedItem dropdown is populated and length is {BookedItemDropdown.Count}");
         Model.StaffUsername = user.User.Identity.Name;
         await LocalStorage.SetItemAsync<BookingUpsertComponentModel>("createBooking", Model);
     }

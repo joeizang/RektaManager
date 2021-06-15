@@ -12,6 +12,25 @@ namespace RektaManagerApp.Server.Extensions
     {
         public static void SeedData(this ModelBuilder builder)
         {
+            builder.Entity<ApplicationRole>().HasData(
+                new ApplicationRole
+                {
+                    Name = "Admins",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    Id = Guid.NewGuid().ToString()
+                },
+                new ApplicationRole
+                {
+                    Name = "Users",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    Id = Guid.NewGuid().ToString()
+                },
+                new ApplicationRole
+                {
+                    Name = "Owner",
+                    CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
+                    Id = Guid.NewGuid().ToString()
+                });
             builder.Entity<Service>().HasData(
                 new Service
                 {

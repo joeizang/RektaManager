@@ -65,12 +65,19 @@
         <div class="form-group">
             <div>
                 <label for="suppliers">Supplier</label>
-                <PNInputSelect @bind-Value="@Model.SupplierId" id="suppliers" class="form-control" DisplayName="Supplier Id">
-                    @foreach (var supplier in Suppliers)
-                    {
-                        <option value="@supplier.SupplierId">@supplier.SupplierName</option>
-                    }
-                </PNInputSelect>
+                @* <PNInputSelect @bind-Value="@Model.SupplierId" id="suppliers" class="form-control" DisplayName="Supplier Id"> *@
+                @*     <option value="0">Select a Measurement...</option> *@
+                @*     @foreach (var supplier in Suppliers) *@
+                @*     { *@
+                @*         <option value="@supplier.SupplierId">@supplier.SupplierName</option> *@
+                @*     } *@
+                @* </PNInputSelect> *@
+                <SfDropDownList DataSource="@Suppliers" AllowFiltering="true" CssClass="form-control" 
+                                Placeholder="Select a Supplier" IgnoreCase="true"
+                                TItem="SupplierSelectModel"
+                                TValue="int">
+                    <DropDownListFieldSettings Text="SupplierName" Value="SupplierId"></DropDownListFieldSettings>
+                </SfDropDownList>
             </div>
         </div>
         <div class="form-group">

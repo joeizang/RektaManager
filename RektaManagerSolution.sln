@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RektaManagerApp.Client", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RektaManagerApp.Shared", "RektaManagerApp\Shared\RektaManagerApp.Shared.csproj", "{1A0187A0-8AE3-4572-AF0E-420B64F4E5A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "RektaManagerApp\Tests\Tests.csproj", "{58506066-B57E-4BDC-BBEE-80BC68D9CF6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "RektaManagerApp\Tests\Tests.csproj", "{58506066-B57E-4BDC-BBEE-80BC68D9CF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

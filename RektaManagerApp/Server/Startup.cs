@@ -15,6 +15,8 @@ using RektaManagerApp.Server.Services;
 using RektaManagerApp.Shared;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using RektaManagerApp.Server.Extensions;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace RektaManagerApp.Server
 {
@@ -38,6 +40,7 @@ namespace RektaManagerApp.Server
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<RektaManagerAppContext>();
 
             services.AddMediatR(typeof(Startup));
@@ -47,8 +50,12 @@ namespace RektaManagerApp.Server
             services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, RektaManagerAppContext>();
-
+                .AddApiAuthorization<ApplicationUser, RektaManagerAppContext>(options => 
+                {
+                    options.IdentityResources["openid"].UserClaims.Add("role");
+                    options.ApiResources.Single().UserClaims.Add("role");
+                });
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
             services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
             services.AddAuthentication()
@@ -59,7 +66,7 @@ namespace RektaManagerApp.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -83,6 +90,8 @@ namespace RektaManagerApp.Server
             app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            SeedApplicationUsers.SeedAppUsers(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,0 +1,23 @@
+﻿@typeparam TModel
+<div>
+    <ul>
+        @foreach (var item in Collection)
+        {
+            <li @onclick="@(() => SelectItem(item))"></li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter]
+    public List<TModel> Collection { get; set; }
+
+    [Parameter]
+    public List<TModel> TargetCollection { get; set; }
+
+    private void SelectItem(TModel item)
+    {
+
+    }
+
+}

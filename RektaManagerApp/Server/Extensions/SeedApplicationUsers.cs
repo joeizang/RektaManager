@@ -10,15 +10,15 @@ namespace RektaManagerApp.Server.Extensions
 {
     public static class SeedApplicationUsers
     {
-        public static async Task SeedAppUsers(UserManager<ApplicationUser> userManager,
+        public static void SeedAppUsers(UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager)
         {
             try
             {
-                var userrole = roleManager.FindByNameAsync("User").ConfigureAwait(false);
-                var ownerrole = roleManager.FindByNameAsync("Owner").ConfigureAwait(false);
-                var adminrole = roleManager.FindByNameAsync("Admin").ConfigureAwait(false);
-                if ( await adminrole == null && await ownerrole == null && await userrole == null)
+                var userrole = roleManager.FindByNameAsync("User");
+                var ownerrole = roleManager.FindByNameAsync("Owner");
+                var adminrole = roleManager.FindByNameAsync("Admin");
+                if ( adminrole.Result == null && ownerrole.Result == null && userrole.Result == null)
                 {
                     var adminRole = new ApplicationRole
                     {
@@ -44,7 +44,9 @@ namespace RektaManagerApp.Server.Extensions
                         FirstName = "SalesUser",
                         LastName = "RektaParkandGardens",
                         Id = Guid.NewGuid().ToString(),
+                        UserName = "salesUser@rektaparkgardens.com",
                         Email = "salesUser@rektaparkgardens.com",
+                        EmailConfirmed = true,
                         CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                         UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                     };
@@ -61,6 +63,8 @@ namespace RektaManagerApp.Server.Extensions
                         LastName = "RektaParkandGardens",
                         Id = Guid.NewGuid().ToString(),
                         Email = "owner@rektaparkgardens.com",
+                        UserName = "owner@rektaparkgardens.com",
+                        EmailConfirmed = true,
                         CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                         UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                     };
@@ -77,12 +81,14 @@ namespace RektaManagerApp.Server.Extensions
                         LastName = "RektaParkandGardens",
                         Id = Guid.NewGuid().ToString(),
                         Email = "admin@rektaparkgardens.com",
+                        UserName = "admin@rektaparkgardens.com",
+                        EmailConfirmed = true,
                         CreatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                         UpdatedAt = DateTimeOffset.UtcNow.LocalDateTime,
                     };
                     var result = userManager.CreateAsync(admin, "adminP@ssword1").Result;
                     if (result.Succeeded)
-                        userManager.AddToRoleAsync(admin, "Admin").Wait();
+                        userManager.AddToRoleAsync(admin, "Admins").Wait();
                 }
             }
             catch (Exception e)
