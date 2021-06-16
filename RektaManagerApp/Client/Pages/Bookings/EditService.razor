@@ -1,0 +1,33 @@
+﻿@using RektaManagerApp.Shared.ComponentModels.Services
+
+
+<EditForm Model="@Model" OnValidSubmit="HandleFormSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label>
+            <b>Service Name</b>
+        </label>
+        <InputText @bind-Value="@Model.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>
+            <b>Service Name</b>
+        </label>
+        <InputNumber @bind-Value="@Model.Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-block btn-outline-primary" type="submit" >
+            <span class="bi bi-pen-fill">Finish Edit</span>
+        </button>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public ServiceUpsertComponentModel Model { get; set; }
+
+    [Parameter]
+    public EventCallback HandleFormSubmit { get; set; }
+}

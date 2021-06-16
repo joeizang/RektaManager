@@ -6,7 +6,7 @@
 
 
 <div class="card shadow d-flex justify-content-center align-items-center p-1 mb-4 col-12">
-    <EditForm Model="@Model" OnInvalidSubmit="@HandleSubmit" class="w-75 pr-3 pt-3">
+    <EditForm Model="@Model" OnValidSubmit="@HandleSubmit" class="w-75 pr-3 pt-3">
         <DataAnnotationsValidator />
         <div class="form-group">
             <label>
@@ -37,13 +37,13 @@
                 @*<SfMultiSelect CssClass="custom-select-lg" @bind-Value="@ServiceChoices" TItem="ServiceDropdownModel" DataSource="@ServicesDropdown" TValue="int[]" Placeholder="Select a Service">
                     <MultiSelectFieldSettings Text="ServiceName" Value="ServiceId"></MultiSelectFieldSettings>
                 </SfMultiSelect>*@
-            <select class="custom-select" multiple>
-                <option selected> Please select Services desired...</option>
-                @foreach(var item in ServicesDropdown)
-                {
-                    <option value="@item.ServiceId" @onclick="@(() => ServiceChoices.Add(item.ServiceId))">@item.ServiceName</option>
-                }
-            </select>
+                <select class="custom-select" multiple>
+                    <option selected> Please select Services desired...</option>
+                    @foreach (var item in ServicesDropdown)
+                    {
+                        <option value="@item.ServiceId" @onclick="@(() => UpdateServiceChoices(item.ServiceId))">@item.ServiceName</option>
+                    }
+                </select>
             </label>
         </div>
         <div class="form-group">
@@ -52,13 +52,13 @@
                 @*<SfMultiSelect CssClass="custom-select-lg" @bind-Value="@BookedItemChoices" TItem="BookedItemDropdownModel" DataSource="@BookedItemDropdown" TValue="int[]" Placeholder="Select a Service">
                     <MultiSelectFieldSettings Text="ItemName" Value="BookedItemId"></MultiSelectFieldSettings>
                 </SfMultiSelect>*@
-            <select class="custom-select" multiple>
-                <option selected>Pick Items desired...</option>
+                <select class="custom-select" multiple>
+                    <option selected>Please select Items desired...</option>
                     @foreach (var item in BookedItemDropdown)
                     {
-                        <option value="@item.BookedItemId" @onclick="@(() => BookedItemChoices.Add(item.BookedItemId))">@item.ItemName</option>
+                        <option value="@item.BookedItemId" @onclick="@(() => UpdateBookedItemChoice(item.BookedItemId))">@item.ItemName</option>
                     }
-            </select>
+                </select>
             </label>
         </div>
         <div class="form-group">
@@ -66,6 +66,12 @@
                 <b>Part Payment? :</b>
             </label>
             <SfSwitch @bind-Checked="@Model.IsPartPaid" />
+        </div>
+        <div class="form-group">
+            <label>
+                <b>Complete Payment? :</b>
+            </label>
+            <SfSwitch @bind-Checked="@Model.IsFullyPaid" />
         </div>
         <div class="form-group">
             <label>
@@ -92,7 +98,7 @@
         </div>
 
         <div class="form-group">
-            <button class="btn btn-block btn-outline-primary">
+            <button class="btn btn-block btn-outline-primary" type="submit">
                 <span class="bi bi-bookmark-plus-fill">Create Booking</span>
             </button>
         </div>
@@ -147,7 +153,7 @@
     [Parameter]
     public List<int> BookedItemChoices { get; set; }
 
-    private DateTime minDate = new DateTime(2020, 01, 01);
+    private DateTime minDate = new DateTime(2021, 01, 01);
 
     private DateTime maxDate = DateTime.UtcNow.AddMonths(6);
 
@@ -157,6 +163,18 @@
         Console.WriteLine($"bookedItem dropdown is populated and length is {BookedItemDropdown.Count}");
         Model.StaffUsername = user.User.Identity.Name;
         await LocalStorage.SetItemAsync<BookingUpsertComponentModel>("createBooking", Model);
+    }
+
+    private void UpdateBookedItemChoice(int id)
+    {
+        BookedItemChoices.Add(id);
+        Console.WriteLine($"Choices has been updated its now {BookedItemChoices.Count} long!");
+    }
+
+    private void UpdateServiceChoices(int id)
+    {
+        ServiceChoices.Add(id);
+        Console.WriteLine($"Service Choices has been updated, its now {ServiceChoices.Count} long!");
     }
 
 }

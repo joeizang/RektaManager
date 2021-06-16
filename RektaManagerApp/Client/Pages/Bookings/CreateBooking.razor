@@ -3,6 +3,7 @@
 @using RektaManagerApp.Shared.ComponentModels.Services
 @inject IToastService Toast
 @inject IHttpService Http
+@inject ILocalStorageService LocalStorage
 
 <div class="d-flex justify-content-center align-items-center mb-3">
     <h3 class="h3">Create Booking</h3>
@@ -11,7 +12,7 @@
 <BookingForm BookedItemDropdown="@_bookedItemDropdown"
              ServicesDropdown="@_serviceDropdown"
              Model="@booking"
-             HandleSubmit="HandleCreate"
+             HandleSubmit="@HandleCreate"
              ServiceChoices="@ServiceChoices"
              BookedItemChoices="@BookedItemChoices"></BookingForm>
 
@@ -49,8 +50,16 @@
         }
     }
 
-    private async Task HandleCreate()
+    async Task HandleCreate()
     {
+        //Console.WriteLine($"BookingForm has been clicked!!!");
+        booking.BookedItems = BookedItemChoices;
+        booking.BookedServices = ServiceChoices;
 
+        if (await LocalStorage.ContainKeyAsync("createBooking"))
+        {
+            await LocalStorage.RemoveItemAsync("createBooking");
+            await LocalStorage.SetItemAsync<BookingUpsertComponentModel>("finalBooking", booking);
+        }
     }
 }

@@ -1,0 +1,99 @@
+﻿@page "/bookings/services"
+@using RektaManagerApp.Shared.ComponentModels.Services
+@inject IHttpService Http
+@inject IToastService Toast
+@inject NavigationManager Navigation 
+
+
+<div class="d-flex justify-content-center align-items-center mb-4">
+    <h3 class="h3">Services List</h3>
+</div>
+<div class="d-flex">
+    <SfGrid DataSource="@_services" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
+        <GridPageSettings PageSize="10"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(ServiceComponentModel.ServiceId)" HeaderText="Service ID" TextAlign="TextAlign.Center" AllowFiltering="false" AllowSorting="false"></GridColumn>
+            <GridColumn Field="@nameof(ServiceComponentModel.Name)" HeaderText="Service Name" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(ServiceComponentModel.Price)" HeaderText="Service Price" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center" AllowFiltering="false" AllowSorting="false" AllowEditing="false">
+                <Template>
+                    @{
+                        var service = (context as ServiceComponentModel);
+                        <span class="btn-group" role="group">
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => ShowEditDialog(service.ServiceId))">
+                                <span class="bi bi-pencil-square"></span>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => ConfirmDelete(service.ServiceId))">
+                                <span class="bi bi-trash2-fill"></span>
+                            </button>
+                        </span>
+                    }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+
+<SfDialog @ref="@_editDialog" IsModal="true" @bind-Visible="@_showEditDialog" Width="30rem" CloseOnEscape="false" ShowCloseIcon="true">
+    <DialogTemplates>
+        <Header><span class="h4 text-center">Edit Service</span></Header>
+        <Content>
+            <EditService Model="@_targetService" HandleFormSubmit="@FinishEdit"/>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+<SfDialog @ref="@_deleteDialog" IsModal="true" @bind-Visible="@_confirmDeleteDialog" Width="20rem">
+
+</SfDialog>
+
+@code {
+    List<ServiceComponentModel> _services = new();
+
+    ServiceUpsertComponentModel _targetService = new();
+    private bool _showEditDialog = false;
+    private bool _confirmDeleteDialog = false;
+    SfDialog _editDialog;
+    SfDialog _deleteDialog;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<ServiceComponentModel>>("api/services");
+
+        if (response.Success)
+            _services = response.Response;
+    }
+
+
+
+    async Task ShowEditDialog(int id)
+    {
+        _showEditDialog = true;
+        var response = await Http.GetByIdAsync<ServiceUpsertComponentModel>($"api/services/{id}");
+
+        if (response.Success)
+            _targetService = response.Response;
+    }
+
+    async Task FinishEdit()
+    {
+        var response = await Http.PutAsync<ServiceUpsertComponentModel>("api/services", _targetService);
+
+        if (response.Success)
+        {
+            Toast.ShowSuccess("Update Successful!", "Update Service");
+            _showEditDialog = false;
+        }
+
+    }
+
+    void ConfirmDelete(int id)
+    {
+        _confirmDeleteDialog = true;
+    }
+
+    async Task DoDelete(int id)
+    {
+        var response = await Http.DeleteAsync($"api/services/{id}");
+    }
+}

@@ -16,6 +16,18 @@
             Make Booking
         </button>
     </span>
+    <span>
+        <button @onclick="@(() => Navigation.NavigateTo("bookings/services"))" class="btn btn-outline-primary">
+            <span class="bi bi-pen-fill"></span>
+            Update Services
+        </button>
+    </span>
+    <span>
+        <button @onclick="@(() => Navigation.NavigateTo("bookings/bookedItems"))" class="btn btn-outline-primary">
+            <span class="bi bi-pen-fill"></span>
+            Update Rental Items
+        </button>
+    </span>
 </div>
 
 <div>

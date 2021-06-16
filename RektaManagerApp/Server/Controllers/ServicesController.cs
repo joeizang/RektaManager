@@ -24,9 +24,14 @@ namespace RektaManagerApp.Server.Controllers
 
         // GET: api/Services
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
+        public async Task<ActionResult<IEnumerable<ServiceComponentModel>>> GetServices()
         {
-            return await _context.Services.ToListAsync();
+            return await _context.Services.AsNoTracking().Select(s => new ServiceComponentModel
+            {
+                Name = s.Name,
+                Price = s.Price,
+                ServiceId = s.Id
+            }).ToListAsync().ConfigureAwait(false);
         }
 
         [HttpGet("servicesDropDown", Name = "GetServicesDropDown")]
