@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManager.Server.Data;
 using RektaManager.Shared;
+using RektaManagerApp.Shared.ComponentModels.Bookings;
 
 namespace RektaManager.Server.Controllers
 {
@@ -26,6 +27,19 @@ namespace RektaManager.Server.Controllers
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
             return await _context.Bookings.ToListAsync();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BookedItemUpsertComponentModel>>> GetBookedItems()
+        {
+            var result = await _context.BookedItems.AsNoTracking().Select(b => new BookedItemUpsertComponentModel
+            {
+                Id = b.Id,
+                Price = b.Price,
+                Name = b.Name,
+                Timestamp = b.Timestamp
+            }).ToListAsync().ConfigureAwait(false);
+            return result;
         }
 
         // GET: api/Bookings/5

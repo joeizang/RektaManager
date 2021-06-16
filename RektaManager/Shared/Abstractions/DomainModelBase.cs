@@ -11,7 +11,7 @@ namespace RektaManager.Shared.Abstractions
     public abstract class DomainModelBase : IDomainModel
     {
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow.LocalDateTime;
-        
+
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow.LocalDateTime;
 
         [StringLength(100)]
@@ -22,12 +22,11 @@ namespace RektaManager.Shared.Abstractions
 
         [Key]
         public int Id { get; set; }
-        
+
         public bool IsDeleted { get; set; }
 
         [ConcurrencyCheck, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
-        public byte[] Timestamp { get; set; }
-
+        public DateTime Timestamp { get; set; }
     }
 }

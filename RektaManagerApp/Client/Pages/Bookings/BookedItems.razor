@@ -1,5 +1,73 @@
-﻿<h3>BookedItems</h3>
+﻿@page "/bookings/bookedItems"
+@using RektaManagerApp.Shared.ComponentModels.Bookings
+@inject IHttpService Http
+@inject NavigationManager Navigation
+@inject IToastService Toast
+
+<div class="d-flex justify-content-center align-items-center mb-4">
+    <h3 class="h3">Booked Items Listing</h3>
+</div>
+
+<div>
+    <SfGrid DataSource="@_bookedItems" AllowFiltering="true" AllowSorting="true" AllowPaging="true">
+        <GridPageSettings PageSize="10"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(BookedItemUpsertComponentModel.Id)" 
+                        HeaderText="BookedItem ID" TextAlign="TextAlign.Center" 
+                        AllowFiltering="false" AllowSorting="false" AutoFit="true"></GridColumn>
+            <GridColumn Field="@nameof(BookedItemUpsertComponentModel.Name)" HeaderText="Item Name" 
+                        TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field="@nameof(BookedItemUpsertComponentModel.Price)" HeaderText="Item Price" 
+                        TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center">
+                <Template>
+                    @{
+                        var bookedItem = (context as BookedItemUpsertComponentModel);
+                        <span class="btn-group" role="group">
+                            <button class="btn btn-outline-info btn-sm" @onclick="@(() => ShowEditDialog(bookedItem.Id))">
+                                <span class="bi bi-pencil-square"></span>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => ShowDeleteDialog(bookedItem.Id))">
+                                <span class="bi bi-trash2-fill"></span>
+                            </button>
+                        </span>
+                    }
+                </Template>
+            </GridColumn>
+            
+        </GridColumns>
+    </SfGrid>
+</div>
+
+<SfDialog Width="30rem" IsModal="true" @bind-Visible="@_showEditBookedItem" CloseOnEscape="false" ShowCloseIcon="true">
+
+</SfDialog>
+
+<SfDialog Width="20rem" IsModal="true" @bind-Visible="@_showDeleteBookedItem" CloseOnEscape="false" ShowCloseIcon="true">
+
+</SfDialog>
 
 @code {
 
+    List<BookedItemUpsertComponentModel> _bookedItems = new();
+    bool _showEditBookedItem = false;
+    bool _showDeleteBookedItem = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync<List<BookedItemUpsertComponentModel>>("api/bookings/bookedItems");
+
+        if (response.Success)
+            _bookedItems = response.Response;
+    }
+
+    async Task ShowEditDialog(int id)
+    {
+
+    }
+
+    async Task ShowDeleteDialog(int id)
+    {
+
+    }
 }

@@ -20,6 +20,6 @@ namespace RektaManager.Shared.Abstractions
 
         public bool IsDeleted { get; set; }
 
-        byte[] Timestamp { get; set; }
+        DateTime Timestamp { get; set; }
     }
 }
