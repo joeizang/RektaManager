@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,22 +49,31 @@ namespace RektaManagerApp.Shared.ComponentModels.Invoices
 
     public class InvoiceUpsertComponentModel
     {
+        [Required]
         public DateTime TransactionDate { get; set; }
 
+        [Required]
         public DateTime DueDate { get; set; }
 
+        [Required]
+        [StringLength(300)]
         public string Description { get; set; }
 
         public bool FullyPaid { get; set; }
 
+        [Required]
+        [StringLength(50)]
         public string CustomerName { get; set; }
 
+        [StringLength(50)]
         public string CustomerPhone { get; set; }
 
+        [Required]
         public decimal Amount { get; set; }
 
         public decimal Total { get; set; }
 
+        [Required]
         public string AttendingStaff { get; set; }
 
         public List<int> Services { get; set; } = new();

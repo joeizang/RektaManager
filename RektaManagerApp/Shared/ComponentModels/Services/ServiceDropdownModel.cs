@@ -27,12 +27,17 @@ namespace RektaManagerApp.Shared.ComponentModels.Services
 
     public class ServiceUpsertComponentModel
     {
+        [Required]
+        [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
 
+        [Required]
         public DateTime Timestamp { get; set; }
 
+        [Required]
         public int ServiceId { get; set; }
 
     }

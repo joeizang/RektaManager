@@ -10,12 +10,14 @@ namespace RektaManagerApp.Shared.ComponentModels.Inventories
     public class InventoryUpsertComponentModel
     {
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
-        [Required] public DateTime SupplyDate { get; set; } = DateTime.UtcNow;
+        [Required] 
+        public DateTime SupplyDate { get; set; } = DateTime.UtcNow;
 
         [Required]
         public double Quantity { get; set; }
