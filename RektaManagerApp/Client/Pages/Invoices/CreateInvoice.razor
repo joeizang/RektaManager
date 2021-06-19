@@ -1,23 +1,49 @@
 ﻿@page "/invoices/issue-invoice"
 @using RektaManagerApp.Shared.ComponentModels.Invoices
+@using RektaManagerApp.Shared.ComponentModels.Services
+@using RektaManagerApp.Shared.ComponentModels.Bookings
 @inject IHttpService Http
 @inject IToastService Toast
-
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
 
 <div class="d-flex justify-content-center align-items-center">
     <h3 class="h3">Issue an Invoice</h3>
 </div>
 
 <div class="col-12">
-    <InvoiceForm Model="@_invoice" HandleSubmit="@HandleCreateInvoice"></InvoiceForm>
+    <InvoiceForm Model="@_invoice" HandleSubmit="@HandleCreateInvoice" Services="@_serviceDropdown" BookedItems="@_bookedItems"></InvoiceForm>
 </div>
 
 
 @code {
     private InvoiceUpsertComponentModel _invoice = new();
+    private List<ServiceDropdownModel> _serviceDropdown = new();
+    private List<BookedItemDropdownModel> _bookedItems = new();
 
-    private void HandleCreateInvoice()
+
+    protected override async Task OnInitializedAsync()
     {
-        
+        var response = await Http.GetAsync<List<ServiceDropdownModel>>("api/services/servicesDropDown");
+        if (response.Success)
+            _serviceDropdown = response.Response;
+
+        var itemsResponse = await Http.GetAsync<List<BookedItemDropdownModel>>("api/bookings/bookedItems");
+        if (itemsResponse.Success)
+            _bookedItems = itemsResponse.Response;
+    }
+
+    private async Task HandleCreateInvoice()
+    {
+        await LocalStorage.SetItemAsync<InvoiceUpsertComponentModel>("completedInvoice", _invoice);
+        var response = await Http.Post("api/invoices", _invoice);
+
+        if(response.Success)
+        {
+            Toast.ShowSuccess("Invoice Issued Successfully!", "Successful Creation!");
+            await LocalStorage.RemoveItemAsync("completedInvoice");
+            Navigation.NavigateTo("invoices", true);
+        }
+        Toast.ShowError($"Invoice not issued due to an error : {response.HttpResponseMessage.StatusCode}");
     }
 }

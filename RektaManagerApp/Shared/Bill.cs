@@ -13,6 +13,7 @@ namespace RektaManagerApp.Shared
     {
         [Key]
         public new string Id { get; set; }
+        
         public DateTimeOffset TransactionDate { get; set; }
 
         public DateTimeOffset DueDate { get; set; }
@@ -26,7 +27,7 @@ namespace RektaManagerApp.Shared
         [Column(TypeName = "decimal(20,2)")]
         public decimal Total { get; set; }
 
-        public bool PaymentStatus { get; set; }
+        public bool FullyPaid { get; set; }
 
         public List<ChartOfAccounts> ChartOfAccounts { get; set; }
 

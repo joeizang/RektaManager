@@ -1,5 +1,7 @@
 ﻿@using RektaManagerApp.Shared.ComponentModels.Invoices
-
+@using RektaManagerApp.Shared.ComponentModels.Bookings
+@using RektaManagerApp.Shared.ComponentModels.Services
+@inject AuthenticationStateProvider AuthProvider
 
 <div class="card shadow d-flex justify-content-center align-items-center p-1 mb-4 col-12">
     <EditForm Model="@Model" OnValidSubmit="@HandleSubmit" class="w-75 pr-3 pt-3">
@@ -20,9 +22,40 @@
             <InputText class="form-control" @bind-Value="@Model.CustomerName" />
             <span class="text-danger"><ValidationMessage For="@(() => Model.CustomerName)" /></span>
         </div>
+
         <div class="form-group">
             <label>
-                <b>Deposit :</b>
+                <b>Select Services :</b>
+            </label>
+            <select class="custom-select" multiple>
+                <option class="text-secondary">Select several services by using Control + Click....</option>
+                @foreach (var service in Services)
+                {
+                    <option value="@service.ServiceId" @onclick="@(() => Model.Services.Add(service.ServiceId))">@service.ServiceName</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <b>Select Bookable Items :</b>
+            </label>
+            <select class="custom-select" multiple>
+                <option class="text-secondary">Select several bookable items by using Control + Click....</option>
+                @foreach (var bookedItem in BookedItems)
+                {
+                    <option value="@bookedItem.BookedItemId" 
+                            @onclick="@(() => Model.BookedItems.Add(bookedItem.BookedItemId))">
+                        @bookedItem.ItemName
+                    </option>
+                }
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label>
+                <b>Amount :</b>
             </label>
             <InputNumber class="form-control" @bind-Value="@Model.Amount" />
             <span class="text-danger"><ValidationMessage For="@(() => Model.Amount)" /></span>
@@ -31,7 +64,7 @@
             <label>
                 <b>Part Payment? :</b>
             </label>
-            <SfSwitch @bind-Checked="@Model.IsPartPayment" />
+            <SfSwitch @bind-Checked="@Model.FullyPaid" />
         </div>
         <div class="form-group">
             <label>
@@ -44,15 +77,15 @@
             <label>
                 <b>Attending Staff :</b>
             </label>
-            <InputText class="form-control" @bind-Value="@Model.CustomerPhone" readonly />
+            <InputText class="form-control" @bind-Value="@Model.AttendingStaff" readonly />
             <span class="text-danger"><ValidationMessage For="@(() => Model.CustomerPhone)" /></span>
         </div>
         <div class="form-group">
             <label>
                 <b>Event Date :</b>
             </label>
-            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.DueDate" Min="@minDate" Max="@maxDate" @ref="@DatePicker" Format="dd-MM-yyyy">
-                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => DatePicker.Show())"></DatePickerEvents>
+            <SfDatePicker CssClass="form-control" TValue="DateTime" @bind-Value="@Model.DueDate" Min="@minDate" Max="@maxDate" @ref="@EventDateRef" Format="dd-MM-yyyy">
+                <DatePickerEvents TValue="DateTime" Focus="@((Syncfusion.Blazor.Calendars.FocusEventArgs args) => EventDateRef.Show())"></DatePickerEvents>
             </SfDatePicker>
             <span class="text-danger"><ValidationMessage For="@(() => Model.DueDate)" /></span>
         </div>
@@ -65,44 +98,34 @@
     </EditForm>
 </div>
 
-<style>
-        .e-ddl.e-input-group.e-control-wrapper.e-input-focus::before, .e-ddl.e-input-group.e-control-wrapper.e-input-focus::after {
-            background: #78C2AD;
-        }
-        .e-outline.e-input-group.e-input-focus:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left), .e-outline.e-input-group.e-input-focus.e-control-wrapper:hover:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled):not(.e-float-icon-left), .e-outline.e-input-group.e-input-focus:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled), .e-outline.e-input-group.e-control-wrapper.e-input-focus:not(.e-success):not(.e-warning):not(.e-error):not(.e-disabled) {
-            border-color: #78C2AD;
-            box-shadow: inset 1px 1px #78C2AD, inset -1px 0 #78C2AD, inset 0 -1px #78C2AD;
-        }
-        .e-dropdownbase .e-list-item.e-item-focus, .e-dropdownbase .e-list-item.e-active, .e-dropdownbase .e-list-item.e-active.e-hover, .e-dropdownbase .e-list-item.e-hover {
-            background-color: #78C2AD;
-            color: #78C2AD;
-        }
-        e-dropdownbase .e-list-item, .e-dropdownbase .e-list-item.e-item-focus {
-            background-color: maroon;
-            color: pink;
-            @*font-family: emoji;*@
-            min-height: 29px;
-        }
-        .e-ddl.e-input-group.e-control-wrapper .e-input {
-            font-size: 20px;
-            @*font-family: emoji;*@
-            color: #78C2AD;
-            background: #78C2AD;
-        }
-</style>
-
 
 @code {
     [Parameter]
     public InvoiceUpsertComponentModel Model { get; set; }
 
     [Parameter]
+    public List<ServiceDropdownModel> Services { get; set; }
+
+    [Parameter]
+    public List<BookedItemDropdownModel> BookedItems { get; set; }
+
+    [Parameter]
     public EventCallback HandleSubmit { get; set; }
 
     SfDatePicker<DateTime> DatePicker;
 
+    SfDatePicker<DateTime> EventDateRef;
+
     private DateTime minDate = new DateTime(2020, 01, 01);
 
     private DateTime maxDate = DateTime.UtcNow.AddMonths(6);
+
+    public AuthenticationState AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthState = await AuthProvider.GetAuthenticationStateAsync();
+        Model.AttendingStaff = AuthState.User.Identity.Name ?? "Anonymous";
+    }
 
 }

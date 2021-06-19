@@ -54,7 +54,7 @@ namespace RektaManagerApp.Shared.ComponentModels.Invoices
 
         public string Description { get; set; }
 
-        public bool InvoicePaymentStatus { get; set; }
+        public bool FullyPaid { get; set; }
 
         public string CustomerName { get; set; }
 
@@ -64,6 +64,13 @@ namespace RektaManagerApp.Shared.ComponentModels.Invoices
 
         public decimal Total { get; set; }
 
-        public bool IsPartPayment { get; set; }
+        public string AttendingStaff { get; set; }
+
+        public List<int> Services { get; set; } = new();
+        
+        public List<int> BookedItems { get; set; } = new();
+
+        public List<int> Orders { get; set; } = new();
+
     }
 }

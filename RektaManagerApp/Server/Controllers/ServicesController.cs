@@ -46,6 +46,12 @@ namespace RektaManagerApp.Server.Controllers
             return result;
         }
 
+        //[HttpGet("serviceSummary", Name ="GetServiceSummaryList")]
+        //public async Task<ActionResult<IEnumerable<ServiceSummaryListModel>>> GetSelectedServiceSummary(string )
+        //{
+
+        //}
+
         // GET: api/Services/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetService(int id)

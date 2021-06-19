@@ -24,7 +24,25 @@
         <GridColumns>
             <GridColumn Field="@nameof(InventoryComponentModel.InventoryId)" TextAlign="TextAlign.Center" AllowSorting="false" AllowEditing="false"></GridColumn>
             <GridColumn Field="@nameof(InventoryComponentModel.InventoryName)" TextAlign="TextAlign.Center" AllowSorting="false" AllowEditing="false"></GridColumn>
-            <GridColumn Field="@nameof(InventoryComponentModel.QuantityInStock)" TextAlign="TextAlign.Center" AllowSorting="false" AllowEditing="false"></GridColumn>
+            <GridColumn Field="@nameof(InventoryComponentModel.QuantityInStock)" TextAlign="TextAlign.Center" AllowSorting="false" AllowEditing="false">
+                <Template>
+                    @{ 
+                        var inventory = (context as InventoryComponentModel);
+                        if(inventory.QuantityInStock >= 20)
+                        {
+                            <span class="text-success"><b>@inventory.QuantityInStock</b></span>
+                        }
+                        else if(inventory.QuantityInStock < 30 && inventory.QuantityInStock > 15)
+                        {
+                            <span class="text-warning text"><b>@inventory.QuantityInStock</b></span>
+                        }
+                        else if(inventory.QuantityInStock < 15)
+                        {
+                            <span class="text-danger"><b>@inventory.QuantityInStock</b></span>
+                        }
+                    }
+                </Template>
+            </GridColumn>
             <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center">
                 <Template>
                     @{

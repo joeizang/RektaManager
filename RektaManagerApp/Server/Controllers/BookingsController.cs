@@ -46,6 +46,20 @@ namespace RektaManagerApp.Server.Controllers
             return result;
         }
 
+
+        [HttpGet("bookedItems", Name = "GetBookedItems")]
+        public async Task<ActionResult<IEnumerable<BookedItemUpsertComponentModel>>> GetBookedItems()
+        {
+            var result = await _context.BookedItems.AsNoTracking().Select(b => new BookedItemUpsertComponentModel
+            {
+                Id = b.Id,
+                Price = b.Price,
+                Name = b.Name,
+                Timestamp = b.Timestamp
+            }).ToListAsync().ConfigureAwait(false);
+            return result;
+        }
+
         [HttpGet("bookedItemDropDown", Name = "GetBookedItemDropDown")]
         public async Task<ActionResult<IEnumerable<BookedItemDropdownModel>>> GetDropDown()
         {

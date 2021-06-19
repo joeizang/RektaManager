@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,6 +97,10 @@ namespace RektaManagerApp.Server.Data
         public DbSet<SupplierActionAudit> SupplierActionsAudits { get; set; }
 
         public DbSet<StaffShiftActionsAudit> StaffShiftActionsAudit { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
+        public DbSet<InvoicePayment> InvoicePayments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -344,11 +348,5 @@ namespace RektaManagerApp.Server.Data
                 .Property(b => b.Timestamp).IsRowVersion().IsConcurrencyToken();
 
         }
-
-
-        public DbSet<Invoice> Invoices { get; set; }
-
-
-        public DbSet<InvoicePayment> InvoicePayments { get; set; }
     }
 }

@@ -45,7 +45,6 @@
   <ItemGroup>
     <Folder Include="Notifications\Bills" />
     <Folder Include="Notifications\Bookings" />
-    <Folder Include="Notifications\Invoices" />
     <Folder Include="Notifications\Products" />
     <Folder Include="Notifications\Suppliers" />
   </ItemGroup>

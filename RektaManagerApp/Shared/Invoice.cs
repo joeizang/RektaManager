@@ -13,13 +13,16 @@ namespace RektaManagerApp.Shared
     {
         [Key]
         public new string Id { get; set; }
+
         public DateTimeOffset TransactionDate { get; set; }
 
         public DateTimeOffset DueDate { get; set; }
 
         public string Description { get; set; }
 
-        public bool InvoicePaymentStatus { get; set; }
+        public decimal Total { get; set; }
+
+        public bool FullyPaid { get; set; }
 
         public Customer Customer { get; set; }
 

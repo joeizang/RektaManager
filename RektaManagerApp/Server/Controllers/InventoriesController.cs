@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RektaManagerApp.Server.Data;
@@ -16,10 +17,12 @@ namespace RektaManagerApp.Server.Controllers
     public class InventoriesController : ControllerBase
     {
         private readonly RektaManagerAppContext _context;
+        private readonly IMediator _mediator;
 
-        public InventoriesController(RektaManagerAppContext context)
+        public InventoriesController(RektaManagerAppContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Inventories

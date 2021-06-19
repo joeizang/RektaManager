@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace RektaManagerApp.Shared.ComponentModels.Services
     {
         public int ServiceId { get; set; }
 
+        [Display(Name = "Service Name")]
         public string ServiceName { get; set; }
 
     }
@@ -33,5 +35,12 @@ namespace RektaManagerApp.Shared.ComponentModels.Services
 
         public int ServiceId { get; set; }
 
+    }
+
+    public class ServiceSummaryListModel
+    {
+        public int ServiceId { get; set; }
+
+        public string ServiceName { get; set; }
     }
 }

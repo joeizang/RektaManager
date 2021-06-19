@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RektaManagerApp.Server.Abstractions;
 using RektaManagerApp.Server.Data;
+using RektaManagerApp.Server.Notifications.Invoices;
 using RektaManagerApp.Shared;
 using RektaManagerApp.Shared.ComponentModels.Invoices;
 
@@ -16,10 +19,14 @@ namespace RektaManagerApp.Server.Controllers
     public class InvoicesController : ControllerBase
     {
         private readonly RektaManagerAppContext _context;
+        private readonly IRepository _repo;
+        private readonly IMediator _mediator;
 
-        public InvoicesController(RektaManagerAppContext context)
+        public InvoicesController(RektaManagerAppContext context, IRepository repo, IMediator mediator)
         {
             _context = context;
+            _repo = repo;
+            _mediator = mediator;
         }
 
         // GET: api/Invoices
@@ -31,7 +38,7 @@ namespace RektaManagerApp.Server.Controllers
                 {
                     CustomerName = x.Customer.Name,
                     DueDate = x.DueDate,
-                    InvoicePaymentStatus = x.InvoicePaymentStatus,
+                    InvoicePaymentStatus = x.FullyPaid,
                     NumberOfOrders = x.Orders.Count,
                     TransactionDate = x.TransactionDate
                 }).ToListAsync().ConfigureAwait(false);
@@ -86,12 +93,56 @@ namespace RektaManagerApp.Server.Controllers
         // POST: api/Invoices
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Invoice>> PostInvoice(Invoice invoice)
+        public async Task<ActionResult<InvoiceComponentModel>> PostInvoice(InvoiceUpsertComponentModel model)
         {
-            _context.Invoices.Add(invoice);
-            await _context.SaveChangesAsync();
+            var newId = _repo.GenerateStringId();
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
 
-            return CreatedAtAction("GetInvoice", new { id = invoice.Id }, invoice);
+                var invoice = new Invoice
+                {
+                    Id = newId,
+                    Description = model.Description,
+                    DueDate = model.DueDate,
+                    TransactionDate = model.TransactionDate,
+                    FullyPaid = model.FullyPaid,
+                    Customer = new Customer { Name = model.CustomerName, PhoneNumber = model.CustomerPhone },
+                    Total = model.Total,
+                    CreatedBy = model.AttendingStaff
+                };
+                
+                _context.Invoices.Add(invoice);
+                await _repo.Save<Invoice>().ConfigureAwait(false);
+
+                var customerId = await _context.Customers.AsNoTracking()
+                    .Include(c => c.CustomerInvoices.Where(i => i.Id.Equals(newId)))
+                    .Select(c => new
+                    {
+                        CustomerId = c.Id
+                    }).SingleOrDefaultAsync().ConfigureAwait(false);
+
+                var notification = new InvoiceCreatedNotification
+                {
+                    Description = model.Description,
+                    DueDate = model.DueDate,
+                    Total = model.Total,
+                    FullyPaid = model.FullyPaid,
+                    InvoiceId = newId,
+                    TransactionDate = model.TransactionDate,
+                    CustomerId = customerId.CustomerId,
+                    CreatedBy = model.AttendingStaff
+                };
+
+                await _mediator.Publish<InvoiceCreatedNotification>(notification);
+
+                return CreatedAtAction("GetInvoice", new { id = invoice.Id }, invoice);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
         }
 
         // DELETE: api/Invoices/5

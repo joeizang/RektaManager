@@ -13,12 +13,17 @@ namespace RektaManagerApp.Shared
     {
         [Key]
         public new string Id { get; set; }
+
         public DateTimeOffset TransactionDate { get; set; }
 
         [StringLength(300)]
         public string Description { get; set; }
 
-        [StringLength(150)]
+        public bool PartPayment { get; set; }
+
+        public bool FullPayment { get; set; }
+
+        [StringLength(300)]
         public string Reference { get; set; }
 
         [Column(TypeName = "decimal(20,2)")]

@@ -50,16 +50,22 @@
         <div class="form-group">
             <div>
                 <label for="inventories">Inventory</label>
-                <PNInputSelect @bind-Value="@Model.ProductInventoryId" id="inventories" class="form-control" DisplayName="Inventory Id">
+                @*<PNInputSelect @bind-Value="@Model.ProductInventoryId" id="inventories" class="form-control" DisplayName="Inventory Id">
                     <option value="0">Select an Inventory...</option>
                     @foreach (var option in Inventories)
                     {
                         <option value="@option.InventoryId">@option.InventoryName</option>
                     }
-                </PNInputSelect>
-                @*<SfDropDownList TValue="int" TItem="InventorySelectModel" DataSource="Inventories">
+                </PNInputSelect>*@
+                <SfDropDownList TValue="int" 
+                                TItem="InventorySelectModel" 
+                                DataSource="Inventories"
+                                @bind-Value="@Model.ProductInventoryId"
+                                Placeholder="Pick an Inventory this belongs to..."
+                                AllowFiltering="true"
+                                CssClass="form-control">
                     <DropDownListFieldSettings Value="InventoryId" Text="InventoryName"></DropDownListFieldSettings>
-                </SfDropDownList>*@
+                </SfDropDownList>
             </div>
         </div>
         <div class="form-group">
@@ -72,8 +78,9 @@
                 @*         <option value="@supplier.SupplierId">@supplier.SupplierName</option> *@
                 @*     } *@
                 @* </PNInputSelect> *@
-                <SfDropDownList DataSource="@Suppliers" AllowFiltering="true" CssClass="form-control" 
-                                Placeholder="Select a Supplier" IgnoreCase="true"
+                <SfDropDownList DataSource="@Suppliers" AllowFiltering="true" CssClass="form-control"
+                                @bind-Value="@Model.SupplierId"
+                                Placeholder="Select the Supplier that supplied this..." IgnoreCase="true"
                                 TItem="SupplierSelectModel"
                                 TValue="int">
                     <DropDownListFieldSettings Text="SupplierName" Value="SupplierId"></DropDownListFieldSettings>
@@ -83,13 +90,21 @@
         <div class="form-group">
             <div>
                 <label for="unitMeasure">Unit Measure</label>
-                <InputSelect id="unitMeasure" @bind-Value="@Model.UnitMeasure" class="form-control">
+                @*<InputSelect id="unitMeasure" @bind-Value="@Model.UnitMeasure" class="form-control">
                     <option value="0">Select a Measurement...</option>
                     @foreach (var option in Enum.GetValues<UnitMeasure>())
                     {
                         <option>@option</option>
                     }
-                </InputSelect>
+                </InputSelect>*@
+                <SfDropDownList DataSource="@UnitMeasureValues" 
+                                Placeholder="Select a Unit Measurement eg: dozen, packets..." 
+                                @bind-Value="@Model.UnitMeasure"
+                                TValue="UnitMeasure"
+                                TItem="string"
+                                AllowFiltering="true">
+
+                </SfDropDownList>
             </div>
         </div>
         <div class="form-group">
@@ -133,6 +148,8 @@
 
     [Parameter]
     public string ShowSpinnerStatus { get; set; }
+
+    string[] UnitMeasureValues = Enum.GetNames(typeof(UnitMeasure));
 
 
     protected override void OnInitialized()
