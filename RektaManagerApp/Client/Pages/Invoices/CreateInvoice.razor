@@ -28,7 +28,7 @@
         if (response.Success)
             _serviceDropdown = response.Response;
 
-        var itemsResponse = await Http.GetAsync<List<BookedItemDropdownModel>>("api/bookings/bookedItems");
+        var itemsResponse = await Http.GetAsync<List<BookedItemDropdownModel>>("api/bookings/bookedItemDropDown");
         if (itemsResponse.Success)
             _bookedItems = itemsResponse.Response;
     }

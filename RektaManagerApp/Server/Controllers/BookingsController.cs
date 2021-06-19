@@ -40,7 +40,6 @@ namespace RektaManagerApp.Server.Controllers
                     EventDate = b.EventDate.LocalDateTime,
                     BookingId = b.Id,
                     IsFullyPaid = b.IsFullyPaid,
-                    IsPartPaid = b.IsPartPayment
                 }).ToListAsync().ConfigureAwait(false);
 
             return result;

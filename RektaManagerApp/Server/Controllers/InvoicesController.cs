@@ -112,6 +112,26 @@ namespace RektaManagerApp.Server.Controllers
                     Total = model.Total,
                     CreatedBy = model.AttendingStaff
                 };
+                var bookedItems = new List<BookedItem>();
+                var services = new List<Service>();
+
+                if(model.BookedItems.Any())
+                {
+                    model.BookedItems.ForEach(b => 
+                    {
+                        bookedItems.Add(new BookedItem { Id = b });
+                    });
+                }
+
+                if(model.Services.Any())
+                {
+                    model.Services.ForEach(s =>
+                    {
+                        services.Add(new Service { Id = s });
+                    });
+                }
+
+
                 
                 _context.Invoices.Add(invoice);
                 await _repo.Save<Invoice>().ConfigureAwait(false);

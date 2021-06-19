@@ -33,13 +33,11 @@ namespace RektaManagerApp.Shared
 
         public string Description { get; set; }
 
-        public bool IsPartPayment { get; set; }
-
         public bool IsFullyPaid { get; set; }
 
         public List<BookingSales> BookingSalesInvoices { get; set; }
 
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
 
         public Invoice Invoice { get; set; }
 

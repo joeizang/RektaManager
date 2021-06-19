@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RektaManagerApp.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,10 @@ namespace RektaManagerApp.Server.Notifications.Invoices
         public int CustomerId { get; set; }
 
         public string CreatedBy { get; set; }
+
+        public List<BookedItem> BookedItems { get; set; }
+
+        public List<Service> Services { get; set; }
+
     }
 }
