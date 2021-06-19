@@ -166,12 +166,18 @@ namespace RektaManagerApp.Server.Controllers
                 if (ModelState.IsValid)
                 {
                     //_context.Products.Add(product);
-                    await _repo.Add(product);
-                    await _repo.Save<Product>();
-                    var result = await _context.Products
-                        .Where(x => x.ProductUniqueIdentifier.Equals(model.ProductUniqueIdentifier))
-                        .SingleOrDefaultAsync().ConfigureAwait(false);
-                    newId = result.Id;
+                    await _repo.Add(product).ConfigureAwait(false);
+                    await _repo.Save<Product>().ConfigureAwait(false);
+
+                    var changes = JsonSerializer.Serialize(product);
+                    //add notification
+                    var audit = new ProductActionsAudit
+                    {
+                        Actions = ActionPerformed.Created,
+                        Changes = changes
+                    };
+                    await _repo.Add(audit).ConfigureAwait(false);
+                    await _repo.Save<ProductActionsAudit>().ConfigureAwait(false);
                 }
             }
             catch (Exception e)
