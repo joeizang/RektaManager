@@ -242,7 +242,8 @@ namespace RektaManagerApp.Server.Controllers
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            //_context.Products.Remove(product);
+            await _repo.Delete<Product>(id).ConfigureAwait(false);
             await _context.SaveChangesAsync();
 
             return NoContent();

@@ -27,7 +27,7 @@ namespace RektaManagerApp.Shared
         public double Quantity { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(20)]
         public string ItemCode { get; set; }
     }
 }

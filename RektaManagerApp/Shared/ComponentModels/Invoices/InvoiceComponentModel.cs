@@ -42,7 +42,7 @@ namespace RektaManagerApp.Shared.ComponentModels.Invoices
 
         public DateTimeOffset? DueDate { get; set; }
 
-        public int InvoiceId { get; set; }
+        public string InvoiceId { get; set; }
 
     }
 

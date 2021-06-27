@@ -30,7 +30,7 @@ namespace RektaManagerApp.Server.Notifications.Bookings
                 var newId = _repo.GenerateStringId();
 
                 //var user = await _userManager.FindByEmailAsync(notification.CreatedBy).ConfigureAwait(false);
-                var user = _userManager.Users.Where(u => u.Email.Equals(notification.CreatedBy, StringComparison.CurrentCultureIgnoreCase))
+                var user = _userManager.Users.Where(u => u.Email.Equals(notification.CreatedBy))
                                     .Select(x => x.Id).SingleOrDefault();
 
                 var booking = new Booking

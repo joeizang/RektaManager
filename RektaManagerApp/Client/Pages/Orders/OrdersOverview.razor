@@ -2,6 +2,7 @@
 @using Blazored.LocalStorage
 @inject ISyncLocalStorageService LocalStorage
 @inject IOrderService OrderService
+@inject AuthenticationStateProvider AuthProvider
 @inject IModalService Modal 
 @implements IDisposable
 
@@ -27,36 +28,35 @@ else
     <DialogTemplates>
         <Header><h3 class="h3">Finish the Order</h3></Header>
         <Content>
-            <FinishOrder OrderedItems="@CurrentCart" />
+            <FinishOrder OrderedItems="@CurrentCart" AuthState="AuthStateProvider" />
         </Content>
     </DialogTemplates>
 </SfDialog>
 
 @code {
 
-    public List<OrderedItemUpsertComponentModel> CurrentCart { get; set; }
+    public List<OrderedItemUpsertComponentModel> CurrentCart { get; set; } = new();
+
+    public AuthenticationState AuthStateProvider { get; set; }
 
     private bool _showDialog = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         OrderService.OnChange += StateHasChanged;
+        AuthStateProvider = await AuthProvider.GetAuthenticationStateAsync();
     }
 
     private int GetCartCount()
     {
         CurrentCart = LocalStorage.GetItem<List<OrderedItemUpsertComponentModel>>("currentCart");
-        //Console.WriteLine(CurrentCart.FirstOrDefault()?.ItemName);
         return CurrentCart?.Count ?? 0;
     }
 
     private void FinishOrder()
     {
         _showDialog = true;
-        //Modal.Open<FinishOrder>("Finish Placing the Order", new Dictionary<string, object>()
-        //{
-        //            { "OrderedItems", CurrentCart }
-        //        }, new DialogOptions { Width = "30rem" });
+
     }
 
     public void Dispose()

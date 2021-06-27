@@ -17,14 +17,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in OrderedItems)
+            @if (OrderedItems is null)
             {
-                <tr>
-                    <td>@item.ItemName</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.ItemPrice</td>
-                    <td>@CalculateTotal((decimal)@item.Quantity, @item.ItemPrice)</td>
-                </tr>
+
+
+                <tr>Nothing Added to Order Yet!</tr>
+            }
+            else
+            {
+                @foreach (var item in OrderedItems)
+                {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.ItemPrice</td>
+                        <td>@CalculateTotal((decimal)@item.Quantity, @item.ItemPrice)</td>
+                    </tr>
+                }
             }
             <tr class="h-25">
                 <td></td>
@@ -47,7 +56,7 @@
 @code {
 
     [Parameter]
-    public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; }
+    public List<OrderedItemUpsertComponentModel> OrderedItems { get; set; } = new();
 
     public string Visibility { get; set; } = "none";
 
@@ -76,7 +85,7 @@
         order.OrderedItems = OrderedItems;
         order.OrderDate = DateTimeOffset.UtcNow;
         order.CustomerName = OrderedItems.First().CustomerName;
-        order.StaffId = AuthState.User.Identity.Name;
+        order.StaffId = AuthState.User.Identity?.Name;
         order.Timestamp = DateTimeOffset.UtcNow.LocalDateTime;
         order.OrderTotal = _grandTotal;
 
@@ -85,7 +94,7 @@
         DisableBtn = false;
         Visibility = "none";
 
-        if (!response.Success)
+        if (response.Success == false)
             Toast.ShowError("There was an error placing your order!", "Order Failed!");
 
         Toast.ShowSuccess("Placed Order Successfully", "Order Success");

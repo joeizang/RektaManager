@@ -10,6 +10,8 @@ namespace RektaManagerApp.Shared.ComponentModels.Orders
 {
     public class OrderUpsertComponentModel : BaseUpsertComponentModel
     {
+        string _dateString = DateTimeOffset.UtcNow.LocalDateTime.AddMonths(6).ToShortDateString();
+
         [Required]
         [StringLength(100)]
         public string CustomerName { get; set; }

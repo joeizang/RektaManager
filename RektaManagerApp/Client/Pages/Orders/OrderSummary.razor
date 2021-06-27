@@ -18,22 +18,44 @@
     </div>
 
     <div class="d-flex">
-        <SfGrid DataSource="@_orders">
-
+        <SfGrid DataSource="@_orders" AllowPaging="true" AllowFiltering="true" AllowSorting="true">
+            <GridPageSettings PageSize="10"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Field="@nameof(OrderComponentModel.OrderId)" HeaderText="Order ID" AllowEditing="false" TextAlign="TextAlign.Center"></GridColumn>
+                <GridColumn Field="@nameof(OrderComponentModel.OrderDate)" HeaderText="Order Date" TextAlign="TextAlign.Center">
+                    <Template>
+                        @{ 
+                            var date = (context as OrderComponentModel);
+                            <span>
+                                @date.OrderDate.Date
+                            </span>
+                        }
+                    </Template>
+                </GridColumn>
+                <GridColumn HeaderText="Items in Order" TextAlign="TextAlign.Center" >
+                    <Template>
+                        @{ 
+                            var order = (context as OrderComponentModel);
+                            <span>
+                                @order.OrderedItems.Count()
+                            </span>
+                        }
+                    </Template>
+                </GridColumn>
+            </GridColumns>
         </SfGrid>
     </div>
 </div>
 
 @code {
-    List<OrderComponentModel> _orders = new List<OrderComponentModel>();
+    List<OrderComponentModel> _orders = new();
 
     protected override async Task OnInitializedAsync()
     {
         var response = await Http.GetAsync<List<OrderComponentModel>>("api/orders");
 
-        if (response.Success == false)
-            _orders = new List<OrderComponentModel>();
-        _orders = response.Response;
+        if (response.Success)
+            _orders = response.Response;
     }
 
 }

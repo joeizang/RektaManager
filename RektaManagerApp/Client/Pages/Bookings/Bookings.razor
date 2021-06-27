@@ -65,6 +65,9 @@
     protected override async Task OnInitializedAsync()
     {
         var response = await Http.GetAsync<List<BookingComponentModel>>("api/bookings");
+
+        if (response.Success)
+            _bookings = response.Response;
     }
 
     private void DeleteBooking(string id)
