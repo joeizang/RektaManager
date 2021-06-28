@@ -1,6 +1,7 @@
 ﻿@page "/orders"
 @inject IHttpService Http
 @inject NavigationManager Navigation
+@inject IToastService Toast 
 @using RektaManagerApp.Shared.ComponentModels.Orders
 
 <div class="d-flex justify-content-center align-items-center">
@@ -21,13 +22,13 @@
         <SfGrid DataSource="@_orders" AllowPaging="true" AllowFiltering="true" AllowSorting="true">
             <GridPageSettings PageSize="10"></GridPageSettings>
             <GridColumns>
-                <GridColumn Field="@nameof(OrderComponentModel.OrderId)" HeaderText="Order ID" AllowEditing="false" TextAlign="TextAlign.Center"></GridColumn>
+                <GridColumn AllowSorting="false" AllowFiltering="false" Field="@nameof(OrderComponentModel.OrderId)" HeaderText="Order ID" AllowEditing="false" TextAlign="TextAlign.Center"></GridColumn>
                 <GridColumn Field="@nameof(OrderComponentModel.OrderDate)" HeaderText="Order Date" TextAlign="TextAlign.Center">
                     <Template>
                         @{ 
                             var date = (context as OrderComponentModel);
                             <span>
-                                @date.OrderDate.Date
+                                @date.OrderDate.Date.ToString("dd-MM-yyyy")
                             </span>
                         }
                     </Template>
@@ -42,6 +43,27 @@
                         }
                     </Template>
                 </GridColumn>
+                <GridColumn Field="@nameof(OrderComponentModel.CustomerName)" HeaderText="Customer" TextAlign="TextAlign.Center"></GridColumn>
+                <GridColumn Field="@nameof(OrderComponentModel.OrderTotal)" HeaderText="Total" TextAlign="TextAlign.Center"></GridColumn>
+                <GridColumn HeaderText="Actions" TextAlign="TextAlign.Center">
+                    <Template>
+                        @{
+                            var order = (context as OrderComponentModel);
+                            <a href="inventory/details/@order.OrderId" class="btn btn-outline-info btn-sm">
+                                <span class="bi bi-eye-fill"></span>
+                            </a>
+                            <a href="inventory/edit/@order.OrderId" class="btn btn-outline-info btn-sm">
+                                <span class="bi bi-pencil-square"></span>
+                            </a>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteOrder(order.OrderId))">
+                                <span class="bi bi-trash2-fill"></span>
+                                <span style="display: @_displayProp">
+                                    <ActionSpinner ActionName="Deleting" ColorVariant="text-dark" />
+                                </span>
+                            </button>
+                        }
+                    </Template>
+                </GridColumn>
             </GridColumns>
         </SfGrid>
     </div>
@@ -50,12 +72,28 @@
 @code {
     List<OrderComponentModel> _orders = new();
 
+    string _displayProp = "none";
+
     protected override async Task OnInitializedAsync()
     {
         var response = await Http.GetAsync<List<OrderComponentModel>>("api/orders");
 
         if (response.Success)
             _orders = response.Response;
+    }
+
+    async Task DeleteOrder(string id)
+    {
+        _displayProp = "inline";
+        var response = await Http.DeleteAsync($"api/orders/{id}");
+        if (response.Success)
+        {
+            Toast.ShowSuccess("Deleted Successfully!", "Delete Successful");
+            _displayProp = "none";
+            Navigation.NavigateTo("orders", true);
+        }
+
+
     }
 
 }
