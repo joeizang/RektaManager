@@ -1,9 +1,5 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.EntityFramework.Entities;
-using IdentityServer4.EntityFramework.Options;
+﻿using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +7,7 @@ using Microsoft.Extensions.Options;
 using MySql.EntityFrameworkCore.Extensions;
 using RektaManagerApp.Server.Extensions;
 using RektaManagerApp.Shared;
+using System;
 
 namespace RektaManagerApp.Server.Data
 {
